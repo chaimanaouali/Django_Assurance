@@ -1,0 +1,12 @@
+{% extends 'admin/base-admin.html.twig' %}
+
+{% block title %}New ReponseDevis{% endblock %}
+
+{% block body %}
+<!DOCTYPE html>
+    <h1>Create new ReponseDevis</h1>
+
+    {{ include('reponse_devis/_form.html.twig') }}
+
+    <a href="{{ path('app_reponse_devis_index') }}">back to list</a>
+{% endblock %}
