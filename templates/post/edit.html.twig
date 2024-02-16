@@ -1,0 +1,16 @@
+{% extends 'admin/base-admin.html.twig' %}
+
+{% block title %}Edit Post{% endblock %}
+
+{% block body %}
+    <!DOCTYPE html>
+    <title>Edit Post</title>
+    
+    <h1>Edit Post</h1>
+
+    {{ include('post/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_post_index') }}">back to list</a>
+
+    {{ include('post/_delete_form.html.twig') }}
+{% endblock %}

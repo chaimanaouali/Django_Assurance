@@ -1,0 +1,62 @@
+{% extends 'admin/base-admin.html.twig' %}
+
+{% block content %}
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>Post index</title>
+    </head>
+    <body>
+
+    <h1>Post index</h1>
+
+    {{ dump(posts) }} {# Dump the entire posts array to inspect its structure #}
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Titre</th>
+                <th>Description</th>
+                <th>Image</th>
+                <th>DateCreation</th>
+                <th>Categorie</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for post in posts %}
+            <tr>
+                <td>{{ post.id }}</td>
+                <td>{{ post.titre }}</td>
+                <td>{{ post.description }}</td>
+                <td>
+                    {% if post.image %}
+                        <img src="{{ asset('uploads/' ~ post.image) }}" alt="Post Image">
+                    {% else %}
+                        No Image
+                    {% endif %}
+                </td>
+                <td>{{ post.dateCreation ? post.dateCreation|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ post.categorie }}</td>
+                <td>{{ post.status }}</td>
+                <td>
+                    <a href="{{ path('app_post_show', {'id': post.id}) }}">Show</a>
+                    <a href="{{ path('app_post_edit', {'id': post.id}) }}">Edit</a>
+                </td>
+            </tr>
+        {% endfor %}
+        {% if posts|length == 0 %}
+            <tr>
+                <td colspan="8">No records found</td>
+            </tr>
+        {% endif %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_post_new') }}">Create new</a>
+
+    </body>
+    </html>
+{% endblock %}

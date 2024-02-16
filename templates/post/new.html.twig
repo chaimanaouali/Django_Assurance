@@ -1,0 +1,23 @@
+{% extends 'admin/base-admin.html.twig' %}
+
+{% block title %}New Post{% endblock %}
+
+{% block body %}
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>New Post</title>
+    </head>
+    <body>
+        <h1>Create new Post</h1>
+
+        {{ include('post/_form.html.twig', {'form': form}) }}
+
+        <a href="{{ path('app_post_index') }}">Back to List</a>
+    </body>
+    </html>
+{% endblock %}
+
+
+
+
