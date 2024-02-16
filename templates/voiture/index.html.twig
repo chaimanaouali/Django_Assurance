@@ -1,0 +1,41 @@
+{% extends 'admin/base-admin.html.twig' %}
+
+{% block title %}Voiture index{% endblock %}
+
+{% block body %}
+    <h1>Voiture index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Matricule</th>
+                <th>Marque</th>
+                <th>Prix Voiture</th>
+                <th>Puissance</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for voiture in voitures %}
+            <tr>
+                <td>{{ voiture.id }}</td>
+                <td>{{ voiture.matricule }}</td>
+                <td>{{ voiture.marque }}</td>
+                <td>{{ voiture.prixVoiture }}</td>
+                <td>{{ voiture.puissance }}</td>
+                <td>
+                    <a href="{{ path('app_voiture_show', {'id': voiture.id}) }}">Show</a>
+                    <a href="{{ path('app_voiture_edit', {'id': voiture.id}) }}">Edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">No records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_voiture_new') }}">Create new</a>
+{% endblock %}
