@@ -4,8 +4,13 @@ namespace App\Entity;
 
 use App\Repository\DevisRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 #[ORM\Entity(repositoryClass: DevisRepository::class)]
+#[UniqueEntity(fields: ['email'], message: 'This email is already in use.')]
+
 class Devis
 {
     #[ORM\Id]
@@ -21,7 +26,8 @@ class Devis
 
     #[ORM\Column(type: "string", length: 255)]
     private $adresse;
-
+    #[Assert\NotBlank(message: 'Email cannot be blank')]
+    #[Assert\Email(message: 'Invalid email address')]
     #[ORM\Column(type: "string", length: 255)]
     private $email;
 
@@ -29,6 +35,17 @@ class Devis
     private $dateNaissance;
 
     #[ORM\Column(type: "integer", name: "num_tel")]
+    #[Assert\NotBlank(message: 'Numéro de téléphone ne peut pas être vide')]
+    #[Assert\Length(
+        min: 8,
+        max: 8,
+        minMessage: 'Le numéro de téléphone doit avoir au moins 8 chiffres',
+        maxMessage: 'Le numéro de téléphone ne peut pas dépasser 8 chiffres'
+    )]
+    #[Assert\Regex(
+        pattern: '/^\+?\d+$/',
+        message: 'Le numéro de téléphone doit contenir uniquement des chiffres'
+    )]
     private $numTel;
 
     #[ORM\Column(type: "string", length: 255)]
@@ -102,7 +119,14 @@ class Devis
 
     public function setDateNaissance(\DateTimeInterface $dateNaissance): self
     {
-        $this->dateNaissance = $dateNaissance;
+        if ($dateNaissance instanceof \DateTimeInterface) {
+            $this->dateNaissance = $dateNaissance;
+        } elseif (is_string($dateNaissance)) {
+            $this->dateNaissance = new \DateTime($dateNaissance);
+        } else {
+            throw new \InvalidArgumentException('La date de naissance doit être une instance de \DateTimeInterface ou une chaîne de caractères représentant une date valide.');
+        }
+    
         return $this;
     }
 

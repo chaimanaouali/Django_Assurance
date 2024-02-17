@@ -4,8 +4,11 @@ namespace App\Entity;
 
 use App\Repository\ReponseDevisRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ReponseDevisRepository::class)]
+
 class ReponseDevis
 {
     #[ORM\Id]
@@ -13,6 +16,7 @@ class ReponseDevis
     #[ORM\Column(type: "integer", name: "id_rep")]
     private $idRep;
 
+    #[Assert\Choice(choices: ['en attente', 'refusé', 'en traitement', 'validé'], message: 'L\'état doit être "en attente", "refusé", "en traitement" ou "validé"')]
     #[ORM\Column(type: "string", length: 255)]
     private $etat;
 
@@ -28,6 +32,7 @@ class ReponseDevis
     #[ORM\Column(type: "string", length: 255, name: "duree_validite")]
     private $dureeValidite;
 
+    #[Assert\File(mimeTypes: ['image/jpeg', 'image/png', 'application/pdf'])]
     #[ORM\Column(type: "string", length: 255)]
     private $documents;
 

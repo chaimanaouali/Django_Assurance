@@ -10,6 +10,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
 #[Route('/reponse/devis')]
 class ReponseDevisController extends AbstractController
@@ -26,20 +28,42 @@ class ReponseDevisController extends AbstractController
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $reponseDevi = new ReponseDevis();
-        $form = $this->createForm(ReponseDevisType::class, $reponseDevi);
-        $form->handleRequest($request);
+    $form = $this->createForm(ReponseDevisType::class, $reponseDevi);
+    $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($reponseDevi);
-            $entityManager->flush();
+    if ($form->isSubmitted() && $form->isValid()) {
+        /** @var UploadedFile $documentFile */
+        $documentFile = $form->get('documents')->getData();
 
-            return $this->redirectToRoute('app_reponse_devis_index', [], Response::HTTP_SEE_OTHER);
+        if ($documentFile) {
+            $originalFilename = pathinfo($documentFile->getClientOriginalName(), PATHINFO_FILENAME);
+            $newFilename = $originalFilename.'.'.$documentFile->guessExtension();
+
+            try {
+                $documentFile->move(
+                    $this->getParameter('documents_directory'), // Chemin vers le répertoire de stockage des documents
+                    $newFilename
+                );
+            } catch (FileException $e) {
+                // Gérer l'erreur de téléchargement de fichier
+            }
+
+            // Stockez le nom du fichier dans l'entité ReponseDevis
+            $reponseDevi->setDocuments($newFilename);
         }
 
-        return $this->renderForm('reponse_devis/new.html.twig', [
-            'reponse_devi' => $reponseDevi,
-            'form' => $form,
-        ]);
+        // Persistez et flush l'entité ReponseDevis
+        $entityManager->persist($reponseDevi);
+        $entityManager->flush();
+
+        // Redirigez l'utilisateur vers une autre page après la soumission du formulaire
+        return $this->redirectToRoute('app_reponse_devis_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    return $this->renderForm('reponse_devis/new.html.twig', [
+        'reponse_devi' => $reponseDevi,
+        'form' => $form,
+    ]);
     }
 
     #[Route('/{idRep}', name: 'app_reponse_devis_show', methods: ['GET'])]
