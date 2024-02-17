@@ -93,49 +93,51 @@
 						<!-- Content -->
 						{% block body %}
 										
-	<h1>Les Mecaniciens</h1>
+	 <h1>Mecanicien</h1>
+
     <table class="table">
-        <thead>
+        <tbody>
             <tr>
                 <th>Id</th>
-                <th>Nom</th>
-                <th>Prenom</th>
-                <th>Localisation</th>
-                <th>Disponibilite</th>
-                <th>Numero</th>
-                <th>Image</th>
-                <th>Email</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for mecanicien in mecaniciens %}
-            <tr>
                 <td>{{ mecanicien.id }}</td>
-                <td>{{ mecanicien.nom }}</td>
-                <td>{{ mecanicien.prenom }}</td>
-                <td>{{ mecanicien.localisation }}</td>
-                <td>{{ mecanicien.disponibilite }}</td>
-                <td>{{ mecanicien.numero }}</td>
-                <td>{{ mecanicien.image }}</td>
-                <td>{{ mecanicien.email }}</td>
-                <td>
-                    <a href="{{ path('app_mecanicien_show', {'id': mecanicien.id}) }}">show</a>
-                    <a href="{{ path('app_mecanicien_edit', {'id': mecanicien.id}) }}">edit</a>
-                </td>
             </tr>
-        {% else %}
             <tr>
-                <td colspan="9">no records found</td>
+                <th>Nom</th>
+                <td>{{ mecanicien.nom }}</td>
             </tr>
-        {% endfor %}
+            <tr>
+                <th>Prenom</th>
+                <td>{{ mecanicien.prenom }}</td>
+            </tr>
+            <tr>
+                <th>Localisation</th>
+                <td>{{ mecanicien.localisation }}</td>
+            </tr>
+            <tr>
+                <th>Disponibilite</th>
+                <td>{{ mecanicien.disponibilite }}</td>
+            </tr>
+            <tr>
+                <th>Numero</th>
+                <td>{{ mecanicien.numero }}</td>
+            </tr>
+            <tr>
+                <th>Image</th>
+                <td>{{ mecanicien.image }}</td>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <td>{{ mecanicien.email }}</td>
+            </tr>
         </tbody>
     </table>
 
-    <a href="{{ path('app_mecanicien_new') }}">Create new</a>
-						
-						
-						{% endblock %}
+    <a href="{{ path('app_mecanicien_index') }}">back to list</a>
+
+    <a href="{{ path('app_mecanicien_edit', {'id': mecanicien.id}) }}">edit</a>
+
+    {{ include('mecanicien/_delete_form.html.twig') }}
+ {% endblock %}
 						<!-- / Content -->
 
 

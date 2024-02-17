@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+
+<title>Edit Mecanicien</title>
+
+{% block body %}
+    <h1>Edit Mecanicien</h1>
+
+    {{ include('mecanicien/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_mecanicien_index') }}">back to list</a>
+
+    {{ include('mecanicien/_delete_form.html.twig') }}
+{% endblock %}

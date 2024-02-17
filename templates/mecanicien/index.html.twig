@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+
+<title>Mecanicien index</title>
+
+{% block body %}
+    <h1>Mecanicien index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nom</th>
+                <th>Prenom</th>
+                <th>Localisation</th>
+                <th>Disponibilite</th>
+                <th>Numero</th>
+                <th>Image</th>
+                <th>Email</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for mecanicien in mecaniciens %}
+            <tr>
+                <td>{{ mecanicien.id }}</td>
+                <td>{{ mecanicien.nom }}</td>
+                <td>{{ mecanicien.prenom }}</td>
+                <td>{{ mecanicien.localisation }}</td>
+                <td>{{ mecanicien.disponibilite }}</td>
+                <td>{{ mecanicien.numero }}</td>
+                <td>{{ mecanicien.image }}</td>
+                <td>{{ mecanicien.email }}</td>
+                <td>
+                    <a href="{{ path('app_mecanicien_show', {'id': mecanicien.id}) }}">show</a>
+                    <a href="{{ path('app_mecanicien_edit', {'id': mecanicien.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="9">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_mecanicien_new') }}">Create new</a>
+{% endblock %}

@@ -93,49 +93,39 @@
 						<!-- Content -->
 						{% block body %}
 										
-	<h1>Les Mecaniciens</h1>
+	  <h1>Evaluation</h1>
+
     <table class="table">
-        <thead>
+        <tbody>
             <tr>
                 <th>Id</th>
-                <th>Nom</th>
-                <th>Prenom</th>
-                <th>Localisation</th>
-                <th>Disponibilite</th>
-                <th>Numero</th>
-                <th>Image</th>
-                <th>Email</th>
-                <th>actions</th>
+                <td>{{ evaluation.id }}</td>
             </tr>
-        </thead>
-        <tbody>
-        {% for mecanicien in mecaniciens %}
             <tr>
-                <td>{{ mecanicien.id }}</td>
-                <td>{{ mecanicien.nom }}</td>
-                <td>{{ mecanicien.prenom }}</td>
-                <td>{{ mecanicien.localisation }}</td>
-                <td>{{ mecanicien.disponibilite }}</td>
-                <td>{{ mecanicien.numero }}</td>
-                <td>{{ mecanicien.image }}</td>
-                <td>{{ mecanicien.email }}</td>
-                <td>
-                    <a href="{{ path('app_mecanicien_show', {'id': mecanicien.id}) }}">show</a>
-                    <a href="{{ path('app_mecanicien_edit', {'id': mecanicien.id}) }}">edit</a>
-                </td>
+                <th>Nom_client</th>
+                <td>{{ evaluation.nomClient }}</td>
             </tr>
-        {% else %}
             <tr>
-                <td colspan="9">no records found</td>
+                <th>Prenom_client</th>
+                <td>{{ evaluation.prenomClient }}</td>
             </tr>
-        {% endfor %}
+            <tr>
+                <th>Avis_client</th>
+                <td>{{ evaluation.avisClient }}</td>
+            </tr>
+            <tr>
+                <th>Date_eval</th>
+                <td>{{ evaluation.dateEval ? evaluation.dateEval|date('Y-m-d') : '' }}</td>
+            </tr>
         </tbody>
     </table>
 
-    <a href="{{ path('app_mecanicien_new') }}">Create new</a>
-						
-						
-						{% endblock %}
+    <a href="{{ path('app_evaluation_index') }}">back to list</a>
+
+    <a href="{{ path('app_evaluation_edit', {'id': evaluation.id}) }}">edit</a>
+
+    {{ include('evaluation/_delete_form.html.twig') }}
+ {% endblock %}
 						<!-- / Content -->
 
 
