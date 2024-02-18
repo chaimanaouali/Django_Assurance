@@ -1,0 +1,58 @@
+
+
+
+
+
+{% extends 'base-admin.html.twig'%}
+{% block css %}
+{{ parent() }}
+{%endblock%}
+
+{% block title %} new constat{% endblock %}
+{% block navbar %}
+{{ parent() }}
+{%endblock%}
+
+{% block body %}
+    <h1>Constat</h1>
+    
+    <table class="table">
+        <tbody>
+            <tr>
+                <th class="table">Id</th>
+                <td>{{ constat.id}}</td>
+            </tr>
+            <tr>
+                <th class="table">Date</th>
+                <td>{{ constat.date ? constat.date|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th class="table">Lieu</th>
+                <td>{{ constat.lieu }}</td>
+            </tr>
+            <tr>
+                <th class="table">Description</th>
+                <td>{{ constat.description }}</td>
+            </tr>
+            <tr>
+                <th class="table">Conditionroute</th>
+                <td>{{ constat.conditionroute }}</td>
+            </tr>
+            <tr>
+                <th class="table">Rapportepolice</th>
+                <td>{{ constat.rapportepolice ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th class="table">Photo</th>
+                 <td><img src="{{ asset('uploads/images.jpg') }}" alt="Uploaded Image" length="100" width="100"></td>
+         
+            </tr>
+        </tbody>
+    </table>
+
+    <a class="btn btn-outline-info" href="{{ path('app_constat_index') }}">back to list <i class='bx bx-arrow-back' ></i></a>
+
+    <a class="btn btn-outline-warning" href="{{ path('app_constat_edit', {'id': constat.id}) }}">edit<i class='bx bxs-edit-alt'></i></a>
+
+    {{ include('constat/_delete_form.html.twig') }}
+{% endblock %}

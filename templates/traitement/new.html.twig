@@ -1,0 +1,18 @@
+{% extends 'base-admin.html.twig'%}
+{% block css %}
+{{ parent() }}
+{%endblock%}
+
+{% block title %}new Traitement{% endblock %}
+{% block navbar %}
+{{ parent() }}
+{%endblock%}
+
+{% block body %}
+{{ parent() }}
+    <h1>Create new Traitement</h1>
+
+    {{ include('traitement/_form.html.twig') }}
+
+    <a href="{{ path('app_traitement_index') }}">back to list <i class='bx bx-arrow-back' ></i></a>
+{% endblock %}

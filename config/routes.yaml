@@ -1,3 +1,55 @@
 #index:
 #    path: /
 #    controller: App\Controller\DefaultController::index
+
+
+app_constat_index:
+    path: /constat
+    controller: 'App\Controller\ConstatController::index'
+    methods: ['GET']
+
+app_constat_new:
+    path: /constat/new
+    controller: 'App\Controller\ConstatController::new'
+    methods: ['GET', 'POST']
+
+app_constat_show:
+    path: /constat/{id}
+    controller: 'App\Controller\ConstatController::show'
+    methods: ['GET']
+
+app_constat_edit:
+    path: /constat/{id}/edit
+    controller: 'App\Controller\ConstatController::edit'
+    methods: ['GET', 'POST']
+
+app_constat_delete:
+    path: /constat/{id}
+    controller: 'App\Controller\ConstatController::delete'
+    methods: ['POST']
+
+
+app_traitement_index:
+    path: /traitement
+    controller: 'App\Controller\TraitementController::index'
+    methods: ['GET']
+
+app_traitement_new:
+    path: /traitement/new
+    controller: 'App\Controller\TraitementController::new'
+    methods: ['GET', 'POST']
+
+app_traitement_show:
+    path: /traitement/{id}
+    controller: 'App\Controller\TraitementController::show'
+    methods: ['GET']
+
+app_traitement_edit:
+    path: /traitement/{id}/edit
+    controller: 'App\Controller\TraitementController::edit'
+    methods: ['GET', 'POST']
+
+app_traitement_delete:
+    path: /traitement/{id}
+    controller: 'App\Controller\TraitementController::delete'
+    methods: ['POST']

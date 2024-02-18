@@ -1,0 +1,50 @@
+
+{% extends 'base-admin.html.twig'%}
+{% block css %}
+{{ parent() }}
+{%endblock%}
+
+{% block title %}{% endblock %}
+{% block navbar %}
+{{ parent() }}
+{%endblock%}
+
+{% block body %}
+{{ parent() }}
+    <h1>Traitement</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ traitement.id }}</td>
+            </tr>
+            <tr>
+                <th>Id_constat</th>
+                <td>{{ traitement.idConstat }}</td>
+            </tr>
+            <tr>
+                <th>Date_taitement</th>
+                <td>{{ traitement.dateTaitement ? traitement.dateTaitement|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Responsable</th>
+                <td>{{ traitement.responsable }}</td>
+            </tr>
+            <tr>
+                <th>Statut</th>
+                <td>{{ traitement.statut }}</td>
+            </tr>
+            <tr>
+                <th>Remarque</th>
+                <td>{{ traitement.remarque }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a  class="btn btn-outline-info" href="{{ path('app_traitement_index') }}">back to list <i class='bx bx-arrow-back' > </i></a>
+
+    <a class="btn btn-outline-warning" href="{{ path('app_traitement_edit', {'id': traitement.id}) }}">edit<i class='bx bxs-edit-alt'></i></a>
+
+    {{ include('traitement/_delete_form.html.twig') }}
+{% endblock %}
