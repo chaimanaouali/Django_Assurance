@@ -1,5 +1,6 @@
-{% extends 'admin/base-admin.html.twig' %}
-{% block title %}Devis{% endblock %}
+<!DOCTYPE html>
+
+<title>Devis index</title>
 
 {% block body %}
     <h1>Devis index</h1>
@@ -7,13 +8,13 @@
     <table class="table">
         <thead>
             <tr>
-                <th>IdDev</th>
+                <th>Id</th>
                 <th>Nom</th>
                 <th>Prenom</th>
                 <th>Adresse</th>
                 <th>Email</th>
-                <th>DateNaissance</th>
-                <th>NumTel</th>
+                <th>Date_naiss</th>
+                <th>Num_tel</th>
                 <th>Modele</th>
                 <th>Puissance</th>
                 <th>Prix</th>
@@ -23,19 +24,19 @@
         <tbody>
         {% for devi in devis %}
             <tr>
-                <td>{{ devi.idDev }}</td>
+                <td>{{ devi.id }}</td>
                 <td>{{ devi.nom }}</td>
                 <td>{{ devi.prenom }}</td>
                 <td>{{ devi.adresse }}</td>
                 <td>{{ devi.email }}</td>
-                <td>{{ devi.dateNaissance ? devi.dateNaissance|date('Y-m-d') : '' }}</td>
+                <td>{{ devi.dateNaiss ? devi.dateNaiss|date('Y-m-d') : '' }}</td>
                 <td>{{ devi.numTel }}</td>
                 <td>{{ devi.modele }}</td>
                 <td>{{ devi.puissance }}</td>
                 <td>{{ devi.prix }}</td>
                 <td>
-                    <a href="{{ path('app_devis_show', {'idDev': devi.idDev}) }}">show</a>
-                    <a href="{{ path('app_devis_edit', {'idDev': devi.idDev}) }}">edit</a>
+                    <a href="{{ path('app_devis_show', {'id': devi.id}) }}">show</a>
+                    <a href="{{ path('app_devis_edit', {'id': devi.id}) }}">edit</a>
                 </td>
             </tr>
         {% else %}

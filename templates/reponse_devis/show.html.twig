@@ -1,19 +1,15 @@
-
-{% extends 'admin/base-admin.html.twig' %}
-{% block title %}ReponseDevis{% endblock %}
-
+<!DOCTYPE html>
 
 <title>ReponseDevis</title>
 
 {% block body %}
-<!DOCTYPE html>
     <h1>ReponseDevis</h1>
 
     <table class="table">
         <tbody>
             <tr>
-                <th>IdRep</th>
-                <td>{{ reponse_devi.idRep }}</td>
+                <th>Id</th>
+                <td>{{ reponse_devi.id }}</td>
             </tr>
             <tr>
                 <th>Etat</th>
@@ -24,15 +20,15 @@
                 <td>{{ reponse_devi.decision }}</td>
             </tr>
             <tr>
-                <th>DateReglement</th>
+                <th>Date_reglement</th>
                 <td>{{ reponse_devi.dateReglement ? reponse_devi.dateReglement|date('Y-m-d') : '' }}</td>
             </tr>
             <tr>
-                <th>DelaiReparation</th>
+                <th>Delai_reparation</th>
                 <td>{{ reponse_devi.delaiReparation }}</td>
             </tr>
             <tr>
-                <th>DureeValidite</th>
+                <th>Duree_validite</th>
                 <td>{{ reponse_devi.dureeValidite }}</td>
             </tr>
             <tr>
@@ -44,7 +40,7 @@
 
     <a href="{{ path('app_reponse_devis_index') }}">back to list</a>
 
-    <a href="{{ path('app_reponse_devis_edit', {'idRep': reponse_devi.idRep}) }}">edit</a>
+    <a href="{{ path('app_reponse_devis_edit', {'id': reponse_devi.id}) }}">edit</a>
 
     {{ include('reponse_devis/_delete_form.html.twig') }}
 {% endblock %}

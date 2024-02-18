@@ -11,7 +11,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-
 #[Route('/devis')]
 class DevisController extends AbstractController
 {
@@ -43,7 +42,7 @@ class DevisController extends AbstractController
         ]);
     }
 
-    #[Route('/{idDev}', name: 'app_devis_show', methods: ['GET'])]
+    #[Route('/{id}', name: 'app_devis_show', methods: ['GET'])]
     public function show(Devis $devi): Response
     {
         return $this->render('devis/show.html.twig', [
@@ -51,7 +50,7 @@ class DevisController extends AbstractController
         ]);
     }
 
-    #[Route('/{idDev}/edit', name: 'app_devis_edit', methods: ['GET', 'POST'])]
+    #[Route('/{id}/edit', name: 'app_devis_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Devis $devi, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(DevisType::class, $devi);
@@ -69,10 +68,10 @@ class DevisController extends AbstractController
         ]);
     }
 
-    #[Route('/{idDev}', name: 'app_devis_delete', methods: ['POST'])]
+    #[Route('/{id}', name: 'app_devis_delete', methods: ['POST'])]
     public function delete(Request $request, Devis $devi, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$devi->getIdDev(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete'.$devi->getId(), $request->request->get('_token'))) {
             $entityManager->remove($devi);
             $entityManager->flush();
         }

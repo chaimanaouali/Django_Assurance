@@ -1,0 +1,6 @@
+symfony console make:controller AuthorController -----> creation controller
+symfony console make:entity
+symfony console make:form 
+symfony console doctrine:database:create
+symfony console make:migration
+symfony console doctrine:migration:migrate

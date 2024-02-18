@@ -3,48 +3,43 @@
 namespace App\Entity;
 
 use App\Repository\ReponseDevisRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ReponseDevisRepository::class)]
-
 class ReponseDevis
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: "IDENTITY")]
-    #[ORM\Column(type: "integer", name: "id_rep")]
-    private $idRep;
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?int $id = null;
 
     #[Assert\Choice(choices: ['en attente', 'refusé', 'en traitement', 'validé'], message: 'L\'état doit être "en attente", "refusé", "en traitement" ou "validé"')]
-    #[ORM\Column(type: "string", length: 255)]
-    private $etat;
+    #[ORM\Column(length: 255)]
+    private ?string $etat = null;
 
-    #[ORM\Column(type: "string", length: 255)]
-    private $decision;
+    #[ORM\Column(length: 255)]
+    private ?string $decision = null;
 
-    #[ORM\Column(type: "date", name: "date_reglement")]
-    private $dateReglement;
+    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    private ?\DateTimeInterface $date_reglement = null;
 
-    #[ORM\Column(type: "string", length: 255, name: "delai_reparation")]
-    private $delaiReparation;
+    #[ORM\Column(length: 255)]
+    private ?string $delai_reparation = null;
 
-    #[ORM\Column(type: "string", length: 255, name: "duree_validite")]
-    private $dureeValidite;
+    #[ORM\Column(length: 255)]
+    private ?string $duree_validite = null;
 
     #[Assert\File(mimeTypes: ['image/jpeg', 'image/png', 'application/pdf'])]
-    #[ORM\Column(type: "string", length: 255)]
-    private $documents;
+    #[ORM\Column(length: 255)]
+    private ?string $documents = null;
 
-    public function getIdRep(): ?int
-    {
-        return $this->idRep;
-    }
+    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    private ?Devis $email = null;
 
-    public function setIdRep(int $idRep): self
+    public function getId(): ?int
     {
-        $this->idRep = $idRep;
-        return $this;
+        return $this->id;
     }
 
     public function getEtat(): ?string
@@ -52,9 +47,10 @@ class ReponseDevis
         return $this->etat;
     }
 
-    public function setEtat(string $etat): self
+    public function setEtat(string $etat): static
     {
         $this->etat = $etat;
+
         return $this;
     }
 
@@ -63,42 +59,46 @@ class ReponseDevis
         return $this->decision;
     }
 
-    public function setDecision(string $decision): self
+    public function setDecision(string $decision): static
     {
         $this->decision = $decision;
+
         return $this;
     }
 
     public function getDateReglement(): ?\DateTimeInterface
     {
-        return $this->dateReglement;
+        return $this->date_reglement;
     }
 
-    public function setDateReglement(\DateTimeInterface $dateReglement): self
+    public function setDateReglement(\DateTimeInterface $date_reglement): static
     {
-        $this->dateReglement = $dateReglement;
+        $this->date_reglement = $date_reglement;
+
         return $this;
     }
 
     public function getDelaiReparation(): ?string
     {
-        return $this->delaiReparation;
+        return $this->delai_reparation;
     }
 
-    public function setDelaiReparation(string $delaiReparation): self
+    public function setDelaiReparation(string $delai_reparation): static
     {
-        $this->delaiReparation = $delaiReparation;
+        $this->delai_reparation = $delai_reparation;
+
         return $this;
     }
 
     public function getDureeValidite(): ?string
     {
-        return $this->dureeValidite;
+        return $this->duree_validite;
     }
 
-    public function setDureeValidite(string $dureeValidite): self
+    public function setDureeValidite(string $duree_validite): static
     {
-        $this->dureeValidite = $dureeValidite;
+        $this->duree_validite = $duree_validite;
+
         return $this;
     }
 
@@ -107,9 +107,22 @@ class ReponseDevis
         return $this->documents;
     }
 
-    public function setDocuments(string $documents): self
+    public function setDocuments(string $documents): static
     {
         $this->documents = $documents;
+
+        return $this;
+    }
+
+    public function getEmail(): ?Devis
+    {
+        return $this->email;
+    }
+
+    public function setEmail(?Devis $email): static
+    {
+        $this->email = $email;
+
         return $this;
     }
 }

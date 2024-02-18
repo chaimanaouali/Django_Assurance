@@ -1,5 +1,6 @@
-{% extends 'admin/base-admin.html.twig' %}
-{% block title %}Devis{% endblock %}
+<!DOCTYPE html>
+
+<title>Devis</title>
 
 {% block body %}
     <h1>Devis</h1>
@@ -7,8 +8,8 @@
     <table class="table">
         <tbody>
             <tr>
-                <th>IdDev</th>
-                <td>{{ devi.idDev }}</td>
+                <th>Id</th>
+                <td>{{ devi.id }}</td>
             </tr>
             <tr>
                 <th>Nom</th>
@@ -27,11 +28,11 @@
                 <td>{{ devi.email }}</td>
             </tr>
             <tr>
-                <th>DateNaissance</th>
-                <td>{{ devi.dateNaissance ? devi.dateNaissance|date('Y-m-d') : '' }}</td>
+                <th>Date_naiss</th>
+                <td>{{ devi.dateNaiss ? devi.dateNaiss|date('Y-m-d') : '' }}</td>
             </tr>
             <tr>
-                <th>NumTel</th>
+                <th>Num_tel</th>
                 <td>{{ devi.numTel }}</td>
             </tr>
             <tr>
@@ -51,7 +52,7 @@
 
     <a href="{{ path('app_devis_index') }}">back to list</a>
 
-    <a href="{{ path('app_devis_edit', {'idDev': devi.idDev}) }}">edit</a>
+    <a href="{{ path('app_devis_edit', {'id': devi.id}) }}">edit</a>
 
     {{ include('devis/_delete_form.html.twig') }}
 {% endblock %}

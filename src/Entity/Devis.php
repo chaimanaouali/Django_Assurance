@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\DevisRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -10,31 +11,31 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: DevisRepository::class)]
 #[UniqueEntity(fields: ['email'], message: 'This email is already in use.')]
-
 class Devis
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: "IDENTITY")]
-    #[ORM\Column(type: "integer", name: "id_dev")]
-    private $idDev;
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?int $id = null;
 
-    #[ORM\Column(type: "string", length: 255)]
-    private $nom;
+    #[ORM\Column(length: 255)]
+    private ?string $nom = null;
 
-    #[ORM\Column(type: "string", length: 255)]
-    private $prenom;
+    #[ORM\Column(length: 255)]
+    private ?string $prenom = null;
 
-    #[ORM\Column(type: "string", length: 255)]
-    private $adresse;
+    #[ORM\Column(length: 255)]
+    private ?string $adresse = null;
+
     #[Assert\NotBlank(message: 'Email cannot be blank')]
     #[Assert\Email(message: 'Invalid email address')]
-    #[ORM\Column(type: "string", length: 255)]
-    private $email;
+    #[ORM\Column(length: 255)]
+    private ?string $email = null;
 
-    #[ORM\Column(type: "date", name: "date_naiss")]
-    private $dateNaissance;
+    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    private ?\DateTimeInterface $date_naiss = null;
 
-    #[ORM\Column(type: "integer", name: "num_tel")]
+    #[ORM\Column]
     #[Assert\NotBlank(message: 'Numéro de téléphone ne peut pas être vide')]
     #[Assert\Length(
         min: 8,
@@ -46,26 +47,20 @@ class Devis
         pattern: '/^\+?\d+$/',
         message: 'Le numéro de téléphone doit contenir uniquement des chiffres'
     )]
-    private $numTel;
+    private ?int $num_tel = null;
 
-    #[ORM\Column(type: "string", length: 255)]
-    private $modele;
+    #[ORM\Column(length: 255)]
+    private ?string $modele = null;
 
-    #[ORM\Column(type: "string", length: 255)]
-    private $puissance;
+    #[ORM\Column(length: 255)]
+    private ?string $puissance = null;
 
-    #[ORM\Column(type: "string", length: 255)]
-    private $prix;
+    #[ORM\Column]
+    private ?float $prix = null;
 
-    public function getIdDev(): ?int
+    public function getId(): ?int
     {
-        return $this->idDev;
-    }
-
-    public function setIdDev(int $idDev): self
-    {
-        $this->idDev = $idDev;
-        return $this;
+        return $this->id;
     }
 
     public function getNom(): ?string
@@ -73,9 +68,10 @@ class Devis
         return $this->nom;
     }
 
-    public function setNom(string $nom): self
+    public function setNom(string $nom): static
     {
         $this->nom = $nom;
+
         return $this;
     }
 
@@ -84,9 +80,10 @@ class Devis
         return $this->prenom;
     }
 
-    public function setPrenom(string $prenom): self
+    public function setPrenom(string $prenom): static
     {
         $this->prenom = $prenom;
+
         return $this;
     }
 
@@ -95,9 +92,10 @@ class Devis
         return $this->adresse;
     }
 
-    public function setAdresse(string $adresse): self
+    public function setAdresse(string $adresse): static
     {
         $this->adresse = $adresse;
+
         return $this;
     }
 
@@ -106,38 +104,34 @@ class Devis
         return $this->email;
     }
 
-    public function setEmail(string $email): self
+    public function setEmail(string $email): static
     {
         $this->email = $email;
+
         return $this;
     }
 
-    public function getDateNaissance(): ?\DateTimeInterface
+    public function getDateNaiss(): ?\DateTimeInterface
     {
-        return $this->dateNaissance;
+        return $this->date_naiss;
     }
 
-    public function setDateNaissance(\DateTimeInterface $dateNaissance): self
+    public function setDateNaiss(\DateTimeInterface $date_naiss): static
     {
-        if ($dateNaissance instanceof \DateTimeInterface) {
-            $this->dateNaissance = $dateNaissance;
-        } elseif (is_string($dateNaissance)) {
-            $this->dateNaissance = new \DateTime($dateNaissance);
-        } else {
-            throw new \InvalidArgumentException('La date de naissance doit être une instance de \DateTimeInterface ou une chaîne de caractères représentant une date valide.');
-        }
-    
+        $this->date_naiss = $date_naiss;
+
         return $this;
     }
 
     public function getNumTel(): ?int
     {
-        return $this->numTel;
+        return $this->num_tel;
     }
 
-    public function setNumTel(int $numTel): self
+    public function setNumTel(int $num_tel): static
     {
-        $this->numTel = $numTel;
+        $this->num_tel = $num_tel;
+
         return $this;
     }
 
@@ -146,9 +140,10 @@ class Devis
         return $this->modele;
     }
 
-    public function setModele(string $modele): self
+    public function setModele(string $modele): static
     {
         $this->modele = $modele;
+
         return $this;
     }
 
@@ -157,20 +152,22 @@ class Devis
         return $this->puissance;
     }
 
-    public function setPuissance(string $puissance): self
+    public function setPuissance(string $puissance): static
     {
         $this->puissance = $puissance;
+
         return $this;
     }
 
-    public function getPrix(): ?string
+    public function getPrix(): ?float
     {
         return $this->prix;
     }
 
-    public function setPrix(string $prix): self
+    public function setPrix(float $prix): static
     {
         $this->prix = $prix;
+
         return $this;
     }
 }
