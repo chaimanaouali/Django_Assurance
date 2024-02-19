@@ -33,7 +33,7 @@ class Post
     #[Assert\NotBlank]
     private string $description; // New attribute
 
-    #[ORM\Column(length: 1)]
+    #[ORM\Column(length: 255)]
     #[Assert\NotBlank]
     #[Assert\Image(
         minWidth: 200,
@@ -54,7 +54,7 @@ class Post
     #[ORM\Column(length: 30)]
     #[Assert\NotBlank]
     #[Assert\Length(max:30)]
-    private string $categorie = 'default_category';
+    private string $categorie ;
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank]
@@ -62,7 +62,7 @@ class Post
     #[Assert\NotBlank]
    
 
-    private string $status = 'default_status';
+    private string $status ;
 
     public function __construct()
     {

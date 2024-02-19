@@ -15,12 +15,23 @@ use Symfony\Component\Routing\Annotation\Route;
 class PostController extends AbstractController
 {
     #[Route('/', name: 'app_post_index', methods: ['GET'])]
-    public function index(PostRepository $postRepository): Response
+    public function index(Request $request, PostRepository $postRepository): Response
     {
+        $searchTerm = $request->query->get('searchTerm');
+    
+        if ($searchTerm) {
+            // Perform search if a search term is provided
+            $posts = $postRepository->findBySearchTerm($searchTerm);
+        } else {
+            // Otherwise, retrieve all posts
+            $posts = $postRepository->findAll();
+        }
+    
         return $this->render('post/index.html.twig', [
-            'posts' => $postRepository->findAll(),
+            'posts' => $posts,
         ]);
     }
+    
 
     #[Route('/new', name: 'app_post_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
@@ -64,22 +75,31 @@ class PostController extends AbstractController
         ]);
     }
 
-    private function handleImageUpload(Request $request, Post $post): void
-    {
-        $uploadedFile = $request->files->get('post1')['image'];
+   private function handleImageUpload(Request $request, Post $post): void
+{
+    $uploadedFile = $request->files->get('post1')['image'];
 
-        if ($uploadedFile) {
-            $uploadsDirectory = $this->getParameter('uploads_directory'); // Fetch uploads_directory parameter
-            $newFilename = uniqid().'.'.$uploadedFile->guessExtension();
+    if ($uploadedFile) {
+        $uploadsDirectory = $this->getParameter('uploads_directory');
 
-            $uploadedFile->move(
-                $uploadsDirectory,
-                $newFilename
-            );
-
-            $post->setImage($newFilename);
+        // Check if the directory exists, if not, create it
+        if (!file_exists($uploadsDirectory)) {
+            mkdir($uploadsDirectory, 0777, true);
         }
+
+        $newFilename = uniqid().'.'.$uploadedFile->guessExtension();
+
+        $uploadedFile->move(
+            $uploadsDirectory,
+            $newFilename
+        );
+
+        // Set the image path relative to the public directory
+        $post->setImage('uploads/'.$newFilename);
     }
+}
+
+
     public function showImages(): Response
 {
     // Récupérez les chemins complets des images depuis la base de données ou toute autre source
@@ -94,13 +114,17 @@ class PostController extends AbstractController
     ]);
 }
 
-    #[Route('/{id}', name: 'app_post_show', methods: ['GET'])]
-    public function show(Post $post): Response
-    {
-        return $this->render('post/show.html.twig', [
-            'post' => $post,
-        ]);
-    }
+#[Route('/{id}', name: 'app_post_show', methods: ['GET'])]
+public function show(Post $post): Response
+{
+    // Assuming $post->getImage() returns the image path
+    $imagePath = $post->getImage(); 
+
+    return $this->render('post/show.html.twig', [
+        'post' => $post,
+        'imagePath' => $imagePath, // Pass the image path to the template
+    ]);
+}
 
     #[Route('/{id}', name: 'app_post_delete', methods: ['POST'])]
     public function delete(Request $request, Post $post, EntityManagerInterface $entityManager): Response

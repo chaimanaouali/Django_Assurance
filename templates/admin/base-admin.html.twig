@@ -18,6 +18,7 @@
     <link rel="stylesheet" href="{{ asset('back/css/demo.css') }}"/>
     <link rel="stylesheet" href="{{ asset('back/vendor/libs/perfect-scrollbar/perfect-scrollbar.css') }}"/>
     <link rel="stylesheet" href="{{ asset('back/vendor/libs/apex-charts/apex-charts.css') }}"/>
+    <link rel="stylesheet" href="{{ asset('back/css/pagination.css') }}"> {# Corrected path to pagination.css #}
     <script src="{{ asset('back/vendor/js/helpers.js') }}"></script>
     <script src="{{ asset('back/js/config.js') }}"></script>
     {% endblock css %}
@@ -39,6 +40,10 @@
                         <!DOCTYPE html>
                         <title>Post index</title>
                         <h1>Post index</h1>
+                         <form action="{{ path('app_post_index') }}" method="GET">
+        <input type="text" name="searchTerm" placeholder="Search...">
+        <button type="submit">Search</button>
+    </form>
                         <table class="table">
                             <thead>
                                 <tr>
@@ -72,7 +77,9 @@
                                 {% endfor %}
                             </tbody>
                         </table>
-                        <a href="{{ path('app_post_new') }}">Create new</a>
+                        <a href="{{ path('app_post_new') }}">Create </a>
+                        
+                        
                     {% endblock %}
                     <!-- / Content -->
                     {% include 'admin/footer-admin.html.twig' %}
@@ -92,6 +99,7 @@
     <script src="{{ asset('back/vendor/js/bootstrap.js') }}"></script>
     <script src="{{ asset('back/vendor/libs/perfect-scrollbar/perfect-scrollbar.js') }}"></script>
     <script src="{{ asset('back/vendor/js/menu.js') }}"></script>
+    <script src="{{ asset('back/js/pagination.js') }}"></script> {# Corrected path to pagination.js #}
     <!-- Vendors JS -->
     <script src="{{ asset('back/vendor/libs/apex-charts/apexcharts.js') }}"></script>
     <!-- Main JS -->

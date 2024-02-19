@@ -21,6 +21,23 @@ class PostRepository extends ServiceEntityRepository
         parent::__construct($registry, Post::class);
     }
 
+     /**
+     * Recherche les posts en fonction d'un terme de recherche dans le titre.
+     *
+     * @param string $searchTerm Le terme de recherche
+     * @return Post[] Les posts correspondant au terme de recherche
+     */
+    public function findBySearchTerm($searchTerm): array
+    {
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.titre LIKE :searchTerm')
+            ->setParameter('searchTerm', '%' . $searchTerm . '%')
+            ->orderBy('p.id', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
+
 //    /**
 //     * @return Post[] Returns an array of Post objects
 //     */

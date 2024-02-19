@@ -7,7 +7,8 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
-use Symfony\Component\Form\Extension\Core\Type\FileType; // Import FileType
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\TextType; // Import TextType
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class Post1Type extends AbstractType
@@ -15,6 +16,10 @@ class Post1Type extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
+            ->add('keyword', TextType::class, [
+                'label' => 'Search Keyword',
+                'required' => false,
+            ])
             ->add('titre')
             ->add('description')
             ->add('image', FileType::class, [
@@ -34,14 +39,13 @@ class Post1Type extends AbstractType
                 'expanded' => false,
                 // other options as needed
             ])
-            ->add('status',ChoiceType::class,[
+            ->add('status', ChoiceType::class, [
                 'choices' => [
                     'Active' => 'active',
                     'Inactive' => 'inactive',
                 ],
                 'multiple' => false, // Allow only single choice
                 'expanded' => false,
-
             ]);
     }
 

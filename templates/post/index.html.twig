@@ -1,16 +1,16 @@
 {% extends 'admin/base-admin.html.twig' %}
 
 {% block content %}
-    <!DOCTYPE html>
-    <html>
-    <head>
-        <title>Post index</title>
-    </head>
-    <body>
-
     <h1>Post index</h1>
 
-    {{ dump(posts) }} {# Dump the entire posts array to inspect its structure #}
+    <!-- Dump the entire posts array to inspect its structure -->
+    {{ dump(posts) }}
+
+    <!-- Search form -->
+    <form action="{{ path('app_post_index') }}" method="GET">
+        <input type="text" name="searchTerm" placeholder="Search...">
+        <button type="submit">Search</button>
+    </form>
 
     <table class="table">
         <thead>
@@ -46,17 +46,33 @@
                     <a href="{{ path('app_post_edit', {'id': post.id}) }}">Edit</a>
                 </td>
             </tr>
-        {% endfor %}
-        {% if posts|length == 0 %}
+        {% else %}
             <tr>
                 <td colspan="8">No records found</td>
             </tr>
-        {% endif %}
+        {% endfor %}
         </tbody>
     </table>
 
-    <a href="{{ path('app_post_new') }}">Create new</a>
-
-    </body>
-    </html>
+    <!-- Render pagination links -->
+    <div class="pagination">
+        <!-- Previous button -->
+        {% if posts.hasPreviousPage %}
+            <a href="{{ path(app.request.get('_route'), app.request.get('_route_params')|merge({'page': posts.previousPage})) }}" class="btn btn-primary">Previous</a>
+        {% endif %}
+        
+        <!-- Numbered pages -->
+        {% for page in posts.pagesInRange %}
+            {% if page != posts.currentPage %}
+                <a href="{{ path(app.request.get('_route'), app.request.get('_route_params')|merge({'page': page})) }}" class="btn btn-secondary">{{ page }}</a>
+            {% else %}
+                <span class="btn btn-primary disabled">{{ page }}</span>
+            {% endif %}
+        {% endfor %}
+        
+        <!-- Next button -->
+        {% if posts.hasNextPage %}
+            <a href="{{ path(app.request.get('_route'), app.request.get('_route_params')|merge({'page': posts.nextPage})) }}" class="btn btn-primary">Next</a>
+        {% endif %}
+    </div>
 {% endblock %}
