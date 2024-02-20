@@ -41,12 +41,13 @@ class ConstatType extends AbstractType
                 'multiple' => false, // Allows selecting only one option
                 'required' => true, // Set to true if you want to force a selection
             ])
-
             ->add('photo', FileType::class, [
-                'label' => 'photo',
-                'required' => false,
-                'data_class' => null, 
+                'label' => 'Your Image (JPG, JPEG, PNG file)',
+                'mapped' => false, // tells Symfony not to try to map this field to any entity property
+                'required' => false, // allow the field to be empty, so you can remove the image
+                'attr' => ['accept' => 'image/*']
             ])
+            
         ;
     }
 

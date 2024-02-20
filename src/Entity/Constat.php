@@ -6,9 +6,12 @@ use App\Repository\ConstatRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\UX\Turbo\Attribute\Broadcast;
 use Symfony\Component\HttpFoundation\File\File;
+use App\Entity\Assert\NotBlank;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 
 #[ORM\Entity(repositoryClass: ConstatRepository::class)]
 #[Broadcast]
+
 class Constat
 {
     #[ORM\Id]
@@ -32,18 +35,12 @@ class Constat
     private ?bool $rapportepolice = null;
 
     
-    #[ORM\Column(length: 1)]
-    #[Assert\NotBlank]
-    #[Assert\Image(
-        minWidth: 200,
-        maxWidth: 500,
-        minHeight: 200,
-        maxHeight: 500,
-    )]
-    #[Assert\Image(
-    mimeTypesMessage: 'Please upload a valid image file.')]
-    private ?string $photo = null;
+  
 
+
+
+    #[ORM\Column(length:255)]
+    private ?string $photo = null;
     public function getId(): ?int
     {
         return $this->id;

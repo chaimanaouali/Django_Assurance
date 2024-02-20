@@ -17,7 +17,7 @@
         <thead class="table-dark">
             <tr>
                 <th>Id</th>
-                <th>Id_constat</th>
+                <th>identifiant</th>
                 <th>Date_taitement</th>
                 <th>Responsable</th>
                 <th>Statut</th>
@@ -29,7 +29,7 @@
         {% for traitement in traitements %}
             <tr>
                 <td>{{ traitement.id }}</td>
-                <td>{{ traitement.idConstat }}</td>
+                <td>{{ traitement.identifiant.id}}</td>
                 <td>{{ traitement.dateTaitement ? traitement.dateTaitement|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ traitement.responsable }}</td>
                 <td>{{ traitement.statut }}</td>

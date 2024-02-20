@@ -17,6 +17,7 @@
         <thead class="table-dark">
             <tr>
                 <th>Id</th>
+            
                 <th>Date</th>
                 <th>Lieu</th>
                 <th>Description</th>
@@ -35,10 +36,10 @@
                 <td>{{ constat.description }}</td>
                 <td>{{ constat.conditionroute }}</td>
                 <td>{{ constat.rapportepolice ? 'Yes' : 'No' }}</td>
-                <td><img src="{{ asset('uploads/images.jpg') }}"  alt="Uploaded Image" length="100" width="100"></td>
+                <td><img src="{{ asset('uploads/' ~ constat.photo) }}"  alt="Uploaded Image" length="100" width="100"></td>
                 
                 <td > 
-
+                    <a type="button" class="btn btn-outline-warning" href="{{ path('app_traitement_new', {'id': constat.id}) }}">trai<i class='bx bxs-edit-alt'></i></a>
                     <a type="button" class="btn btn-outline-info" href="{{ path('app_constat_show', {'id': constat.id}) }}">show <i class='bx bx-show'></i></a>
                     <a type="button" class="btn btn-outline-warning" href="{{ path('app_constat_edit', {'id': constat.id}) }}">edit<i class='bx bxs-edit-alt'></i></a>
                 </td>

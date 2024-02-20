@@ -16,11 +16,6 @@ class Traitement
     #[ORM\Column]
     private ?int $id = null;
     
-
-  
-    #[ORM\Column]
-    private ?int $id_constat = null;
- 
    
     #[ORM\Column()]
     private ?\DateTime $date_taitement = null;
@@ -40,23 +35,18 @@ class Traitement
     
     #[ORM\Column(length: 255)]
     private ?string $remarque = null;
+
+    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    private ?Constat $identifiant = null;
+
+   
     
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getIdConstat(): ?int
-    {
-        return $this->id_constat;
-    }
-
-    public function setIdConstat(?int $id_constat): static
-    {
-        $this->id_constat = $id_constat;
-
-        return $this;
-    }
+   
 
     public function getDateTaitement(): ?\DateTime
     {
@@ -105,6 +95,20 @@ class Traitement
 
         return $this;
     }
+
+    public function getIdentifiant(): ?Constat
+    {
+        return $this->identifiant;
+    }
+
+    public function setIdentifiant(?Constat $identifiant): static
+    {
+        $this->identifiant = $identifiant;
+
+        return $this;
+    }
+
+    
    
 }
 

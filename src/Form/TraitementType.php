@@ -14,8 +14,9 @@ class TraitementType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('id_constat')
+        
             ->add('date_taitement')
+            
             ->add('responsable')
             ->add('statut', ChoiceType::class, [
                 'label' => 'statut',

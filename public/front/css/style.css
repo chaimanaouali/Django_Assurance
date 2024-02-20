@@ -367,6 +367,29 @@ h6,
     border-radius: 2px;
     transition: .5s;
 }
+/* Styles for the entire form */
+.custom-form {
+    background-color: #f0f0f0;
+    padding: 20px; /* Adjust the padding as needed */
+}
+
+/* Styles for the text area */
+.custom-textarea {
+    width: 100%;
+    height: 150px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    margin-bottom: 10px; /* Add some space between fields */
+}
+
+/* Styles for the button */
+.custom-button {
+    color: #ffffff;
+    background-color: #007bff;
+    /* Add more button styles as needed */
+}
 
 .testimonial-carousel .owl-dot.active {
     width: 30px;

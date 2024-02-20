@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Traitement;
 use App\Form\TraitementType;
 use App\Repository\TraitementRepository;
+use App\Repository\ConstatRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,21 +16,24 @@ use Symfony\Component\Routing\Annotation\Route;
 class TraitementController extends AbstractController
 {
     #[Route('/', name: 'app_traitement_index', methods: ['GET'])]
-    public function index(TraitementRepository $traitementRepository): Response
-    {
+    public function index(TraitementRepository $traitementRepository ): Response
+    { 
         return $this->render('traitement/index.html.twig', [
             'traitements' => $traitementRepository->findAll(),
         ]);
     }
 
-    #[Route('/new', name: 'app_traitement_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    #[Route('/new/{id}', name: 'app_traitement_new', methods: ['GET', 'POST'])]
+    public function new(Request $request, EntityManagerInterface $entityManager ,ConstatRepository $repo): Response
     {
         $traitement = new Traitement();
         $form = $this->createForm(TraitementType::class, $traitement);
         $form->handleRequest($request);
-
+        $idFromUrl = $request->query->get('id');
+  $constat=$repo->find($idFromUrl);
+  
         if ($form->isSubmitted() && $form->isValid()) {
+            $traitement->setIdentifiant($constat);
             $entityManager->persist($traitement);
             $entityManager->flush();
 

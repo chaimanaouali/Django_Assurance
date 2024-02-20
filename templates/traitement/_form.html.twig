@@ -1,4 +1,102 @@
-{{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button  class="btn btn-outline-primary">{{ button_label|default('Save') }}</button>
-{{ form_end(form) }}
+{% block css %}
+    <style>
+        /* Your custom CSS styles go here */
+        body {
+            background-color: #f0f0f0;
+        }
+
+        .custom-container {
+            /* Add the styles from the provided class */
+            /* Adjust these styles as needed */
+            max-width: 100%;
+            margin-right: auto;
+            margin-left: auto;
+            padding-right: 15px;
+            padding-left: 15px;
+        }
+
+        .card-body {
+            /* Add any additional styles for the card-body class if needed */
+            margin: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Add any additional styles for the form fields if needed */
+        .input-group-merge {
+            position: relative;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: stretch;
+            width: 100%;
+        }
+
+        .input-group-merge .input-group-text {
+            border-radius: 0;
+        }
+
+        .form-control {
+            border-radius: 0;
+        }
+
+        .btn-primary {
+            color: #fff;
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <div class="custom-container">
+        <div class="card-body">
+            {{ form_start(form) }}
+            
+   
+
+
+            <div class="form-group">
+                <label class="form-label"  for="{{ form.date_taitement.vars.id }}">{{ form.date_taitement.vars.label }} </label>
+                <div class="input-group input-group-merge" >
+                    <span class="input-group-text">  <i class="bx bx-time" ></i></span>
+                    {{ form_widget(form.date_taitement, {'attr': {'class': 'form-control','placeholder': 'id_constat'}, 'label_attr': {'class': 'sr-only'}}) }}
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="{{ form.responsable.vars.id }}">{{ form.responsable.vars.label }}</label>
+                <div class="input-group input-group-merge">
+                    <span class="input-group-text"><i class="bx bx-user"></i></span>
+                    {{ form_widget(form.responsable, {'attr': {'class': 'form-control','placeholder': 'Responsable'}, 'label_attr': {'class': 'sr-only'}}) }}
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="{{ form.statut.vars.id }}">{{ form.statut.vars.label }}</label>
+                <div class="input-group input-group-merge">
+                    <span class="input-group-text"><i class="bx bx-refresh"></i></span>
+                    {{ form_widget(form.statut, {'attr': {'class': 'form-control'}, 'label_attr': {'class': 'sr-only'}}) }}
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="{{ form.remarque.vars.id }}">{{ form.remarque.vars.label }}</label>
+                <div class="input-group input-group-merge">
+                    <span class="input-group-text"><i class="bx bx-comment"></i></span>
+                    {{ form_widget(form.remarque, {'attr': {'class': 'form-control','placeholder': 'Description'}, 'label_attr': {'class': 'sr-only'}}) }}
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Send</button>
+
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}
