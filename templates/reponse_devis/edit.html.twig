@@ -1,13 +1,14 @@
-<!DOCTYPE html>
+{% extends 'admin/base-admin.html.twig' %}
 
-<title>Edit ReponseDevis</title>
+{% block title %}Edit ReponseDevis{% endblock %}
 
 {% block body %}
-    <h1>Edit ReponseDevis</h1>
+    <!DOCTYPE html>
+    <h1>Editer ReponseDevis</h1>
 
     {{ include('reponse_devis/_form.html.twig', {'button_label': 'Update'}) }}
 
-    <a href="{{ path('app_reponse_devis_index') }}">back to list</a>
+    <a href="{{ path('app_reponse_devis_index') }}">retour a la liste</a>
 
     {{ include('reponse_devis/_delete_form.html.twig') }}
 {% endblock %}

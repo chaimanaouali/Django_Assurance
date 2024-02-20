@@ -1,0 +1,45 @@
+{% extends 'admin/base-admin.html.twig' %}
+
+{% block title %}affichage devis{% endblock %}
+
+{% block body %}
+    <h1>Devis </h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nom</th>
+                <th>Prenom</th>
+                <th>Adresse</th>
+                <th>Email</th>
+                <th>Date_naiss</th>
+                <th>Num_tel</th>
+                <th>Modele</th>
+                <th>Puissance</th>
+                <th>Prix</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for devi in devis %}
+            <tr>
+                <td>{{ devi.id }}</td>
+                <td>{{ devi.nom }}</td>
+                <td>{{ devi.prenom }}</td>
+                <td>{{ devi.adresse }}</td>
+                <td>{{ devi.email }}</td>
+                <td>{{ devi.dateNaiss ? devi.dateNaiss|date('Y-m-d') : '' }}</td>
+                <td>{{ devi.numTel }}</td>
+                <td>{{ devi.modele }}</td>
+                <td>{{ devi.puissance }}</td>
+                <td>{{ devi.prix }}</td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="11">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

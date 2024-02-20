@@ -32,6 +32,11 @@ class Devis
     #[ORM\Column(length: 255)]
     private ?string $email = null;
 
+    /**
+     * @ORM\Column(type="date")
+     * @Assert\NotBlank(message="La date de naissance ne peut pas être vide")
+     * @Assert\LessThanOrEqual("today", message="La date de naissance ne peut pas être dans le futur")
+     */
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $date_naiss = null;
 

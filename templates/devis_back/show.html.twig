@@ -1,8 +1,11 @@
-{% extends 'admin/base-front.html.twig' %}
-{% block title %} devis{% endblock %}
+
+{% extends 'admin/base-admin.html.twig' %}
+
+{% block title %}affichage devis{% endblock %}
+<title>Devis</title>
 
 {% block body %}
-    <!DOCTYPE html>
+<!DOCTYPE html>
     <h1>Devis</h1>
 
     <table class="table">
@@ -50,9 +53,9 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_devis_index') }}" class="btn btn-primary">Back to List</a>
+    <a href="{{ path('app_devis_back_index') }}">back to list</a>
 
-    <a href="{{ path('app_devis_edit', {'id': devi.id}) }}" class="btn btn-warning">Edit</a>
+    <a href="{{ path('app_devis_back_edit', {'id': devi.id}) }}">edit</a>
 
-    {{ include('devis/_delete_form.html.twig') }}
+    {{ include('devis_back/_delete_form.html.twig') }}
 {% endblock %}

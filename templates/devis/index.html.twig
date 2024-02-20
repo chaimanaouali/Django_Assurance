@@ -1,9 +1,9 @@
-<!DOCTYPE html>
-
-<title>Devis index</title>
+{% extends 'admin/base-front.html.twig' %}
+{% block title %} devis{% endblock %}
 
 {% block body %}
-    <h1>Devis index</h1>
+    <!DOCTYPE html>
+    <h1>Devis </h1>
 
     <table class="table">
         <thead>
@@ -18,34 +18,35 @@
                 <th>Modele</th>
                 <th>Puissance</th>
                 <th>Prix</th>
-                <th>actions</th>
+                <th>Actions</th> <!-- Changed to "Actions" for clarity -->
             </tr>
         </thead>
         <tbody>
-        {% for devi in devis %}
-            <tr>
-                <td>{{ devi.id }}</td>
-                <td>{{ devi.nom }}</td>
-                <td>{{ devi.prenom }}</td>
-                <td>{{ devi.adresse }}</td>
-                <td>{{ devi.email }}</td>
-                <td>{{ devi.dateNaiss ? devi.dateNaiss|date('Y-m-d') : '' }}</td>
-                <td>{{ devi.numTel }}</td>
-                <td>{{ devi.modele }}</td>
-                <td>{{ devi.puissance }}</td>
-                <td>{{ devi.prix }}</td>
-                <td>
-                    <a href="{{ path('app_devis_show', {'id': devi.id}) }}">show</a>
-                    <a href="{{ path('app_devis_edit', {'id': devi.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="11">no records found</td>
-            </tr>
-        {% endfor %}
+            {% for devi in devis %}
+                <tr>
+                    <td>{{ devi.id }}</td>
+                    <td>{{ devi.nom }}</td>
+                    <td>{{ devi.prenom }}</td>
+                    <td>{{ devi.adresse }}</td>
+                    <td>{{ devi.email }}</td>
+                    <td>{{ devi.dateNaiss ? devi.dateNaiss|date('Y-m-d') : '' }}</td>
+                    <td>{{ devi.numTel }}</td>
+                    <td>{{ devi.modele }}</td>
+                    <td>{{ devi.puissance }}</td>
+                    <td>{{ devi.prix }}</td>
+                    <td>
+                        <a href="{{ path('app_devis_show', {'id': devi.id}) }}" class="btn btn-primary">Show</a>
+                        <a href="{{ path('app_devis_edit', {'id': devi.id}) }}" class="btn btn-warning">Edit</a>
+                       
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="11">No records found</td>
+                </tr>
+            {% endfor %}
         </tbody>
     </table>
 
-    <a href="{{ path('app_devis_new') }}">Create new</a>
+    <a href="{{ path('app_devis_new') }}" class="btn btn-success">Create new</a>
 {% endblock %}

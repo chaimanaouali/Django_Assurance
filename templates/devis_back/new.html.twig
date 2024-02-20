@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+{% extends 'admin/base-admin.html.twig' %}
+
+{% block title %}affichage devis{% endblock %}
+<title>New Devis</title>
+
+{% block body %}
+<!DOCTYPE html>
+    <h1>Create new Devis</h1>
+
+    {{ include('devis_back/_form.html.twig') }}
+
+    <a href="{{ path('app_devis_back_index') }}">back to list</a>
+{% endblock %}

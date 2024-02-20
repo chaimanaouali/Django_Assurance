@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+{% extends 'admin/base-admin.html.twig' %}
 
-<title>ReponseDevis index</title>
+{% block title %}ReponseDevis{% endblock %}
 
 {% block body %}
-    <h1>ReponseDevis index</h1>
+    <h1>ReponseDevis</h1>
 
     <table class="table">
         <thead>
@@ -15,7 +15,7 @@
                 <th>Delai_reparation</th>
                 <th>Duree_validite</th>
                 <th>Documents</th>
-                <th>actions</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -27,11 +27,23 @@
                 <td>{{ reponse_devi.dateReglement ? reponse_devi.dateReglement|date('Y-m-d') : '' }}</td>
                 <td>{{ reponse_devi.delaiReparation }}</td>
                 <td>{{ reponse_devi.dureeValidite }}</td>
-                <td>{{ reponse_devi.documents }}</td>
                 <td>
-                    <a href="{{ path('app_reponse_devis_show', {'id': reponse_devi.id}) }}">show</a>
-                    <a href="{{ path('app_reponse_devis_edit', {'id': reponse_devi.id}) }}">edit</a>
+                    {% if reponse_devi.documents %}
+                        {% if reponse_devi.documents|lower matches '/\.(jpeg|jpg|gif|png|pdf)$/i' %}
+                            <img src="{{ asset('uploads/documents/' ~ reponse_devi.documents) }}" alt="reponse documents" style="max-width: 200px;">
+                        {% else %}
+                            <a href="{{ asset('uploads/documents/' ~ reponse_devi.documents) }}" target="_blank">voir Document</a>
+                        {% endif %}
+                    {% else %}
+                       pas de document
+                    {% endif %}
                 </td>
+                <td>
+                    <a href="{{ path('app_reponse_devis_show', {'id': reponse_devi.id}) }}">voir</a>
+                    <a href="{{ path('app_reponse_devis_edit', {'id': reponse_devi.id}) }}">edition</a>
+                     {{ include('reponse_devis/_delete_form.html.twig') }}
+                </td>
+               
             </tr>
         {% else %}
             <tr>
@@ -41,5 +53,5 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_reponse_devis_new') }}">Create new</a>
+    <a href="{{ path('app_reponse_devis_new') }}">créer </a>
 {% endblock %}

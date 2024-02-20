@@ -21,6 +21,7 @@ class ReponseDevis
     #[ORM\Column(length: 255)]
     private ?string $decision = null;
 
+    
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $date_reglement = null;
 

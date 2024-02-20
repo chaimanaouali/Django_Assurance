@@ -48,23 +48,15 @@ class ReponseDevisController extends AbstractController
                     'form' => $form->createView(),
                 ]);
             }
-    
-            // Si l'email est unique, persistez et flush l'entité ReponseDevis
-            $entityManager->persist($reponseDevi);
-            $entityManager->flush();
-    
-            return $this->redirectToRoute('app_reponse_devis_index', [], Response::HTTP_SEE_OTHER);
-        }
-    
-        if ($form->isSubmitted() && $form->isValid()) {
+
             // Récupérer le fichier envoyé dans le formulaire
             $documentFile = $form->get('documents')->getData();
-    
+
             // Vérifier si un fichier a été téléversé
             if ($documentFile instanceof UploadedFile) {
                 // Générer un nom de fichier unique
                 $newFilename = uniqid().'.'.$documentFile->guessExtension();
-    
+
                 try {
                     // Déplacer le fichier téléversé vers le répertoire de stockage des documents
                     $documentFile->move(
@@ -74,25 +66,26 @@ class ReponseDevisController extends AbstractController
                 } catch (FileException $e) {
                     // Gérer l'erreur de téléchargement de fichier
                 }
-    
+
                 // Stockez le nom du fichier dans l'entité ReponseDevis
                 $reponseDevi->setDocuments($newFilename);
             }
-    
+
             // Enregistrer l'entité dans la base de données
             $entityManager->persist($reponseDevi);
             $entityManager->flush();
-    
+
             // Redirection vers la page d'index après l'enregistrement réussi
             return $this->redirectToRoute('app_reponse_devis_index', [], Response::HTTP_SEE_OTHER);
         }
-    
+
         // Rendu du formulaire avec les données de la nouvelle réponse devis
         return $this->renderForm('reponse_devis/new.html.twig', [
             'reponse_devi' => $reponseDevi,
             'form' => $form,
         ]);
     }
+
 
     #[Route('/{id}', name: 'app_reponse_devis_show', methods: ['GET'])]
     public function show(ReponseDevis $reponseDevi): Response

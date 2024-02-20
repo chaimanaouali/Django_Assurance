@@ -1,6 +1,6 @@
-<!DOCTYPE html>
+{% extends 'admin/base-admin.html.twig' %}
 
-<title>ReponseDevis</title>
+{% block title %}ReponseDevis{% endblock %}
 
 {% block body %}
     <h1>ReponseDevis</h1>
@@ -31,16 +31,28 @@
                 <th>Duree_validite</th>
                 <td>{{ reponse_devi.dureeValidite }}</td>
             </tr>
+             <tr>
+               <th>email</th>
+              <td>{{ reponse_devi.getEmail().email }}</td>
+
+
+            </tr>
             <tr>
                 <th>Documents</th>
-                <td>{{ reponse_devi.documents }}</td>
+                <td>
+                    {% if reponse_devi.documents %}
+                        <a href="{{ asset('\uploads\documents' ~ reponse_devi.documents) }}" target="_blank">voir Document</a>
+                    {% else %}
+                        pas de document
+                    {% endif %}
+                </td>
             </tr>
         </tbody>
     </table>
 
-    <a href="{{ path('app_reponse_devis_index') }}">back to list</a>
+    <a href="{{ path('app_reponse_devis_index') }}">Retour a la liste</a>
 
-    <a href="{{ path('app_reponse_devis_edit', {'id': reponse_devi.id}) }}">edit</a>
+    <a href="{{ path('app_reponse_devis_edit', {'id': reponse_devi.id}) }}">Edit</a>
 
     {{ include('reponse_devis/_delete_form.html.twig') }}
 {% endblock %}

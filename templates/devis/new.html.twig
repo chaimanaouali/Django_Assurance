@@ -1,11 +1,13 @@
-<!DOCTYPE html>
-
-<title>New Devis</title>
+{% extends 'admin/base-front.html.twig' %}
+{% block title %} devis{% endblock %}
 
 {% block body %}
+    <!DOCTYPE html>
+
     <h1>Create new Devis</h1>
 
     {{ include('devis/_form.html.twig') }}
 
-    <a href="{{ path('app_devis_index') }}">back to list</a>
+    <a href="{{ path('app_devis_index') }}" class="btn btn-primary">Back to List</a>
+    <button type="submit" class="btn btn-success">Save</button>
 {% endblock %}
