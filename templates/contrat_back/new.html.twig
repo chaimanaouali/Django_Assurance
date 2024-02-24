@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+
+<title>New Contrat</title>
+
+{% block body %}
+
+    <h1>Create new Contrat</h1>
+
+    {{ include('contrat_back/_form.html.twig') }}
+
+    <a href="{{ path('app_contrat_back_index') }}">back to list</a>
+{% endblock %}

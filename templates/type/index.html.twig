@@ -1,0 +1,98 @@
+{% extends 'admin/base-admin.html.twig' %}
+
+{% block title %} Type index {% endblock %}
+
+{% block body %}
+<style>
+h1 {
+    font-size: 30px; /* Decrease font size for form title */
+    color: #007bff; /* Same blue as the submit button */
+    margin-bottom: 10px; /* Increase margin for spacing */
+    margin-left: 20px; /* Move the h1 element to the left */
+    font-family: 'Public Sans', sans-serif; /* Use Public Sans SemiBold font */
+    font-weight: 600; /* SemiBold font weight */
+}
+ /* Style for table */
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+/* Style for table header */
+.table th {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: left;
+    background-color: #f2f2f2;
+    font-weight: bold;
+}
+
+/* Style for table data */
+.table td {
+    border: 1px solid #ccc;
+    padding: 10px;
+}
+
+/* Style for action links */
+.action-links {
+    margin-top: 20px;
+}
+
+.action-link,
+.create-button {
+    display: inline-block;
+    padding: 4px 8px; /* Adjusted padding for smaller buttons */
+    border: 1px solid #007bff;
+    background-color: #007bff;
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 3px;
+    margin-right: 10px;
+    transition: all 0.3s ease;
+    font-size: 12px; /* Adjusted font size for smaller buttons */
+}
+
+.action-link:hover,
+.create-button:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+}
+</style>
+
+<h1>Type index</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Description</th>
+            <th>Type De Couverture</th>
+            <th>Show</th> <!-- Corrected label -->
+            <th>Edit</th> <!-- Corrected label -->
+        </tr>
+    </thead>
+    <tbody>
+    {% for type in types %}
+        <tr>
+            <td>{{ type.id }}</td>
+            <td>{{ type.description }}</td>
+            <td>{{ type.typeCouverture }}</td>
+            <td class="action-links">
+                <a href="{{ path('app_type_show', {'id': type.id}) }}" class="action-link">Show</a>
+            </td>
+            <td>
+                <a href="{{ path('app_type_edit', {'id': type.id}) }}" class="action-link">Edit</a>
+            </td>
+        </tr>
+    {% else %}
+        <tr>
+            <td colspan="5">No records found</td> <!-- Corrected colspan -->
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+<a href="{{ path('app_type_new') }}" class="create-button">Create new</a>
+{% endblock %}

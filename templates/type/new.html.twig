@@ -1,0 +1,44 @@
+{% extends 'admin/base-admin.html.twig' %}
+
+{% block title %} New type{% endblock %}
+
+{% block body %}
+<style>
+/* Style for form title */
+h1 {
+    font-size: 30px; /* Decrease font size for form title */
+    color: #007bff; /* Same blue as the submit button */
+    margin-bottom: 10px; /* Increase margin for spacing */
+    margin-left: 20px; /* Move the h1 element to the left */
+    font-family: 'Public Sans', sans-serif; /* Use Public Sans SemiBold font */
+    font-weight: 600; /* SemiBold font weight */
+}
+
+/* Style for action link */
+.action-link {
+    display: inline-block;
+    padding: 6px 12px; /* Adjusted padding for smaller button */
+    border: 1px solid #007bff;
+    background-color: #007bff;
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 3px;
+    margin-top: 10px;
+    margin-left: 20px; /* Move the link to the left */
+    transition: all 0.3s ease;
+    font-size: 14px; /* Decrease font size for smaller button */
+}
+
+.action-link:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+}
+</style>
+
+<h1>New type</h1>
+
+{{ include('type/_form.html.twig') }}
+
+<a href="{{ path('app_type_index') }}" class="action-link">Back to List</a>
+{% endblock %}

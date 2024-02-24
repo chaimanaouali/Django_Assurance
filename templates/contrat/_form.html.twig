@@ -1,0 +1,110 @@
+<style>
+ /* Style for form wrapper */
+.form-wrapper {
+    max-width: 2000px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+/* Style for form group */
+.form-group {
+    margin-bottom: 20px;
+}
+
+/* Style for form label */
+.form-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+/* Style for form input fields */
+.form-group input[type="text"],
+.form-group input[type="date"] {
+    width: 100%;
+    padding: 8px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+/* Style for form button */
+.btn {
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 3px;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+}
+
+/* Hover effect for button */
+.btn:hover {
+    background-color: #0056b3;
+}
+
+</style>
+   <style>
+h1 {
+    font-size: 35px;
+    color: #007bff; /* Same blue as the submit button */
+    margin-bottom: 20px;
+    font-family: Arial, sans-serif; /* Change font to Arial or any other desired sans-serif font */
+}
+
+/* Links */
+a {
+    color: #007bff; /* Same blue as the submit button */
+    text-decoration: underline; /* Add text decoration */
+    margin-top: 20px;
+    display: inline-block;
+    font-family: Arial, sans-serif; /* Change font to Arial or any other desired sans-serif font */
+}
+
+a:hover {
+    text-decoration: none; /* Remove underline on hover */
+}
+
+    </style>
+{{ form_start(form) }}
+    <div class="form-wrapper">
+        <div class="form-group">
+            <label class="form-label" for="{{ form.dateDebutContrat.vars.id }}">Start Date:</label>
+            {{ form_widget(form.dateDebutContrat, {'attr': {'class': 'form-control'}}) }}
+            <div class="error-message">{{ form_errors(form.dateDebutContrat) }}</div>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label" for="{{ form.datefinContrat.vars.id }}">End Date:</label>
+            {{ form_widget(form.datefinContrat, {'attr': {'class': 'form-control'}}) }}
+            <div class="error-message">{{ form_errors(form.datefinContrat) }}</div>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label" for="{{ form.adresseAssur.vars.id }}">Address:</label>
+            {{ form_widget(form.adresseAssur, {'attr': {'class': 'form-control'}}) }}
+            <div class="error-message">{{ form_errors(form.adresseAssur) }}</div>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label" for="{{ form.numeroAssur.vars.id }}">Phone Number:</label>
+            {{ form_widget(form.numeroAssur, {'attr': {'class': 'form-control'}}) }}
+            <div class="error-message">{{ form_errors(form.numeroAssur) }}</div>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label" for="{{ form.type_couverture.vars.id }}">Type of Coverage:</label>
+            {{ form_widget(form.type_couverture, {'attr': {'class': 'form-control'}}) }}
+            <div class="error-message">{{ form_errors(form.type_couverture) }}</div>
+        </div>
+
+        <button type="submit" class="btn">{{ button_label|default('Save') }}</button>
+    </div>
+{{ form_end(form) }}
+
+
+

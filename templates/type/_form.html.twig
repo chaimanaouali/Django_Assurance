@@ -1,0 +1,83 @@
+
+<style>
+ /* Style for form wrapper */
+.form-wrapper {
+    width: 100%; /* Take up full display width */
+    padding: 5px; /* Increase padding for bigger box */
+    background-color: #f9f9f9;
+}
+
+/* Style for form group */
+.form-group {
+    margin-bottom: 20px;
+}
+
+/* Style for form label */
+.form-group label {
+    display: block;
+    font-weight: bold;
+    font-size: 20px; /* Increase font size for description label */
+    margin-bottom: 10px; /* Increase margin for spacing */
+}
+
+/* Style for form input fields */
+.form-group input[type="text"] {
+    width: 100%;
+    padding: 10px; /* Increase padding for input fields */
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* Style for form button */
+.btn {
+    padding: 7px 12px; /* Increase padding for button */
+    font-size: 18px; /* Increase font size for button */
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+}
+
+/* Hover effect for button */
+.btn:hover {
+    background-color: #0056b3;
+}
+
+h1 {
+    font-size: 40px; /* Increase font size for form title */
+    color: #007bff; /* Same blue as the submit button */
+    margin-bottom: 10px; /* Increase margin for spacing */
+    margin-left: 20px; /* Move the h1 element to the left */
+    font-family: 'Public Sans', sans-serif; /* Use Public Sans SemiBold font */
+    font-weight: 600; /* SemiBold font weight */
+}
+
+/* Links */
+a {
+    color: #007bff; /* Same blue as the submit button */
+    text-decoration: underline; /* Add text decoration */
+    margin-top: 20px;
+    display: inline-block;
+    font-family: Arial, sans-serif; /* Change font to Arial or any other desired sans-serif font */
+}
+
+a:hover {
+    text-decoration: none; /* Remove underline on hover */
+}
+</style>
+
+<div class="form-wrapper">
+    {{ form_start(form) }}
+    <div class="form-group">
+        {{ form_label(form.description) }}
+        {{ form_widget(form.description) }}
+    </div>
+    <div class="form-group">
+        {{ form_label(form.typeCouverture) }}
+        {{ form_widget(form.typeCouverture) }}
+    </div>
+    <button type="submit" class="btn">Save</button>
+    {{ form_end(form) }}
+</div>
