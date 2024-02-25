@@ -1,6 +1,6 @@
 {% extends 'admin/base-admin.html.twig' %}
 
-{% block title %} Contrat index {% endblock %}
+{% block title %}Contrat index{% endblock %}
 
 {% block body %}
     <!DOCTYPE html>
@@ -12,27 +12,32 @@
                 <th>Id</th>
                 <th>DateDebutContrat</th>
                 <th>DatefinContrat</th>
-                                <th>Type de contrat</th>
-
+                <th>Type de contrat</th>
                 <th>AdresseAssur</th>
                 <th>NumeroAssur</th>
+                <th>Nom</th>
+                <th>Prénom</th>
+                <th>E-mail</th>
             </tr>
         </thead>
         <tbody>
         {% for contrat in contrats %}
             <tr>
                 <td>{{ contrat.id }}</td>
+                 <td>{{ contrat.nom }}</td>
+                <td>{{ contrat.prenom }}</td>
+                <td>{{ contrat.email }}</td>
+                
                 <td>{{ contrat.dateDebutContrat ? contrat.dateDebutContrat|date('Y-m-d') : '' }}</td>
                 <td>{{ contrat.datefinContrat ? contrat.datefinContrat|date('Y-m-d') : '' }}</td>
                 <td>{{ contrat.getTypeCouverture }}</td>
-
                 <td>{{ contrat.adresseAssur }}</td>
                 <td>{{ contrat.numeroAssur }}</td>
-           
+               
             </tr>
         {% else %}
             <tr>
-                <td colspan="7">no records found</td>
+                <td colspan="9">no records found</td>
             </tr>
         {% endfor %}
         </tbody>

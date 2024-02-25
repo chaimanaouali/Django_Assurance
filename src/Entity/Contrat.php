@@ -40,6 +40,30 @@ class Contrat
     #[ORM\OneToOne(targetEntity: Type::class, cascade: ['persist', 'remove'])]
     private ?Type $type_couverture = null;
 
+    #[ORM\Column(length: 255)]
+    #[Assert\NotBlank]
+    #[Assert\Regex(
+        pattern: '/^[A-Z][a-zA-Z]*$/',
+        message: 'Le nom doit commencer par une majuscule et ne doit pas contenir de chiffres.'
+    )]
+    private ?string $nom = null;
+
+    #[ORM\Column(length: 255)]
+    #[Assert\NotBlank]
+    #[Assert\Regex(
+        pattern: '/^[A-Z][a-zA-Z]*$/',
+        message: 'Le prenom doit commencer par une majuscule et ne doit pas contenir de chiffres.'
+    )]
+    private ?string $prenom = null;
+
+    #[ORM\Column(length: 255)]
+    #[Assert\NotBlank]
+    #[Assert\Regex(
+        pattern: '/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/',
+        message: 'Veuillez saisir une adresse e-mail valide.'
+    )]
+    private ?string $email = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -137,5 +161,41 @@ class Contrat
                     ->addViolation();
             }
         }
+    }
+
+    public function getNom(): ?string
+    {
+        return $this->nom;
+    }
+
+    public function setNom(string $nom): static
+    {
+        $this->nom = $nom;
+
+        return $this;
+    }
+
+    public function getPrenom(): ?string
+    {
+        return $this->prenom;
+    }
+
+    public function setPrenom(string $prenom): static
+    {
+        $this->prenom = $prenom;
+
+        return $this;
+    }
+
+    public function getEmail(): ?string
+    {
+        return $this->email;
+    }
+
+    public function setEmail(string $email): static
+    {
+        $this->email = $email;
+
+        return $this;
     }
 }

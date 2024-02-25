@@ -13,12 +13,29 @@
                 <td>{{ contrat.id }}</td>
             </tr>
             <tr>
+                <th>Nom</th>
+                <td>{{ contrat.nom }}</td>
+            </tr>
+            <tr>
+                <th>Prénom</th>
+                <td>{{ contrat.prenom }}</td>
+            </tr>
+            <tr>
+                <th>E-mail</th>
+                <td>{{ contrat.email }}</td>
+            </tr>
+            
+            <tr>
                 <th>DateDebutContrat</th>
                 <td>{{ contrat.dateDebutContrat ? contrat.dateDebutContrat|date('Y-m-d') : '' }}</td>
             </tr>
             <tr>
                 <th>DatefinContrat</th>
                 <td>{{ contrat.datefinContrat ? contrat.datefinContrat|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Type de contrat</th>
+                <td>{{ contrat.getTypeCouverture }}</td>
             </tr>
             <tr>
                 <th>AdresseAssur</th>
@@ -28,6 +45,7 @@
                 <th>NumeroAssur</th>
                 <td>{{ contrat.numeroAssur }}</td>
             </tr>
+            
         </tbody>
     </table>
 

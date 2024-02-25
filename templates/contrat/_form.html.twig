@@ -73,6 +73,21 @@ a:hover {
 {{ form_start(form) }}
     <div class="form-wrapper">
         <div class="form-group">
+            <label class="form-label" for="{{ form.nom.vars.id }}">Nom:</label>
+            {{ form_widget(form.nom, {'attr': {'class': 'form-control'}}) }}
+            <div class="error-message">{{ form_errors(form.nom) }}</div>
+        </div>
+        <div class="form-group">
+            <label class="form-label" for="{{ form.prenom.vars.id }}">Prenom:</label>
+            {{ form_widget(form.prenom, {'attr': {'class': 'form-control'}}) }}
+            <div class="error-message">{{ form_errors(form.prenom) }}</div>
+        </div>
+        <div class="form-group">
+            <label class="form-label" for="{{ form.email.vars.id }}">E-mail:</label>
+            {{ form_widget(form.email, {'attr': {'class': 'form-control'}}) }}
+            <div class="error-message">{{ form_errors(form.email) }}</div>
+        </div>
+        <div class="form-group">
             <label class="form-label" for="{{ form.dateDebutContrat.vars.id }}">Start Date:</label>
             {{ form_widget(form.dateDebutContrat, {'attr': {'class': 'form-control'}}) }}
             <div class="error-message">{{ form_errors(form.dateDebutContrat) }}</div>
@@ -101,7 +116,6 @@ a:hover {
             {{ form_widget(form.type_couverture, {'attr': {'class': 'form-control'}}) }}
             <div class="error-message">{{ form_errors(form.type_couverture) }}</div>
         </div>
-
         <button type="submit" class="btn">{{ button_label|default('Save') }}</button>
     </div>
 {{ form_end(form) }}

@@ -9,25 +9,33 @@
     <table class="table">
         <thead>
             <tr>
+               
                 <th>Id</th>
+                <th>Nom</th>
+                <th>Prénom</th>
+                <th>E-mail</th>
                 <th>DateDebutContrat</th>
                 <th>DatefinContrat</th>
                 <th>Type de contrat</th>
                 <th>AdresseAssuré</th>
                 <th>NumeroAssur</th>
-                <th>actions</th>
+               
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
         {% for contrat in contrats %}
             <tr>
-                <td>{{ contrat.id }}</td>
+                 <td>{{ contrat.id }}</td>
+                <td>{{ contrat.nom }}</td>
+                <td>{{ contrat.prenom }}</td>
+                <td>{{ contrat.email }}</td>
                 <td>{{ contrat.dateDebutContrat ? contrat.dateDebutContrat|date('Y-m-d') : '' }}</td>
                 <td>{{ contrat.datefinContrat ? contrat.datefinContrat|date('Y-m-d') : '' }}</td>
                 <td>{{ contrat.getTypeCouverture }}</td>
-
                 <td>{{ contrat.adresseAssur }}</td>
                 <td>{{ contrat.numeroAssur }}</td>
+                
                 <td>
                     <a href="{{ path('app_contrat_show', {'id': contrat.id}) }}">show</a>
                     <a href="{{ path('app_contrat_edit', {'id': contrat.id}) }}">edit</a>
@@ -35,7 +43,7 @@
             </tr>
         {% else %}
             <tr>
-                <td colspan="7">no records found</td>
+                <td colspan="10">no records found</td>
             </tr>
         {% endfor %}
         </tbody>
