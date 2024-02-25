@@ -15,11 +15,18 @@ use Symfony\Component\Routing\Annotation\Route;
 class DevisController extends AbstractController
 {
     #[Route('/', name: 'app_devis_index', methods: ['GET'])]
-    public function index(DevisRepository $devisRepository): Response
-    {
-        return $this->render('devis/index.html.twig', [
-            'devis' => $devisRepository->findAll(),
-        ]);
+    public function index(DevisRepository $devisRepository, Request $request): Response
+{
+    $sortBy = $request->query->get('sort', 'puissance'); // Default sorting by 'puissance'
+    $order = $request->query->get('order', 'ASC'); // Default order ascending
+
+    $devis = $devisRepository->findBy([], [$sortBy => $order]);
+
+    return $this->render('devis/index.html.twig', [
+        'devis' => $devis,
+        'sortBy' => $sortBy,
+            'order' => $order,
+    ]);
     }
 
     #[Route('/new', name: 'app_devis_new', methods: ['GET', 'POST'])]

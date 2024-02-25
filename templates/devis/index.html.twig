@@ -7,20 +7,21 @@
 
     <table class="table">
         <thead>
-            <tr>
-                <th>Id</th>
-                <th>Nom</th>
-                <th>Prenom</th>
-                <th>Adresse</th>
-                <th>Email</th>
-                <th>Date_naiss</th>
-                <th>Num_tel</th>
-                <th>Modele</th>
-                <th>Puissance</th>
-                <th>Prix</th>
-                <th>Actions</th> <!-- Changed to "Actions" for clarity -->
-            </tr>
-        </thead>
+    <tr>
+        <th><a href="{{ path('app_devis_index', {'sort_by': 'id', 'order': order == 'ASC' ? 'DESC' : 'ASC' }) }}">Id</a></th>
+        <th><a href="{{ path('app_devis_index', {'sort_by': 'nom', 'order': order == 'ASC' ? 'DESC' : 'ASC' }) }}">Nom</a></th>
+        <th><a href="{{ path('app_devis_index', {'sort_by': 'prenom', 'order': order == 'ASC' ? 'DESC' : 'ASC' }) }}">Prenom</a></th>
+        <th><a href="{{ path('app_devis_index', {'sort_by': 'adresse', 'order': order == 'ASC' ? 'DESC' : 'ASC' }) }}">Adresse</a></th>
+        <th><a href="{{ path('app_devis_index', {'sort_by': 'email', 'order': order == 'ASC' ? 'DESC' : 'ASC' }) }}">Email</a></th>
+        <th><a href="{{ path('app_devis_index', {'sort_by': 'dateNaiss', 'order': order == 'ASC' ? 'DESC' : 'ASC' }) }}">Date_naiss</a></th>
+        <th><a href="{{ path('app_devis_index', {'sort_by': 'numTel', 'order': order == 'ASC' ? 'DESC' : 'ASC' }) }}">Num_tel</a></th>
+        <th><a href="{{ path('app_devis_index', {'sort_by': 'modele', 'order': order == 'ASC' ? 'DESC' : 'ASC' }) }}">Modele</a></th>
+        <th><a href="{{ path('app_devis_index', {'sort_by': 'puissance', 'order': order == 'ASC' ? 'DESC' : 'ASC' }) }}">Puissance</a></th>
+        <th><a href="{{ path('app_devis_index', {'sort_by': 'prix', 'order': order == 'ASC' ? 'DESC' : 'ASC' }) }}">Prix</a></th>
+        <th>Actions</th> <!-- Changed to "Actions" for clarity -->
+    </tr>
+</thead>
+
         <tbody>
             {% for devi in devis %}
                 <tr>
