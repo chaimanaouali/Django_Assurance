@@ -15,6 +15,7 @@ class ConstatType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
+            ->add('iduser')
             ->add('date')
             ->add('lieu')
             ->add('description')
@@ -47,6 +48,7 @@ class ConstatType extends AbstractType
                 'required' => false, // allow the field to be empty, so you can remove the image
                 'attr' => ['accept' => 'image/*']
             ])
+          
             
         ;
     }

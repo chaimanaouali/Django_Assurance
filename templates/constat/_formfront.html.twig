@@ -1,0 +1,48 @@
+{% block body %}
+
+    <div class="custom-container">
+        <div class="bg-primary rounded h-100 d-flex align-items-center p-5 wow zoomIn" data-wow-delay="0.9s" style="visibility: visible; animation-delay: 0.9s; animation-name: zoomIn;">
+            {{ form_start(form, {'attr': {'class': 'row g-3'}}) }}
+     
+            
+            <div class="col-xl-12">
+                {{ form_row(form.date, {'attr': {'class': 'form-control bg-light border-0', 'placeholder': 'Date', 'style': 'height: 55px;'}}) }}
+            </div>
+                <div class="col-12">
+                {{ form_row(form.iduser, {'attr': {'class': 'form-control bg-light border-0', 'placeholder': 'User ID', 'style': 'height: 55px;'}}) }}
+            </div>
+            <div class="col-12">
+            
+                {{ form_row(form.lieu, {'attr': {'class': 'form-control bg-light border-0', 'placeholder': 'Lieu', 'style': 'height: 55px;'}}) }}
+                
+            </div>
+            <div class="col-12">
+                {{ form_row(form.description, {'attr': {'class': 'form-control bg-light border-0', 'placeholder': 'Description', 'style': 'height: 55px;'}}) }}
+            </div>
+            <div class="col-12">
+                {{ form_row(form.conditionroute, {'attr': {'class': 'form-control bg-light border-0', 'placeholder': 'Condition Route', 'style': 'height: 55px;'}}) }}
+            </div>
+    <div class="col-12">
+    <div class="form-check">
+        {{ form_widget(form.rapportepolice, {'attr': {'class': 'form-check-input', 'id': 'rapportepolice'}}) }}
+        {{ form_label(form.rapportepolice, 'Rapport de Police', {'label_attr': {'class': 'form-check-label'}}) }}
+    </div>
+    {{ form_errors(form.rapportepolice) }}
+</div>
+            <div class="col-12">
+                {{ form_row(form.photo, {'attr': {'class': 'form-control-file'}}) }}
+            </div>
+           
+
+            <div class="col-12">
+                {{ form_errors(form) }}
+            </div>
+
+            <div class="col-12">
+                <button class="btn btn-dark w-100 py-3" type="submit">Save</button>
+            </div>
+
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}

@@ -59,6 +59,9 @@ class Constat
   
     #[ORM\Column(length:255)]
     private ?string $photo = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $iduser = null;
     public function getId(): ?int
     {
         return $this->id;
@@ -133,6 +136,18 @@ class Constat
     public function setPhoto(string $photo): static
     {
         $this->photo = $photo;
+
+        return $this;
+    }
+
+    public function getIduser(): ?string
+    {
+        return $this->iduser;
+    }
+
+    public function setIduser(string $iduser): static
+    {
+        $this->iduser = $iduser;
 
         return $this;
     }

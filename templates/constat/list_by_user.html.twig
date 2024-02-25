@@ -1,0 +1,59 @@
+{% extends 'base-client.html.twig' %}
+
+{% block css %}
+    {{ parent() }}
+    <!-- Additional CSS specific to list_by_user.html.twig -->
+    <style>
+        /* Add your custom styles here */
+    </style>
+{% endblock %}
+
+{% block title %}Constat List{% endblock %}
+
+{% block navbar %}
+    {{ parent() }}
+{% endblock %}
+
+{% block body %}
+    {{ parent() }}
+
+    <h1>Constats for User {{ iduser }}</h1>
+
+    <table class="table">
+        <thead class="table-dark">
+            <tr>
+                <th>Id</th>
+                <th>Date</th>
+                <th>Lieu</th>
+                <th>Description</th>
+                <th>Conditionroute</th>
+                <th>Rapportepolice</th>
+                <th>Photo</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody class="table-border-bottom-0">
+            {% for constat in constats %}
+                <tr>
+                    <td>{{ constat.id }}</td>
+                    <td>{{ constat.date ? constat.date|date('Y-m-d H:i:s') : '' }}</td>
+                    <td>{{ constat.lieu }}</td>
+                    <td>{{ constat.description }}</td>
+                    <td>{{ constat.conditionroute }}</td>
+                    <td>{{ constat.rapportepolice ? 'Yes' : 'No' }}</td>
+                    <td><img src="{{ asset('uploads/' ~ constat.photo) }}" alt="Uploaded Image" length="100" width="100"></td>
+                    <td>
+                        <a type="button" class="btn btn-outline-info" href="{{ path('app_constat_show', {'id': constat.id}) }}">Show <i class='bx bx-show'></i></a>
+                        <a type="button" class="btn btn-outline-warning" href="{{ path('app_constat_edit', {'id': constat.id}) }}">Edit <i class='bx bxs-edit-alt'></i></a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="7">{{ 'No records found'|trans }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <a type="submit" class="btn btn-outline-success" href="{{ path('app_constat_new') }}">Create new <i class='bx bx-plus'></i></a>
+{% endblock %}

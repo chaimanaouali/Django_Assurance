@@ -1,23 +1,33 @@
+{% extends 'base-admin.html.twig' %}
 
-{% extends 'base-admin.html.twig'%}
 {% block css %}
-{{ parent() }}
-{%endblock%}
+    {{ parent() }}
+{% endblock %}
 
 {% block title %}Constat{% endblock %}
+
 {% block navbar %}
-{{ parent() }}
-{%endblock%}
+    {{ parent() }}
+{% endblock %}
 
 {% block body %}
-{{ parent() }}
+    {{ parent() }}
+
+    <!-- Search Form -->
+    <form method="get" action="{{ path('app_constat_index') }}">
+        <div class="input-group mb-3">
+            <input type="text" class="form-control" placeholder="Search" name="search" value="{{ searchTerm }}">
+            <button class="btn btn-outline-secondary" type="submit">Search</button>
+        </div>
+    </form>
+
     <h1>Constat index</h1>
 
     <table class="table">
         <thead class="table-dark">
             <tr>
+                <th>Id user</th>
                 <th>Id</th>
-            
                 <th>Date</th>
                 <th>Lieu</th>
                 <th>Description</th>
@@ -28,27 +38,29 @@
             </tr>
         </thead>
         <tbody class="table-border-bottom-0">
-        {% for constat in constats %}
-            <tr>
-                <td>{{ constat.id }}</td>
-                <td>{{ constat.date ? constat.date|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ constat.lieu }}</td>
-                <td>{{ constat.description }}</td>
-                <td>{{ constat.conditionroute }}</td>
-                <td>{{ constat.rapportepolice ? 'Yes' : 'No' }}</td>
-                <td><img src="{{ asset('uploads/' ~ constat.photo) }}"  alt="Uploaded Image" length="100" width="100"></td>
-                
-                <td > 
-                    <a type="button" class="btn btn-outline-warning" href="{{ path('app_traitement_new', {'id': constat.id}) }}">trai<i class='bx bxs-edit-alt'></i></a>
-                    <a type="button" class="btn btn-outline-info" href="{{ path('app_constat_show', {'id': constat.id}) }}">show <i class='bx bx-show'></i></a>
-                    <a type="button" class="btn btn-outline-warning" href="{{ path('app_constat_edit', {'id': constat.id}) }}">edit<i class='bx bxs-edit-alt'></i></a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="8">no records found</td>
-            </tr>
-        {% endfor %}
+            {% for constat in constats %}
+                <tr>
+                    <td>{{ constat.iduser }}</td> 
+                    <td>{{ constat.id }}</td>
+                    <td>{{ constat.date ? constat.date|date('Y-m-d H:i:s') : '' }}</td>
+                    <td>{{ constat.lieu }}</td>
+                    <td>{{ constat.description }}</td>
+                    <td>{{ constat.conditionroute }}</td>
+                    <td>{{ constat.rapportepolice ? 'Yes' : 'No' }}</td>
+                    
+                    <td><img src="{{ asset('uploads/' ~ constat.photo) }}"  alt="Uploaded Image" length="100" width="100"></td>
+                    
+                    <td> 
+                        <a type="button" class="btn btn-outline-warning" href="{{ path('app_traitement_new', {'id': constat.id}) }}">trai<i class='bx bxs-edit-alt'></i></a>
+                        <a type="button" class="btn btn-outline-info" href="{{ path('app_constat_show', {'id': constat.id}) }}">show <i class='bx bx-show'></i></a>
+                        <a type="button" class="btn btn-outline-warning" href="{{ path('app_constat_edit', {'id': constat.id}) }}">edit<i class='bx bxs-edit-alt'></i></a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="8">{{ 'No records found'|trans }}</td>
+                </tr>
+            {% endfor %}
         </tbody>
     </table>
 

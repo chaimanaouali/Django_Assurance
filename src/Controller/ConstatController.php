@@ -14,14 +14,21 @@ use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
+
+
+
 #[Route('/constat')]
 class ConstatController extends AbstractController
 {
     #[Route('/', name: 'app_constat_index', methods: ['GET'])]
-    public function index(ConstatRepository $constatRepository): Response
+    public function index(Request $request, ConstatRepository $constatRepository): Response
     {
+        $searchTerm = $request->query->get('search');
+        $constats = $constatRepository->search($searchTerm);
+    
         return $this->render('constat/index.html.twig', [
-            'constats' => $constatRepository->findAll(),
+            'constats' => $constats,
+            'searchTerm' => $searchTerm,
         ]);
     }
 
@@ -67,46 +74,61 @@ if ($imageFile) {
         ]);
     }
     #[Route('/new/front', name: 'app_constat_newfront', methods: ['GET', 'POST'])]
-    public function newfront(Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger ): Response
+    public function newfront(Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger, ConstatRepository $constatRepository): Response
     {
         $constat = new Constat();
         $form = $this->createForm(ConstatType::class, $constat);
         $form->handleRequest($request);
-
+    
         if ($form->isSubmitted() && $form->isValid()) {
-
-/** @var UploadedFile $imageFile */
-$imageFile = $form->get('photo')->getData();
-
-if ($imageFile) {
-     $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
-     $safeFilename = $slugger->slug($originalFilename);
-     $newFilename = $safeFilename . '-' . uniqid() . '.' . $imageFile->guessExtension();
-
-    // Move the file to the directory where your images are stored
-    try {
-        $imageFile->move($this->getParameter('img_directory'), // specify the directory where images should be stored
-            $newFilename
-        );
-     } catch (FileException $e) {
- // Handle the exception if something happens during the file upload
-    }
-
-// Update the 'image' property to store the file name instead of its contents
-        $constat->setPhoto($newFilename);
-}
-
+    
+            /** @var UploadedFile $imageFile */
+            $imageFile = $form->get('photo')->getData();
+    
+            if ($imageFile) {
+                $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename . '-' . uniqid() . '.' . $imageFile->guessExtension();
+    
+                // Move the file to the directory where your images are stored
+                try {
+                    $imageFile->move($this->getParameter('img_directory'), $newFilename);
+                } catch (FileException $e) {
+                    // Handle the exception if something happens during the file upload
+                }
+    
+                // Update the 'image' property to store the file name instead of its contents
+                $constat->setPhoto($newFilename);
+            }
+    
             $entityManager->persist($constat);
             $entityManager->flush();
-
-            return $this->redirectToRoute('app_constat_index', [], Response::HTTP_SEE_OTHER);
+    
+            // Get the iduser from the newly created Constat
+            $iduser = $constat->getIduser();
+    
+            // Redirect to the list_by_user route with the iduser parameter
+            return $this->redirectToRoute('list_by_user', ['iduser' => $iduser]);
         }
-
+    
         return $this->renderForm('constat/newfront.html.twig', [
             'constat' => $constat,
             'form' => $form,
         ]);
     }
+    #[Route('/list_by_user/{iduser}', name: 'list_by_user', methods: ['GET'])]
+    public function listByUser($iduser, ConstatRepository $constatRepository): Response
+    {
+        // Fetch Constats with the specified iduser from the database
+        $constats = $constatRepository->findBy(['iduser' => $iduser]);
+
+        
+        return $this->render('constat/list_by_user.html.twig', [
+            'constats' => $constats,
+            'iduser' => $iduser,
+        ]);
+    }
+
     #[Route('/{id}', name: 'app_constat_show', methods: ['GET'])]
     public function show(Constat $constat): Response
     {

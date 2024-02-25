@@ -21,6 +21,24 @@ class ConstatRepository extends ServiceEntityRepository
         parent::__construct($registry, Constat::class);
     }
 
+
+    public function search(?string $searchTerm): array
+    {
+        $queryBuilder = $this->createQueryBuilder('c');
+
+        if ($searchTerm) {
+            $queryBuilder
+                ->where('c.lieu LIKE :searchTerm OR c.id = :searchTermId OR c.conditionroute LIKE :searchTermRoute OR c.date LIKE :searchTermDate')
+                ->setParameter('searchTerm', '%'.$searchTerm.'%')
+                ->setParameter('searchTermId', $searchTerm)
+                ->setParameter('searchTermRoute', '%'.$searchTerm.'%')
+                ->setParameter('searchTermDate', '%'.$searchTerm.'%');
+            // Add additional conditions for other fields if needed
+        }
+
+        return $queryBuilder->getQuery()->getResult();
+    }
+    
 //    /**
 //     * @return Constat[] Returns an array of Constat objects
 //     */

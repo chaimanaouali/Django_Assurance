@@ -58,3 +58,7 @@ app_constat_newfront:
     path: /new/front
     controller: 'App\Controller\ConstatController::newfront'
     methods: ['GET', 'POST']
+
+app_constat_list_by_user:
+    path: '/list/{iduser}'
+    controller: 'App\Controller\ConstatController::listByUser'
