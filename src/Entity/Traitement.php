@@ -21,7 +21,7 @@ class Traitement
     private ?\DateTime $date_taitement = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank]
+    #[Assert\NotBlank(message:"entrez responsable")]
     #[Assert\NotEqualTo('aaa')]
     #[Assert\Length(max:30)]
     #[Assert\Regex(
@@ -31,12 +31,20 @@ class Traitement
     private ?string $responsable = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message:"entrez responsable")]  
     private ?string $statut = null;
     
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank]
+    #[Assert\NotEqualTo('aaa')]
+    #[Assert\Length(max:30)]
+    #[Assert\Regex(
+        pattern: '/^[a-zA-Z]+(?: [a-zA-Z]+)* ?$/',
+        message: 'The value {{ value }} is not a valid {{ type }}.'
+    )]
     private ?string $remarque = null;
 
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(cascade: ['persist','remove'])]
     private ?Constat $identifiant = null;
 
    

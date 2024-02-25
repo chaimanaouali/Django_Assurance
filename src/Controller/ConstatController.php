@@ -48,10 +48,10 @@ if ($imageFile) {
             $newFilename
         );
      } catch (FileException $e) {
- // Handle the exception if something happens during the file upload
+    // Handle the exception if something happens during the file upload
     }
 
-// Update the 'image' property to store the file name instead of its contents
+    // Update the 'image' property to store the file name instead of its contents
         $constat->setPhoto($newFilename);
 }
 
@@ -66,7 +66,47 @@ if ($imageFile) {
             'form' => $form,
         ]);
     }
+    #[Route('/new/front', name: 'app_constat_newfront', methods: ['GET', 'POST'])]
+    public function newfront(Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger ): Response
+    {
+        $constat = new Constat();
+        $form = $this->createForm(ConstatType::class, $constat);
+        $form->handleRequest($request);
 
+        if ($form->isSubmitted() && $form->isValid()) {
+
+/** @var UploadedFile $imageFile */
+$imageFile = $form->get('photo')->getData();
+
+if ($imageFile) {
+     $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
+     $safeFilename = $slugger->slug($originalFilename);
+     $newFilename = $safeFilename . '-' . uniqid() . '.' . $imageFile->guessExtension();
+
+    // Move the file to the directory where your images are stored
+    try {
+        $imageFile->move($this->getParameter('img_directory'), // specify the directory where images should be stored
+            $newFilename
+        );
+     } catch (FileException $e) {
+ // Handle the exception if something happens during the file upload
+    }
+
+// Update the 'image' property to store the file name instead of its contents
+        $constat->setPhoto($newFilename);
+}
+
+            $entityManager->persist($constat);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_constat_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->renderForm('constat/newfront.html.twig', [
+            'constat' => $constat,
+            'form' => $form,
+        ]);
+    }
     #[Route('/{id}', name: 'app_constat_show', methods: ['GET'])]
     public function show(Constat $constat): Response
     {
@@ -113,6 +153,7 @@ if ($imageFile) {
         ]);
     }
     
+    
     #[Route('/{id}', name: 'app_constat_delete', methods: ['POST'])]
     public function delete(Request $request, Constat $constat, EntityManagerInterface $entityManager): Response
     {
@@ -139,4 +180,5 @@ if ($imageFile) {
             $post->setImage($newFilename);
         }
     }
+    
 }

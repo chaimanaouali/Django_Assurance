@@ -1,0 +1,18 @@
+{% extends 'base-client.html.twig'%}
+{% block css %}
+{{ parent() }}
+{%endblock%}
+
+{% block title %}new constat{% endblock %}
+{% block navbar %}
+{{ parent() }}
+{%endblock%}
+
+{% block body %}
+{{ parent() }}
+    <h1>Create new Constat</h1>
+
+    {{ include('constat/_form.html.twig') }}
+
+    <a  class="btn btn-outline-primary"href="{{ path('app_constat_index') }}">back to list <i class='bx bx-arrow-back' ></i></a>
+{% endblock %}

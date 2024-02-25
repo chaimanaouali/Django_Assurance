@@ -30,7 +30,7 @@ class TraitementController extends AbstractController
         $form = $this->createForm(TraitementType::class, $traitement);
         $form->handleRequest($request);
         $idFromUrl = $request->query->get('id');
-  $constat=$repo->find($idFromUrl);
+        $constat=$repo->find($idFromUrl);
   
         if ($form->isSubmitted() && $form->isValid()) {
             $traitement->setIdentifiant($constat);
