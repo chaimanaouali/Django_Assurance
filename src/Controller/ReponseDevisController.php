@@ -32,52 +32,59 @@ class ReponseDevisController extends AbstractController
         $reponseDevi = new ReponseDevis();
         $form = $this->createForm(ReponseDevisType::class, $reponseDevi);
         $form->handleRequest($request);
-    $form = $this->createForm(ReponseDevisType::class, $reponseDevi);
-    $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($reponseDevi);
-            $entityManager->flush();
-    if ($form->isSubmitted() && $form->isValid()) {
-        /** @var UploadedFile $documentFile */
-        $documentFile = $form->get('documents')->getData();
-
-            return $this->redirectToRoute('app_reponse_devis_index', [], Response::HTTP_SEE_OTHER);
-        if ($documentFile) {
-            $originalFilename = pathinfo($documentFile->getClientOriginalName(), PATHINFO_FILENAME);
-            $newFilename = $originalFilename.'.'.$documentFile->guessExtension();
-
-            try {
-                $documentFile->move(
-                    $this->getParameter('documents_directory'), // Chemin vers le répertoire de stockage des documents
-                    $newFilename
-                );
-            } catch (FileException $e) {
-                // Gérer l'erreur de téléchargement de fichier
+            // Vérifiez si l'email existe déjà dans la base de données
+            $email = $reponseDevi->getEmail();
+            $existingReponseDevi = $entityManager->getRepository(ReponseDevis::class)->findOneBy(['email' => $email]);
+            
+            if ($existingReponseDevi) {
+                // Ajoutez une erreur au formulaire pour indiquer que l'email est déjà utilisé
+                $form->get('email')->addError(new FormError('This email is already used.'));
+                
+                // Affichez à nouveau le formulaire avec les erreurs
+                return $this->render('reponse_devis/new.html.twig', [
+                    'reponse_devi' => $reponseDevi,
+                    'form' => $form->createView(),
+                ]);
             }
 
-            // Stockez le nom du fichier dans l'entité ReponseDevis
-            $reponseDevi->setDocuments($newFilename);
+            // Récupérer le fichier envoyé dans le formulaire
+            $documentFile = $form->get('documents')->getData();
+
+            // Vérifier si un fichier a été téléversé
+            if ($documentFile instanceof UploadedFile) {
+                // Générer un nom de fichier unique
+                $newFilename = uniqid().'.'.$documentFile->guessExtension();
+
+                try {
+                    // Déplacer le fichier téléversé vers le répertoire de stockage des documents
+                    $documentFile->move(
+                        $this->getParameter('documents_directory'), // Chemin vers le répertoire de stockage des documents
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                    // Gérer l'erreur de téléchargement de fichier
+                }
+
+                // Stockez le nom du fichier dans l'entité ReponseDevis
+                $reponseDevi->setDocuments($newFilename);
+            }
+
+            // Enregistrer l'entité dans la base de données
+            $entityManager->persist($reponseDevi);
+            $entityManager->flush();
+
+            // Redirection vers la page d'index après l'enregistrement réussi
+            return $this->redirectToRoute('app_reponse_devis_index', [], Response::HTTP_SEE_OTHER);
         }
 
+        // Rendu du formulaire avec les données de la nouvelle réponse devis
         return $this->renderForm('reponse_devis/new.html.twig', [
             'reponse_devi' => $reponseDevi,
             'form' => $form,
         ]);
-        // Persistez et flush l'entité ReponseDevis
-        $entityManager->persist($reponseDevi);
-        $entityManager->flush();
-
-        // Redirigez l'utilisateur vers une autre page après la soumission du formulaire
-        return $this->redirectToRoute('app_reponse_devis_index', [], Response::HTTP_SEE_OTHER);
     }
-
-    return $this->renderForm('reponse_devis/new.html.twig', [
-        'reponse_devi' => $reponseDevi,
-        'form' => $form,
-    ]);
-    }
-}
 
 
     #[Route('/{id}', name: 'app_reponse_devis_show', methods: ['GET'])]

@@ -15,18 +15,10 @@ use Symfony\Component\Routing\Annotation\Route;
 class DevisController extends AbstractController
 {
     #[Route('/', name: 'app_devis_index', methods: ['GET'])]
-    public function index(Request $request, DevisRepository $devisRepository): Response
+    public function index(DevisRepository $devisRepository): Response
     {
-        $searchQuery = $request->query->get('modele'); // Corrected query parameter name
-    
-        if ($searchQuery) {
-            $devis = $devisRepository->findByModele($searchQuery);
-        } else {
-            $devis = $devisRepository->findAll();
-        }
-    
         return $this->render('devis/index.html.twig', [
-            'devis' => $devis,
+            'devis' => $devisRepository->findAll(),
         ]);
     }
 
@@ -86,5 +78,4 @@ class DevisController extends AbstractController
 
         return $this->redirectToRoute('app_devis_index', [], Response::HTTP_SEE_OTHER);
     }
-   
 }

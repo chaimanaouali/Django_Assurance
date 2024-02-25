@@ -5,8 +5,6 @@ namespace App\Repository;
 use App\Entity\Devis;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use Doctrine\ORM\QueryBuilder;
-use Doctrine\ORM\Query\QueryException;
 
 /**
  * @extends ServiceEntityRepository<Devis>
@@ -47,24 +45,4 @@ class DevisRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
-/**
-     * @return Devis[] Returns an array of Devis objects
-     */
-    // DevisRepository.php
-
-    public function searchDevis(string $modele)
-    {
-        try {
-            return $this->createQueryBuilder('d')
-                ->andWhere('d.modele = :modele')
-                ->setParameter('modele', $modele)
-                ->getQuery()
-                ->getResult();
-        } catch (QueryException $e) {
-            // Handle any potential exceptions here
-            throw new \Exception('Error executing query: ' . $e->getMessage());
-        }
-    }
-
 }
-

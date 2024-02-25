@@ -6,9 +6,8 @@
     <h1>Edit Devis</h1>
 
     {{ include('devis/_form.html.twig', {'button_label': 'Update'}) }}
-    <div class="text-center">
 
-        <a href="{{ path('app_devis_index') }}" class="btn btn-secondary">Back to List</a>
-    </div>
+    <a href="{{ path('app_devis_index') }}" class="btn btn-secondary">Back to List</a>
+
     {% include 'devis/_delete_form.html.twig' with {'id': devi.id} %}
 {% endblock %}
