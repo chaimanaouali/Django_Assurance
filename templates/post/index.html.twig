@@ -1,78 +1,99 @@
-{% extends 'admin/base-admin.html.twig' %}
+{% extends 'admin/base-front.html.twig' %}
 
-{% block content %}
-    <h1>Post index</h1>
+{% block title %}Posts{% endblock %}
 
-    <!-- Dump the entire posts array to inspect its structure -->
-    {{ dump(posts) }}
+{% block body %}
+    <div class="container">
+        <h1 class="text-center mb-4">Posts</h1>
 
-    <!-- Search form -->
-    <form action="{{ path('app_post_index') }}" method="GET">
-        <input type="text" name="searchTerm" placeholder="Search...">
-        <button type="submit">Search</button>
-    </form>
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            {# Back button with icon #}
+            <a href="{{ path('app_home')}}" class="btn btn-sm btn-secondary">
+                <i class="fas fa-arrow-left"></i> Back 
+            </a>
+        </div>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Titre</th>
-                <th>Description</th>
-                <th>Image</th>
-                <th>DateCreation</th>
-                <th>Categorie</th>
-                <th>Status</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for post in posts %}
-            <tr>
-                <td>{{ post.id }}</td>
-                <td>{{ post.titre }}</td>
-                <td>{{ post.description }}</td>
-                <td>
-                    {% if post.image %}
-                        <img src="{{ asset('uploads/' ~ post.image) }}" alt="Post Image">
-                    {% else %}
-                        No Image
-                    {% endif %}
-                </td>
-                <td>{{ post.dateCreation ? post.dateCreation|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ post.categorie }}</td>
-                <td>{{ post.status }}</td>
-                <td>
-                    <a href="{{ path('app_post_show', {'id': post.id}) }}">Show</a>
-                    <a href="{{ path('app_post_edit', {'id': post.id}) }}">Edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="8">No records found</td>
-            </tr>
+        {# Flash messages for notifications #}
+        {% for flashMessage in app.flashes('success') %}
+            <div class="alert alert-success" role="alert">
+                {{ flashMessage }}
+            </div>
         {% endfor %}
-        </tbody>
-    </table>
 
-    <!-- Render pagination links -->
-    <div class="pagination">
-        <!-- Previous button -->
-        {% if posts.hasPreviousPage %}
-            <a href="{{ path(app.request.get('_route'), app.request.get('_route_params')|merge({'page': posts.previousPage})) }}" class="btn btn-primary">Previous</a>
-        {% endif %}
-        
-        <!-- Numbered pages -->
-        {% for page in posts.pagesInRange %}
-            {% if page != posts.currentPage %}
-                <a href="{{ path(app.request.get('_route'), app.request.get('_route_params')|merge({'page': page})) }}" class="btn btn-secondary">{{ page }}</a>
-            {% else %}
-                <span class="btn btn-primary disabled">{{ page }}</span>
-            {% endif %}
-        {% endfor %}
-        
-        <!-- Next button -->
-        {% if posts.hasNextPage %}
-            <a href="{{ path(app.request.get('_route'), app.request.get('_route_params')|merge({'page': posts.nextPage})) }}" class="btn btn-primary">Next</a>
-        {% endif %}
+        <a href="{{ path('app_post_front_index') }}" class="notification-icon">
+            <div class="outer-ring"></div>
+            <div class="inner-circle">
+                <span class="notification-count">{{ totalPosts }}</span>
+            </div>
+            <i class="fas fa-bell"></i> <!-- Notification icon -->
+        </a>
+
+        <form action="{{ path('app_post_front_index') }}" method="get">
+            <input type="text" name="q" placeholder="Search..." value="{{ searchQuery }}">
+            <button type="submit">Search</button>
+        </form>
+
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                {% for post in posts %}
+                    <div class="post-card border mb-4 p-3">
+                        <h2 class="border-bottom pb-2">{{ post.titre }}</h2>
+                        <p>{{ post.description }}</p>
+                        
+                        {# Display the image if available #}
+                        {% if post.imageName %}
+                           <img src="{{ asset('uploads/posts/' ~ post.imageName) }}" alt="Post Image" class="img-fluid mb-3">
+                        {% endif %}
+                            
+                        <h3>Comments</h3>
+                        <ul>
+                            {% for commentaire in postComments[post.id]|default([]) %}
+                                <li>
+                                    <strong>{{ commentaire.contenu }} - {{ commentaire.auteur }}</strong> 
+                                    <span class="comment-date">{{ commentaire.dateCreation|date('Y-m-d H:i:s') }}</span>
+                                </li>
+                            {% endfor %}
+                        </ul>
+
+                        {# Add button for adding comments #}
+                        <a href="{{ path('app_commentaire_new', { 'postId': post.id }) }}" class="btn btn-primary">Add Comment</a>
+                        
+                        {# Like button for the post #}
+                        <form action="{{ path('app_post_front_like', {'id': post.id}) }}" method="post" class="mt-2 float-right">
+                            <button type="submit" class="btn btn-sm btn-primary">
+                                &#128077; Like <span class="like-count">{{ post.likeCount }}</span>
+                            </button>
+                        </form>
+                        <form action="{{ path('app_post_front_share', { 'id': post.id }) }}" method="post">
+                            <input type="email" name="email" placeholder="Enter recipient email">
+                            <button type="submit">Share via Email</button>
+                        </form>
+                    </div>
+                {% endfor %}
+                
+                {# Manual pagination controls #}
+                <nav aria-label="Page navigation">
+                    <ul class="pagination justify-content-center">
+                        {% if currentPage > 1 %}
+                            <li class="page-item">
+                                <a class="page-link" href="{{ path('app_post_front_index', {'page': currentPage - 1}) }}">Previous</a>
+                            </li>
+                        {% endif %}
+                        
+                        {% for page in 1..totalPages %}
+                            <li class="page-item{% if page == currentPage %} active{% endif %}">
+                                <a class="page-link" href="{{ path('app_post_front_index', {'page': page}) }}">{{ page }}</a>
+                            </li>
+                        {% endfor %}
+                        
+                        {% if currentPage < totalPages %}
+                            <li class="page-item">
+                                <a class="page-link" href="{{ path('app_post_front_index', {'page': currentPage + 1}) }}">Next</a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            </div>
+        </div>
     </div>
 {% endblock %}

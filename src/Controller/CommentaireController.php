@@ -10,42 +10,48 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Repository\PostRepository;
+
 
 #[Route('/commentaire')]
 class CommentaireController extends AbstractController
 {
     #[Route('/', name: 'app_commentaire_index', methods: ['GET'])]
     public function index(CommentaireRepository $commentaireRepository): Response
-    {
+    {   
         return $this->render('commentaire/index.html.twig', [
             'commentaires' => $commentaireRepository->findAll(),
         ]);
     }
 
-    #[Route('/new', name: 'app_commentaire_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    #[Route('/commentaire/new/{postId}', name: 'app_commentaire_new', methods: ['GET', 'POST'])]
+    public function new(Request $request, EntityManagerInterface $entityManager, PostRepository $postRepository, $postId): Response
     {
+        $post = $postRepository->find($postId);
+        if (!$post) {
+            throw $this->createNotFoundException('The post does not exist');
+        }
+
         $commentaire = new Commentaire();
+        $commentaire->setPost($post); // Associate the comment with the post
+        $commentaire->setDateCreation(new \DateTime()); // Set creation date
         
-        // Set the dateCreation property explicitly
-        $commentaire->setDateCreation(new \DateTime());
-    
         $form = $this->createForm(CommentaireType::class, $commentaire);
-        $form->handleRequest($request);
-    
+        $form->handleRequest($request); 
+
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($commentaire);
             $entityManager->flush();
-    
-            return $this->redirectToRoute('app_commentaire_index', [], Response::HTTP_SEE_OTHER);
+
+            // Redirect back to the post detail page after adding the comment
+            return $this->redirectToRoute('app_post_front_index', ['id' => $postId]);
         }
-    
+
         return $this->renderForm('commentaire/new.html.twig', [
             'commentaire' => $commentaire,
             'form' => $form,
         ]);
     }
-    
 
     #[Route('/{id}', name: 'app_commentaire_show', methods: ['GET'])]
     public function show(Commentaire $commentaire): Response
@@ -54,6 +60,7 @@ class CommentaireController extends AbstractController
             'commentaire' => $commentaire,
         ]);
     }
+
 
     #[Route('/{id}/edit', name: 'app_commentaire_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Commentaire $commentaire, EntityManagerInterface $entityManager): Response

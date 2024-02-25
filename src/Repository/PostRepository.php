@@ -6,6 +6,8 @@ use App\Entity\Post;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
+
+
 /**
  * @extends ServiceEntityRepository<Post>
  *
@@ -21,22 +23,27 @@ class PostRepository extends ServiceEntityRepository
         parent::__construct($registry, Post::class);
     }
 
-     /**
-     * Recherche les posts en fonction d'un terme de recherche dans le titre.
-     *
-     * @param string $searchTerm Le terme de recherche
-     * @return Post[] Les posts correspondant au terme de recherche
-     */
-    public function findBySearchTerm($searchTerm): array
+
+    public function findMostLikedPosts($limit = 10)
     {
         return $this->createQueryBuilder('p')
-            ->andWhere('p.titre LIKE :searchTerm')
-            ->setParameter('searchTerm', '%' . $searchTerm . '%')
-            ->orderBy('p.id', 'ASC')
+            ->orderBy('p.likeCount', 'DESC')
+            ->setMaxResults($limit)
             ->getQuery()
             ->getResult();
     }
 
+    public function searchPosts($searchQuery)
+    {
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.titre LIKE :query OR p.description LIKE :query')
+            ->setParameter('query', '%' . $searchQuery . '%')
+            ->getQuery()
+            ->getResult();
+    }
+
+
+    
 
 //    /**
 //     * @return Post[] Returns an array of Post objects
