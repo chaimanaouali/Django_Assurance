@@ -21,6 +21,14 @@ class VoitureRepository extends ServiceEntityRepository
         parent::__construct($registry, Voiture::class);
     }
 
+    public function searchVoitures($searchQuery)
+{
+    return $this->createQueryBuilder('v')
+        ->andWhere('v.matricule LIKE :query OR v.marque LIKE :query') // Add more fields if needed
+        ->setParameter('query', '%' . $searchQuery . '%')
+        ->getQuery()
+        ->getResult();
+}
 //    /**
 //     * @return Voiture[] Returns an array of Voiture objects
 //     */

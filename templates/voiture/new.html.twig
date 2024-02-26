@@ -1,11 +1,12 @@
-<!DOCTYPE html>
+{% extends 'admin/base-admin.html.twig' %}
 
-<title>New Voiture</title>
+{% block title %}Nouveau Voiture{% endblock %}
 
 {% block body %}
-    <h1>Create new Voiture</h1>
+    <h1>Creer nouveau Voiture</h1>
 
     {{ include('voiture/_form.html.twig') }}
-
-    <a href="{{ path('app_voiture_index') }}">back to list</a>
+    <div class="text-center">
+        <a href="{{ path('app_voiture_index') }}" class="btn btn-primary">Retour</a>
+    </div>
 {% endblock %}

@@ -1,41 +1,50 @@
-<!DOCTYPE html>
+{% extends 'admin/base-admin.html.twig' %}
 
-<title>Voiture index</title>
+{% block title %}Voiture index{% endblock %}
 
 {% block body %}
-    <h1>Voiture index</h1>
+    <h1 class="text-center">Voitures</h1>
+
+    <form action="{{ path('app_voiture_index') }}" method="get"> <!-- Assuming the route name for the voiture index page is app_voiture_index -->
+    <input type="text" name="q" placeholder="Search..." value="{{ searchQuery }}">
+    <button class="btn btn-primary btn-sm" type="submit">Search</button>
+</form>
 
     <table class="table">
         <thead>
             <tr>
                 <th>Id</th>
+                <th>Email</th>
                 <th>Matricule</th>
                 <th>Marque</th>
-                <th>Prix_voiture</th>
+                <th>Prix</th>
                 <th>Puissance</th>
-                <th>actions</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
         {% for voiture in voitures %}
             <tr>
                 <td>{{ voiture.id }}</td>
+                <td>{{ voiture.email }}</td>
                 <td>{{ voiture.matricule }}</td>
                 <td>{{ voiture.marque }}</td>
                 <td>{{ voiture.prixVoiture }}</td>
                 <td>{{ voiture.puissance }}</td>
                 <td>
-                    <a href="{{ path('app_voiture_show', {'id': voiture.id}) }}">show</a>
-                    <a href="{{ path('app_voiture_edit', {'id': voiture.id}) }}">edit</a>
+                    <a href="{{ path('app_voiture_show', {'id': voiture.id}) }}" class="btn btn-success">Afficher</a>
+                    <a href="{{ path('app_voiture_edit', {'id': voiture.id}) }}" class="btn btn-primary">Modifier</a>
                 </td>
             </tr>
         {% else %}
             <tr>
-                <td colspan="6">no records found</td>
+                <td colspan="6">No records trouvé</td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
-
-    <a href="{{ path('app_voiture_new') }}">Create new</a>
+    <div style="text-align: center; margin-top: 20px;">
+    <a href="{{ path('app_voiture_new') }}" class="btn btn-primary my-3">Créer nouveau</a>
+    <a href="{{ path('app_home') }}" class="btn btn-secondary my-3">Retour</a>
+    </div>
 {% endblock %}

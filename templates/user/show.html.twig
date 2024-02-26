@@ -1,6 +1,6 @@
-<!DOCTYPE html>
+{% extends 'admin/base-admin.html.twig' %}
 
-<title>User</title>
+{% block title %}User{% endblock %}
 
 {% block body %}
     <h1>User</h1>
@@ -25,10 +25,10 @@
             </tr>
         </tbody>
     </table>
+    <div class="text-center">
+        <a href="{{ path('app_user_index') }}" class="btn btn-primary">Retour</a>
 
-    <a href="{{ path('app_user_index') }}">back to list</a>
-
-    <a href="{{ path('app_user_edit', {'id': user.id}) }}">edit</a>
-
+        <a href="{{ path('app_user_edit', {'id': user.id}) }}" class="btn btn-secondary">Modifier</a>
+    </div>
     {{ include('user/_delete_form.html.twig') }}
 {% endblock %}

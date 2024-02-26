@@ -15,10 +15,34 @@ use Symfony\Component\Routing\Annotation\Route;
 class UserController extends AbstractController
 {
     #[Route('/', name: 'app_user_index', methods: ['GET'])]
-    public function index(UserRepository $userRepository): Response
+    public function index(Request $request, UserRepository $userRepository): Response
     {
+        $searchQuery = $request->query->get('q');
+    
+        // Initialize an empty array to hold users
+        $users = [];
+    
+        // If there's a search query, filter users based on it
+        if ($searchQuery) {
+            $users = $userRepository->searchUsers($searchQuery);
+        } else {
+            // If there's no search query, retrieve all users
+            $users = $userRepository->findAll();
+        }
+    
+        // Manually paginate the users
+        $currentPage = $request->query->getInt('page', 1); // Get current page number
+        $perPage = 5; // Items per page
+        $totalUsers = count($users); // Total number of users
+        $totalPages = ceil($totalUsers / $perPage); // Total number of pages
+        $offset = ($currentPage - 1) * $perPage; // Offset for pagination
+        $users = array_slice($users, $offset, $perPage); // Get users for current page
+    
         return $this->render('user/index.html.twig', [
-            'users' => $userRepository->findAll(),
+            'users' => $users,
+            'searchQuery' => $searchQuery, // Pass the search query to the template
+            'currentPage' => $currentPage, // Pass current page number
+            'totalPages' => $totalPages, // Pass total number of pages
         ]);
     }
 

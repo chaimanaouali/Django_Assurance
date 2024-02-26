@@ -4,8 +4,10 @@ namespace App\Entity;
 
 use App\Repository\VoitureRepository;
 use Doctrine\ORM\Mapping as ORM;
-
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 #[ORM\Entity(repositoryClass: VoitureRepository::class)]
+#[UniqueEntity(fields: ['matricule'], message: 'This registration deja utilise.')]
+
 class Voiture
 {
     #[ORM\Id]

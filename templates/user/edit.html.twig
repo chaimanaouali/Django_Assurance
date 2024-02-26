@@ -1,13 +1,13 @@
-<!DOCTYPE html>
+{% extends 'admin/base-admin.html.twig' %}
 
-<title>Edit User</title>
+{% block title %}Modifier User{% endblock %}
 
 {% block body %}
     <h1>Edit User</h1>
+    <div class="text-center">
+        {{ include('user/_form.html.twig', {'button_label': 'Modifier'}) }}
 
-    {{ include('user/_form.html.twig', {'button_label': 'Update'}) }}
-
-    <a href="{{ path('app_user_index') }}">back to list</a>
-
+        <a href="{{ path('app_user_index') }}"class="btn btn-primary">Retour</a>
+    </div>
     {{ include('user/_delete_form.html.twig') }}
 {% endblock %}
