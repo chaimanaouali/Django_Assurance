@@ -16,6 +16,7 @@ class VoitureType extends AbstractType
             ->add('marque')
             ->add('prix_voiture')
             ->add('puissance')
+            ->add('email')
         ;
     }
 

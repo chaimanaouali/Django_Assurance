@@ -25,6 +25,9 @@ class Voiture
     #[ORM\Column]
     private ?int $puissance = null;
 
+    #[ORM\ManyToOne(inversedBy: 'voitures')]
+    private ?User $email = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -74,6 +77,18 @@ class Voiture
     public function setPuissance(int $puissance): static
     {
         $this->puissance = $puissance;
+
+        return $this;
+    }
+
+    public function getEmail(): ?User
+    {
+        return $this->email;
+    }
+
+    public function setEmail(?User $email): static
+    {
+        $this->email = $email;
 
         return $this;
     }

@@ -3,16 +3,15 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Validator\Constraints as Assert;
-
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-#[UniqueEntity(fields: ['email'], message: 'This email is already in use.')]
-
+#[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -20,28 +19,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?int $id = null;
 
-    #[Assert\NotBlank(message: 'Email cannot be blank')]
-    #[Assert\Email(message: 'Invalid email address')]
     #[ORM\Column(length: 180, unique: true)]
     private ?string $email = null;
 
     #[ORM\Column]
-    #[Symfony\Component\Form\Extension\Core\Type\ChoiceType(choices: ['User' => 'user', 'Admin' => 'admin', 'Expert' => 'expert'])]
-    private ?string $roles = "user";
- 
+    private array $roles = [];
+
     /**
      * @var string The hashed password
      */
     #[ORM\Column]
-    #[Assert\Length(min: 8, minMessage: 'Password should be at least {{ limit }} characters long.')]
-    #[Assert\Regex(
-        pattern: '/(?=.*[A-Z])/',
-        message: 'Password should contain at least one uppercase letter.'
-    )]
     private ?string $password = null;
-
-    #[ORM\Column(type: 'boolean')]
-    private $isVerified = false;
 
     #[ORM\Column(length: 255)]
     private ?string $nom_user = null;
@@ -49,6 +37,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255)]
     private ?string $prenom_user = null;
 
+    #[ORM\OneToMany(mappedBy: 'email', targetEntity: Voiture::class)]
+    private Collection $voitures;
+
+    public function __construct()
+    {
+        $this->voitures = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -85,16 +80,23 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return (string) $this->email;
     }
 
-    /**
+      /**
      * @see UserInterface
+     *
+     * @return list<string>
      */
-    public function getRoles(): ?string
+    public function getRoles(): array
     {
-        return $this->roles;
+        $roles = $this->roles;
+        // guarantee every user at least has ROLE_USER
+        $roles[] = 'ROLE_USER';
 
+        return array_unique($roles);
     }
-
-    public function setRoles(string $roles): static
+    /**
+     * @param list<string> $roles
+     */
+    public function setRoles(array $roles): static
     {
         $this->roles = $roles;
 
@@ -136,18 +138,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         // $this->plainPassword = null;
     }
 
-    public function isVerified(): bool
-    {
-        return $this->isVerified;
-    }
-
-    public function setIsVerified(bool $isVerified): static
-    {
-        $this->isVerified = $isVerified;
-
-        return $this;
-    }
-
     public function getNomUser(): ?string
     {
         return $this->nom_user;
@@ -170,5 +160,40 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->prenom_user = $prenom_user;
 
         return $this;
+    }
+
+    /**
+     * @return Collection<int, Voiture>
+     */
+    public function getVoitures(): Collection
+    {
+        return $this->voitures;
+    }
+
+    public function addVoiture(Voiture $voiture): static
+    {
+        if (!$this->voitures->contains($voiture)) {
+            $this->voitures->add($voiture);
+            $voiture->setEmail($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVoiture(Voiture $voiture): static
+    {
+        if ($this->voitures->removeElement($voiture)) {
+            // set the owning side to null (unless already changed)
+            if ($voiture->getEmail() === $this) {
+                $voiture->setEmail(null);
+            }
+        }
+
+        return $this;
+    }
+    public function __toString(): string
+    {
+        // Return whatever property you want to represent the user as a string
+        return $this->email;
     }
 }
