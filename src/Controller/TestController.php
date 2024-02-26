@@ -15,5 +15,4 @@ class TestController extends AbstractController
             'controller_name' => 'TestController',
         ]);
     }
-    
 }

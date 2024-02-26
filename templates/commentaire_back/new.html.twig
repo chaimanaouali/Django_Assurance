@@ -1,0 +1,14 @@
+
+{% extends 'admin/base-admin.html.twig' %}
+
+{% block title %}show Commentaire{% endblock %}
+<title>New Commentaire</title>
+
+{% block body %}
+<!DOCTYPE html>
+    <h1>Create new Commentaire</h1>
+
+    {{ include('commentaire_back/_form.html.twig') }}
+
+    <a href="{{ path('app_commentaire_back_index') }}">back to list</a>
+{% endblock %}

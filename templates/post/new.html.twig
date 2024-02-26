@@ -3,21 +3,17 @@
 {% block title %}New Post{% endblock %}
 
 {% block body %}
-    <!DOCTYPE html>
-    <html>
-    <head>
-        <title>New Post</title>
-    </head>
-    <body>
-        <h1>Create new Post</h1>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <h1 class="text-center mt-5 mb-4">ajouter Post</h1>
 
-        {{ include('post/_form.html.twig', {'form': form}) }}
+                {{ include('post/_form.html.twig') }}
 
-        <a href="{{ path('app_post_index') }}">Back to List</a>
-    </body>
-    </html>
+                <div class="text-center mt-3">
+                    <a href="{{ path('app_post_index') }}" class="btn btn-primary">retour list</a>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
-
-
-
-

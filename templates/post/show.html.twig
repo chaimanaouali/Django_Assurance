@@ -3,51 +3,53 @@
 {% block title %}Post{% endblock %}
 
 {% block body %}
-    <h1>Post</h1>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <h1 class="text-center mt-5 mb-4">Post</h1>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ post.id }}</td>
-            </tr>
-            <tr>
-                <th>Titre</th>
-                <td>{{ post.titre }}</td>
-            </tr>
-            <tr>
-                <th>Description</th>
-                <td>{{ post.description }}</td> {# Display description field #}
-            </tr>
-            <tr>
-               <th>Image</th>
-<td>
-     {% if post.image %}
-                       <img src="{{ asset('uploads/images2.jpg') }}" alt="Uploaded Image">
-                    {% else %}
-                        No Image
-                    {% endif %}
-</td>
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <th>Id</th>
+                            <td>{{ post.id }}</td>
+                        </tr>
+                        <tr>
+                            <th>Titre</th>
+                            <td>{{ post.titre }}</td>
+                        </tr>
+                        <tr>
+                            <th>Description</th>
+                            <td>{{ post.description }}</td>
+                        </tr>
+                        <tr>
+                            <th>Image</th>
+                            <td>
+                                {% if post.imageName %}
+                                    <img src="{{ asset('uploads/posts/' ~ post.imageName) }}" alt="Post Image" style="max-width: 200px;">
+                                {% else %}
+                                    No image available
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Categorie</th>
+                            <td>{{ post.categorie }}</td>
+                        </tr>
+                        <tr>
+                            <th>UpdatedAt</th>
+                            <td>{{ post.updatedAt ? post.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                        </tr>
+                    </tbody>
+                </table>
 
-            </tr>
-            <tr>
-                <th>DateCreation</th>
-                <td>{{ post.dateCreation ? post.dateCreation|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>Categorie</th>
-                <td>{{ post.categorie }}</td>
-            </tr>
-            <tr>
-                <th>Status</th>
-                <td>{{ post.status }}</td>
-            </tr>
-        </tbody>
-    </table>
+                <div class="text-center">
+                    <a href="{{ path('app_post_index') }}" class="btn btn-primary">retourner list</a>
+                    <a href="{{ path('app_post_edit', {'id': post.id}) }}" class="btn btn-secondary">modifier</a>
+                </div>
 
-    <a href="{{ path('app_post_index') }}">Back to List</a>
-
-    <a href="{{ path('app_post_edit', {'id': post.id}) }}">Edit</a>
-
-    {{ include('post/_delete_form.html.twig') }}
+                {{ include('post/_delete_form.html.twig') }}
+            </div>
+        </div>
+    </div>
 {% endblock %}

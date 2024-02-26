@@ -6,15 +6,19 @@ use App\Repository\PostRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use Symfony\Component\HttpFoundation\File\File;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
+
 
 #[ORM\Entity(repositoryClass: PostRepository::class)]
+#[Vich\Uploadable]
 class Post
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
-
+    
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank]
     #[Assert\NotEqualTo('aaa')]
@@ -31,53 +35,46 @@ class Post
     #[ORM\Column(length: 255)]
     #[Assert\Length(min: 10, max: 255)] // Update the length according to your needs
     #[Assert\NotBlank]
+    #[Assert\Regex(
+        pattern: '/^[a-zA-Z]+(?: [a-zA-Z]+)* ?$/',
+        message: 'The value {{ value }} is not a valid {{ type }}.'
+    )]
     private string $description; // New attribute
 
-    #[ORM\Column(length: 255)]
+    #[Vich\UploadableField(mapping: 'post_images', fileNameProperty: 'imageName')]
     #[Assert\NotBlank]
-    #[Assert\Image(
-        minWidth: 200,
-        maxWidth: 500,
-        minHeight: 200,
-        maxHeight: 500,
-    )]
-    #[Assert\Image(
-        mimeTypesMessage: 'Please upload a valid image file.'
-    )]
-    private string $image;
+    private ?File $imageFile = null;
 
-    #[ORM\Column(type: 'datetime')]
-    #[Assert\NotBlank]
-    #[Assert\LessThanOrEqual('today')]
-    private \DateTimeInterface $dateCreation;
+    #[ORM\Column(type: 'string', nullable: true)]
+    private ?string $imageName = null;
+
+
+   
 
     #[ORM\Column(length: 30)]
     #[Assert\NotBlank]
     #[Assert\Length(max:30)]
     private string $categorie ;
 
-    #[ORM\Column(length: 255)]
+
+    #[ORM\Column(type: 'datetime_immutable')]
+    #[Assert\NotNull()]
     #[Assert\NotBlank]
-    #[Assert\Length(max: 15)]
-    #[Assert\NotBlank]
-   
+    #[Assert\LessThanOrEqual('today')]
+    private \DateTimeImmutable $updatedAt;
 
-    private string $status ;
+    #[ORM\Column(type: 'integer')]
+    private int $likeCount = 0; // New property for storing like count
 
-    public function __construct()
-    {
-        // Initialize the categorie property with an empty string or any default value
-        $this->categorie = '';
-        $this->status = '';
-
-    }
     
+
+
+
 
     public function getId(): ?int
     {
         return $this->id;
     }
-
     public function getTitre(): ?string
     {
         return $this->titre;
@@ -102,29 +99,44 @@ class Post
         return $this;
     }
 
-    public function getImage(): ?string
+    /**
+     * If manually uploading a file (i.e. not using Symfony Form) ensure an instance
+     * of 'UploadedFile' is injected into this setter to trigger the update. If this
+     * bundle's configuration parameter 'inject_on_load' is set to 'true' this setter
+     * must be able to accept an instance of 'File' as the bundle will inject one here
+     * during Doctrine hydration.
+     *
+     * @param File|\Symfony\Component\HttpFoundation\File\UploadedFile|null $imageFile
+     */
+    public function setImageFile(?File $imageFile = null): void
     {
-        return $this->image;
+        $this->imageFile = $imageFile;
+
+        if (null !== $imageFile) {
+            // It is required that at least one field changes if you are using doctrine
+            // otherwise the event listeners won't be called and the file is lost
+            $this->updatedAt = new \DateTimeImmutable();
+        }
     }
 
-    public function setImage(string $image): self
+    public function getImageFile(): ?File
     {
-        $this->image = $image;
-
-        return $this;
+        return $this->imageFile;
     }
 
-    public function getDateCreation(): ?\DateTimeInterface
+    public function setImageName(?string $imageName): void
     {
-        return $this->dateCreation;
+        $this->imageName = $imageName;
     }
 
-    public function setDateCreation(\DateTimeInterface $dateCreation): self
+    public function getImageName(): ?string
     {
-        $this->dateCreation = $dateCreation;
-
-        return $this;
+        return $this->imageName;
     }
+
+
+
+    
 
     public function getCategorie(): ?string
     {
@@ -138,17 +150,30 @@ class Post
         return $this;
     }
 
-    public function getStatus(): ?string
+    
+    public function getUpdatedAt(): ?\DateTimeImmutable
     {
-        return $this->status;
+        return $this->updatedAt;
     }
 
-    public function setStatus(string $status): self
+    public function setUpdatedAt(\DateTimeImmutable $updatedAt): self
     {
-        $this->status = $status;
+        $this->updatedAt = $updatedAt;
 
         return $this;
     }
+    public function getLikeCount(): int
+    {
+        return $this->likeCount;
+    }
+
+    public function setLikeCount(int $likeCount): self
+    {
+        $this->likeCount = $likeCount;
+
+        return $this;
+    }
+
 
     public function __toString(): string
     {
@@ -160,7 +185,7 @@ class Post
  */
 public function validateWord(ExecutionContextInterface $context)
 {
-    $restrictedWords = ['jassem', 'sandid', 'iath']; // Define an array of restricted words
+    $restrictedWords = ['putin', 'merde', 'conard','gay']; // Define an array of restricted words
     
     foreach ($restrictedWords as $restrictedWord) {
         
@@ -179,6 +204,4 @@ public function validateWord(ExecutionContextInterface $context)
         // break;
     }
 }
-    
-      
 }

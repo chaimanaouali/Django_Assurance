@@ -1,0 +1,99 @@
+{% extends 'admin/base-front.html.twig' %}
+
+{% block title %}Posts{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1 class="text-center mb-4">Posts</h1>
+
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            {# Back button with icon #}
+            <a href="{{ path('app_home')}}" class="btn btn-sm btn-secondary">
+                <i class="fas fa-arrow-left"></i> Back 
+            </a>
+        </div>
+
+        {# Flash messages for notifications #}
+        {% for flashMessage in app.flashes('success') %}
+            <div class="alert alert-success" role="alert">
+                {{ flashMessage }}
+            </div>
+        {% endfor %}
+
+        <a href="{{ path('app_post_front_index') }}" class="notification-icon">
+            <div class="outer-ring"></div>
+            <div class="inner-circle">
+                <span class="notification-count">{{ totalPosts }}</span>
+            </div>
+            <i class="fas fa-bell"></i> <!-- Notification icon -->
+        </a>
+
+        <form action="{{ path('app_post_front_index') }}" method="get">
+            <input type="text" name="q" placeholder="Search..." value="{{ searchQuery }}">
+            <button class="btn btn-primary btn-sm" type="submit">Search</button>
+        </form>
+       <br>
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                {% for post in posts %}
+                    <div class="post-card border mb-4 p-3">
+                        <h2 class="border-bottom pb-2">{{ post.titre }}</h2>
+                        <p>{{ post.description }}</p>
+                        
+                        {# Display the image if available #}
+                        {% if post.imageName %}
+                           <img src="{{ asset('uploads/posts/' ~ post.imageName) }}" alt="Post Image" class="img-fluid mb-3">
+                        {% endif %}
+                            
+                        <h3>Comments</h3>
+                        <ul>
+                            {% for commentaire in postComments[post.id]|default([]) %}
+                                <li>
+                                    <strong>{{ commentaire.contenu }} - {{ commentaire.auteur }}</strong> 
+                                    <span class="comment-date">{{ commentaire.dateCreation|date('Y-m-d H:i:s') }}</span>
+                                </li>
+                            {% endfor %}
+                        </ul>
+
+                        {# Add button for adding comments #}
+                        <a href="{{ path('app_commentaire_new', { 'postId': post.id }) }}" class="btn btn-primary">Add Comment</a>
+                        
+                        {# Like button for the post #}
+                        <form action="{{ path('app_post_front_like', {'id': post.id}) }}" method="post" class="mt-2 float-right">
+                            <button type="submit" class="btn btn-sm btn-primary">
+                                &#128077; Like <span class="like-count">{{ post.likeCount }}</span>
+                            </button>
+                        </form>
+                        <form action="{{ path('app_post_front_share', { 'id': post.id }) }}" method="post">
+                            <input type="email" name="email" placeholder="Enter recipient email">
+                            <button type="submit">Share via Email</button>
+                        </form>
+                    </div>
+                {% endfor %}
+                
+                {# Manual pagination controls #}
+                <nav aria-label="Page navigation">
+                    <ul class="pagination justify-content-center">
+                        {% if currentPage > 1 %}
+                            <li class="page-item">
+                                <a class="page-link" href="{{ path('app_post_front_index', {'page': currentPage - 1}) }}">Previous</a>
+                            </li>
+                        {% endif %}
+                        
+                        {% for page in 1..totalPages %}
+                            <li class="page-item{% if page == currentPage %} active{% endif %}">
+                                <a class="page-link" href="{{ path('app_post_front_index', {'page': page}) }}">{{ page }}</a>
+                            </li>
+                        {% endfor %}
+                        
+                        {% if currentPage < totalPages %}
+                            <li class="page-item">
+                                <a class="page-link" href="{{ path('app_post_front_index', {'page': currentPage + 1}) }}">Next</a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -7,15 +7,13 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
-
 #[ORM\Entity(repositoryClass: CommentaireRepository::class)]
 class Commentaire
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column]
     private ?int $id = null;
-
     #[ORM\Column(type: 'text')]
     #[Assert\Regex(
         pattern: '/^[a-zA-Z]+(?: [a-zA-Z]+)* ?$/',
@@ -24,7 +22,6 @@ class Commentaire
     private string $contenu;
 
     #[ORM\Column(type: 'datetime')]
-    #[Assert\LessThanOrEqual('today')]
     private \DateTimeInterface $dateCreation;
 
     #[ORM\Column(type: 'string', length: 255)]
@@ -44,7 +41,10 @@ class Commentaire
     #[ORM\JoinColumn(name: "post_id", referencedColumnName: "id")]
     private Post $post;
 
-    // Getters and setters
+   
+
+
+    
 
     public function getId(): ?int
     {
@@ -91,6 +91,7 @@ class Commentaire
         $this->post = $post;
         return $this;
     }
+  
 
     
    /**
@@ -98,7 +99,7 @@ class Commentaire
  */
 public function validateWord(ExecutionContextInterface $context)
 {
-    $restrictedWords = ['jassem', 'sandid', 'iath']; // Define an array of restricted words
+    $restrictedWords = ['merde', 'putin', 'conard','gay']; // Define an array of restricted words
     
     foreach ($restrictedWords as $restrictedWord) {
         
@@ -113,5 +114,4 @@ public function validateWord(ExecutionContextInterface $context)
         // break;
     }
 }
-    
 }

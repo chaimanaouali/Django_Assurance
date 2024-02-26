@@ -1,35 +1,41 @@
-{% extends 'admin/base-admin.html.twig' %}
+{% extends 'admin/base-front.html.twig' %}
 
 {% block title %}Commentaire{% endblock %}
 
 {% block body %}
-    <!DOCTYPE html>
-    <h1>Commentaire</h1>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 offset-md-2">
+                <h1 class="mt-5 mb-4">Commentaire</h1>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ commentaire.id }}</td>
-            </tr>
-            <tr>
-                <th>Contenu</th>
-                <td>{{ commentaire.contenu }}</td>
-            </tr>
-            <tr>
-                <th>DateCreation</th>
-                <td>{{ commentaire.dateCreation ? commentaire.dateCreation|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>Auteur</th>
-                <td>{{ commentaire.auteur }}</td>
-            </tr>
-        </tbody>
-    </table>
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <th scope="row">Id</th>
+                            <td>{{ commentaire.id }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Contenu</th>
+                            <td>{{ commentaire.contenu }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Date de création</th>
+                            <td>{{ commentaire.dateCreation ? commentaire.dateCreation|date('Y-m-d H:i:s') : '' }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Auteur</th>
+                            <td>{{ commentaire.auteur }}</td>
+                        </tr>
+                    </tbody>
+                </table>
 
-    <a href="{{ path('app_commentaire_index') }}">back to list</a>
+                <div class="mt-4">
+                    <a href="{{ path('app_commentaire_index') }}" class="btn btn-primary">Retourner</a>
+                    <a href="{{ path('app_commentaire_edit', {'id': commentaire.id}) }}" class="btn btn-success">Modifier</a>
+                </div>
 
-    <a href="{{ path('app_commentaire_edit', {'id': commentaire.id}) }}">edit</a>
-
-    {{ include('commentaire/_delete_form.html.twig') }}
+                {{ include('commentaire/_delete_form.html.twig') }}
+            </div>
+        </div>
+    </div>
 {% endblock %}

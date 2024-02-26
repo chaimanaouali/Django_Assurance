@@ -1,99 +1,118 @@
-{% extends 'admin/base-front.html.twig' %}
+{% extends 'admin/base-admin.html.twig' %}
 
-{% block title %}Posts{% endblock %}
+{% block title %}Post index{% endblock %}
 
 {% block body %}
     <div class="container">
-        <h1 class="text-center mb-4">Posts</h1>
-
-        <div class="d-flex justify-content-between align-items-center mb-3">
-            {# Back button with icon #}
-            <a href="{{ path('app_home')}}" class="btn btn-sm btn-secondary">
-                <i class="fas fa-arrow-left"></i> Back 
-            </a>
-        </div>
-
-        {# Flash messages for notifications #}
-        {% for flashMessage in app.flashes('success') %}
-            <div class="alert alert-success" role="alert">
-                {{ flashMessage }}
-            </div>
-        {% endfor %}
-
-        <a href="{{ path('app_post_front_index') }}" class="notification-icon">
-            <div class="outer-ring"></div>
-            <div class="inner-circle">
-                <span class="notification-count">{{ totalPosts }}</span>
-            </div>
-            <i class="fas fa-bell"></i> <!-- Notification icon -->
-        </a>
-
-        <form action="{{ path('app_post_front_index') }}" method="get">
-            <input type="text" name="q" placeholder="Search..." value="{{ searchQuery }}">
-            <button type="submit">Search</button>
-        </form>
-
         <div class="row justify-content-center">
-            <div class="col-md-8">
-                {% for post in posts %}
-                    <div class="post-card border mb-4 p-3">
-                        <h2 class="border-bottom pb-2">{{ post.titre }}</h2>
-                        <p>{{ post.description }}</p>
-                        
-                        {# Display the image if available #}
-                        {% if post.imageName %}
-                           <img src="{{ asset('uploads/posts/' ~ post.imageName) }}" alt="Post Image" class="img-fluid mb-3">
-                        {% endif %}
-                            
-                        <h3>Comments</h3>
-                        <ul>
-                            {% for commentaire in postComments[post.id]|default([]) %}
-                                <li>
-                                    <strong>{{ commentaire.contenu }} - {{ commentaire.auteur }}</strong> 
-                                    <span class="comment-date">{{ commentaire.dateCreation|date('Y-m-d H:i:s') }}</span>
-                                </li>
-                            {% endfor %}
-                        </ul>
+            <div class="col-md-10">
+                <h1 class="text-center mt-5 mb-4">Posts</h1>
 
-                        {# Add button for adding comments #}
-                        <a href="{{ path('app_commentaire_new', { 'postId': post.id }) }}" class="btn btn-primary">Add Comment</a>
-                        
-                        {# Like button for the post #}
-                        <form action="{{ path('app_post_front_like', {'id': post.id}) }}" method="post" class="mt-2 float-right">
-                            <button type="submit" class="btn btn-sm btn-primary">
-                                &#128077; Like <span class="like-count">{{ post.likeCount }}</span>
-                            </button>
-                        </form>
-                        <form action="{{ path('app_post_front_share', { 'id': post.id }) }}" method="post">
-                            <input type="email" name="email" placeholder="Enter recipient email">
-                            <button type="submit">Share via Email</button>
-                        </form>
+                {# Display flash messages #}
+                {% for flashMessage in app.flashes('info') %}
+                    <div class="alert alert-info">
+                        {{ flashMessage }}
                     </div>
                 {% endfor %}
-                
-                {# Manual pagination controls #}
-                <nav aria-label="Page navigation">
-                    <ul class="pagination justify-content-center">
-                        {% if currentPage > 1 %}
-                            <li class="page-item">
-                                <a class="page-link" href="{{ path('app_post_front_index', {'page': currentPage - 1}) }}">Previous</a>
-                            </li>
-                        {% endif %}
-                        
-                        {% for page in 1..totalPages %}
-                            <li class="page-item{% if page == currentPage %} active{% endif %}">
-                                <a class="page-link" href="{{ path('app_post_front_index', {'page': page}) }}">{{ page }}</a>
-                            </li>
+
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Title</th>
+                            <th>Description</th>
+                            <th>Image</th>
+                            <th>Category</th>
+                            <th>UpdatedAt</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for post in posts %}
+                            <tr>
+                                <td>{{ post.id }}</td>
+                                <td>{{ post.titre }}</td>
+                                <td>{{ post.description }}</td>
+                                <td>
+                                    {% if post.imageName %}
+                                        <img src="{{ asset('uploads/posts/' ~ post.imageName) }}" alt="Post Image" style="max-width: 100px;">
+                                    {% else %}
+                                        No image available
+                                    {% endif %}
+                                </td>
+                                <td>{{ post.categorie }}</td>
+                                <td>{{ post.updatedAt ? post.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                                <td>
+                                    <a href="{{ path('app_post_show', {'id': post.id}) }}" class="btn btn-primary">afficher</a>
+                                    <a href="{{ path('app_post_edit', {'id': post.id}) }}" class="btn btn-secondary">modifier</a>
+                                </td>
+                            </tr>
                         {% endfor %}
-                        
-                        {% if currentPage < totalPages %}
-                            <li class="page-item">
-                                <a class="page-link" href="{{ path('app_post_front_index', {'page': currentPage + 1}) }}">Next</a>
-                            </li>
+                    </tbody>
+                </table>
+
+                <div class="text-center">
+                    <a href="{{ path('app_post_new') }}" class="btn btn-success">ajouter</a>
+                </div>
+                <br></br>
+
+                {# Render pagination controls manually #}
+                <div class="pagination justify-content-center">
+                    {% if currentPage != 1 %}
+                        <a href="{{ path(app.request.get('_route'), app.request.get('_route_params')|merge({'page': currentPage - 1})) }}" class="btn btn-primary">Precedent</a>
+                    {% endif %}
+
+                    {% for page in 1..pageCount %}
+                        {% if page != currentPage %}
+                            <a href="{{ path(app.request.get('_route'), app.request.get('_route_params')|merge({'page': page})) }}" class="btn btn-secondary">{{ page }}</a>
+                        {% else %}
+                            <span class="btn btn-primary disabled">{{ page }}</span>
                         {% endif %}
-                    </ul>
-                </nav>
+                    {% endfor %}
+
+                    {% if currentPage != pageCount %}
+                        <a href="{{ path(app.request.get('_route'), app.request.get('_route_params')|merge({'page': currentPage + 1})) }}" class="btn btn-primary">suivent</a>
+                    {% endif %}
+                </div>
             </div>
+            <br>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <br>
+  <h2>Category Statistics</h2>
+<div class="category-statistics">
+    <canvas id="categoryChart" width="400" height="400"></canvas>
+</div>
+
+<script>
+    var ctx = document.getElementById('categoryChart').getContext('2d');
+    var colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff', '#ff8000', '#8000ff', '#0080ff', '#80ff00'];
+
+    var data = {
+        labels: [
+            {% for stat in categoryStatistics %}
+                '{{ stat.categorie }}',
+            {% endfor %}
+        ],
+        datasets: [{
+            data: [
+                {% for stat in categoryStatistics %}
+                    {{ stat.postCount }},
+                {% endfor %}
+            ],
+            backgroundColor: colors
+        }]
+    };
+
+    var categoryChart = new Chart(ctx, {
+        type: 'pie',
+        data: data
+    });
+</script>              
+
+
+</div>
+    
+</div>
         </div>
     </div>
 {% endblock %}

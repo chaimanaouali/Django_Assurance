@@ -20,17 +20,18 @@ class CommentaireType extends AbstractType
             ->add('contenu', TextareaType::class, [
                 'label' => 'Contenu',
             ])
-            ->add('dateCreation', DateTimeType::class, [
-                'label' => 'Date de création',
-            ])
+         // ->add('dateCreation', DateTimeType::class, [
+          //   'label' => 'Date de création',
+            //])
             ->add('auteur', TextType::class, [
                 'label' => 'Auteur',
             ])
-            ->add('post', EntityType::class, [
+           ->add('post', EntityType::class, [
                 'class' => Post::class, // Use the Post entity class directly
                 'choice_label' => 'titre', // Assuming 'titre' is the property to display in the dropdown
                 'label' => 'Post',
-            ]);
+                ]);
+           
     }
 
     public function configureOptions(OptionsResolver $resolver): void

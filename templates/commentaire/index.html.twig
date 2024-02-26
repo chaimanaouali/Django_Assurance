@@ -1,18 +1,19 @@
-{% extends 'admin/base-admin.html.twig' %}
-
+{% extends 'admin/base-front.html.twig' %}
 {% block title %}Commentaire index{% endblock %}
 
 {% block body %}
-    <h1>Commentaire index</h1>
+    <div class="text-center mb-4">
+        <h1>Commentaire</h1>
+    </div>
 
     <table class="table">
         <thead>
             <tr>
                 <th>Id</th>
                 <th>Contenu</th>
-                <th>DateCreation</th>
+                <th>Date de Création</th>
                 <th>Auteur</th>
-                <th>actions</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -23,17 +24,20 @@
                 <td>{{ commentaire.dateCreation ? commentaire.dateCreation|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ commentaire.auteur }}</td>
                 <td>
-                    <a href="{{ path('app_commentaire_show', {'id': commentaire.id}) }}">show</a>
-                    <a href="{{ path('app_commentaire_edit', {'id': commentaire.id}) }}">edit</a>
+                    <a href="{{ path('app_commentaire_back_show', {'id': commentaire.id}) }}" class="btn btn-primary">Voir</a>
+                    <a href="{{ path('app_commentaire_back_edit', {'id': commentaire.id}) }}" class="btn btn-success">Modifier</a>
                 </td>
             </tr>
         {% else %}
             <tr>
-                <td colspan="5">no records found</td>
+                <td colspan="5">Aucun enregistrement trouvé</td>
             </tr>
         {% endfor %}
         </tbody>
-    </table>
+    </table> 
 
-    <a href="{{ path('app_commentaire_new') }}">Create new</a>
+    <div class="mt-4">
+        <a href="{{ path('app_commentaire_new') }}" class="btn btn-success">Ajouter commentaire</a>
+        <a href="{{ path('app_post_front_index') }}" class="btn btn-primary">Retour à la liste des posts</a>
+    </div>
 {% endblock %}

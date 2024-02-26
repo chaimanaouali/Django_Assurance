@@ -17,48 +17,42 @@ use Symfony\Component\Mime\Email;
 class PostController extends AbstractController
 {
     #[Route('/post', name: 'app_post_index', methods: ['GET'])]
-    public function index(Request $request, PostRepository $postRepository): Response
-{
-    // Get the current page number from the request query parameters
-    $page = $request->query->getInt('page', 1);
-    // Set the number of items per page
-    $perPage = 5;
-
-    // Get the total count of posts
-    $totalCount = $postRepository->count([]);
-
-    // Calculate the total number of pages
-    $pageCount = ceil($totalCount / $perPage);
-
-    // Calculate the offset
-    $offset = ($page - 1) * $perPage;
+    public function index(Request $request, PostRepository $postRepository, EntityManagerInterface $entityManager): Response
+    {
+        // Get the current page number from the request query parameters
+        $page = $request->query->getInt('page', 1);
+        // Set the number of items per page
+        $perPage = 5;
     
-    // Fetch the posts for the current page
-    $posts = $postRepository->findBy([], ['id' => 'ASC'], $perPage, $offset);
-
-    // Get the total count of posts for the current session
-    $session = $request->getSession();
-    $previousPostCount = $session->get('previousPostCount', 0);
-
-    // Check if there's a change in the total count of posts
-    $newPostCount = $request->query->getInt('postCount', 0);
-    if ($newPostCount > $previousPostCount) {
-        // Set a flash message for notification
-        $this->addFlash('info', 'A new post has been created!');
+        // Get the total count of posts
+        $totalCount = $postRepository->count([]);
+    
+        // Calculate the total number of pages
+        $pageCount = ceil($totalCount / $perPage);
+    
+        // Calculate the offset
+        $offset = ($page - 1) * $perPage;
+    
+        // Fetch the posts for the current page
+        $posts = $postRepository->findBy([], ['id' => 'ASC'], $perPage, $offset);
+    
+        // Fetch statistics for post categories
+        $categoryStatistics = $entityManager->createQueryBuilder()
+            ->select('p.categorie, COUNT(p.id) as postCount')
+            ->from('App\Entity\Post', 'p')
+            ->groupBy('p.categorie')
+            ->getQuery()
+            ->getResult();
+    
+        return $this->render('post/index.html.twig', [
+            'posts' => $posts,
+            'currentPage' => $page,
+            'perPage' => $perPage,
+            'totalCount' => $totalCount,
+            'pageCount' => $pageCount,
+            'categoryStatistics' => $categoryStatistics,
+        ]);
     }
-
-    // Update the previous post count in the session
-    $session->set('previousPostCount', $newPostCount);
-
-    return $this->render('post/index.html.twig', [
-        'posts' => $posts,
-        'currentPage' => $page,
-        'perPage' => $perPage,
-        'totalCount' => $totalCount,
-        'pageCount' => $pageCount,
-    ]);
-}
-
     
     #[Route('/post/new', name: 'app_post_new', methods: ['GET', 'POST'])]
 public function new(Request $request, EntityManagerInterface $entityManager, MailerInterface $mailer, PostRepository $postRepository): Response
@@ -75,7 +69,7 @@ public function new(Request $request, EntityManagerInterface $entityManager, Mai
         $postCount = $postRepository->count([]);
         
         // Add flash message
-        $this->addFlash('success', 'Post created successfully.');
+        $this->addFlash('success', ' New Post Added.');
 
         // Send email after post creation
         $email = (new Email())

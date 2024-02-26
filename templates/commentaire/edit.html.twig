@@ -1,13 +1,20 @@
-{% extends 'admin/base-admin.html.twig' %}
-
-{% block title %}Edit Commentaire{% endblock %}
+{% extends 'admin/base-front.html.twig' %}
+{% block title %}modifier Commentaire{% endblock %}
 
 {% block body %}
-    <h1>Edit Commentaire</h1>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 offset-md-3">
+                <h1 class="mt-5 mb-4">modifier Commentaire</h1>
 
-    {{ include('commentaire/_form.html.twig', {'button_label': 'Update'}) }}
+                {{ include('commentaire/_form.html.twig', {'button_label': 'Update'}) }}
 
-    <a href="{{ path('app_commentaire_index') }}">back to list</a>
+                <div class="mt-3">
+                    <a href="{{ path('app_commentaire_index') }}" class="btn btn-primary">Retourner</a>
+                </div>
 
-    {{ include('commentaire/_delete_form.html.twig') }}
+                {{ include('commentaire/_delete_form.html.twig') }}
+            </div>
+        </div>
+    </div>
 {% endblock %}
