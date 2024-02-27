@@ -10,18 +10,35 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 
 #[Route('/contrat/back')]
 class ContratBackController extends AbstractController
 {
     #[Route('/', name: 'app_contrat_back_index', methods: ['GET'])]
-    public function index(ContratRepository $contratRepository): Response
-    {
-        return $this->render('contrat_back/index.html.twig', [
-            'contrats' => $contratRepository->findAll(),
-        ]);
+    public function index(Request $request, ContratRepository $contratRepository): Response
+{
+    // Get the search query from the request
+    $searchQuery = $request->query->get('searchQuery');
+
+    // Initialize the variable to hold the filtered contracts
+    $contrats = [];
+
+    // If there's a search query, filter contracts based on it
+    if ($searchQuery !== null && !empty($searchQuery)) {
+        $contrats = $contratRepository->searchContrat($searchQuery);
+    } else {
+        // If no search query, fetch all contracts
+        $contrats = $contratRepository->findAll();
     }
 
+    // Pass the search query and contracts to the template
+    return $this->render('contrat/index.html.twig', [
+        'contrats' => $contrats,
+        'searchQuery' => $searchQuery,
+    ]);
+}
     #[Route('/new', name: 'app_contrat_back_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
@@ -78,4 +95,36 @@ class ContratBackController extends AbstractController
 
         return $this->redirectToRoute('app_contrat_back_index', [], Response::HTTP_SEE_OTHER);
     }
+    #[Route('/{id}/generate-pdf', name: 'contrat_generate_pdf')]
+public function generatePdf(Contrat $contrat): Response
+{
+    // Get the HTML content of the page you want to convert to PDF
+    $html = $this->renderView('contrat_back/show-pdf.html.twig', [
+        // Pass any necessary data to your Twig template
+        'contrat' => $contrat,
+    ]);
+
+// Configure Dompdf options
+$options = new Options();
+$options->set('isHtml5ParserEnabled', true);
+
+// Instantiate Dompdf with the configured options
+$dompdf = new Dompdf($options);
+
+// Load HTML content into Dompdf
+$dompdf->loadHtml($html);
+
+// Set paper size and orientation
+$dompdf->setPaper('A4', 'portrait');
+
+// Render the HTML as PDF
+$dompdf->render();
+
+    // Set response headers for PDF download
+    $response = new Response($dompdf->output());
+    $response->headers->set('Content-Type', 'application/pdf');
+    $response->headers->set('Content-Disposition', 'attachment; filename="contrat.pdf"');
+
+    return $response;
+}
 }

@@ -4,36 +4,43 @@
 
 {% block body %}
     <!DOCTYPE html>
+   
     <h1>Contrat index</h1>
 
+    <!-- Search Form -->
+    <form action="{{ path('app_contrat_back_index') }}" method="get">
+        <input type="text" name="searchQuery" placeholder="Search..." value="{{ searchQuery }}">
+        <button type="submit">Search</button>
+    </form>
+    
+    <!-- Contract Table -->
     <table class="table">
         <thead>
             <tr>
                 <th>Id</th>
+                <th>Nom</th>
+                <th>Prénom</th>
+                <th>E-mail</th>
                 <th>DateDebutContrat</th>
                 <th>DatefinContrat</th>
                 <th>Type de contrat</th>
                 <th>AdresseAssur</th>
                 <th>NumeroAssur</th>
-                <th>Nom</th>
-                <th>Prénom</th>
-                <th>E-mail</th>
+                
             </tr>
         </thead>
         <tbody>
         {% for contrat in contrats %}
             <tr>
                 <td>{{ contrat.id }}</td>
-                 <td>{{ contrat.nom }}</td>
+                <td>{{ contrat.nom }}</td>
                 <td>{{ contrat.prenom }}</td>
                 <td>{{ contrat.email }}</td>
-                
                 <td>{{ contrat.dateDebutContrat ? contrat.dateDebutContrat|date('Y-m-d') : '' }}</td>
                 <td>{{ contrat.datefinContrat ? contrat.datefinContrat|date('Y-m-d') : '' }}</td>
                 <td>{{ contrat.getTypeCouverture }}</td>
                 <td>{{ contrat.adresseAssur }}</td>
                 <td>{{ contrat.numeroAssur }}</td>
-               
             </tr>
         {% else %}
             <tr>
@@ -42,5 +49,4 @@
         {% endfor %}
         </tbody>
     </table>
-
 {% endblock %}
