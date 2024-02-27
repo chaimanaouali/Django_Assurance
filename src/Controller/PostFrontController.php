@@ -26,44 +26,44 @@ class PostFrontController extends AbstractController
     {
         $this->mailer = $mailer;
     }
-    #[Route('/', name: 'app_post_front_index', methods: ['GET'])]
-    public function index(Request $request, PostRepository $postRepository, CommentaireRepository $commentaireRepository, PaginatorInterface $paginator): Response
-    {
-        // Get the search query from the request
-        $searchQuery = $request->query->get('q');
-    
-        // If there's a search query, filter posts based on it
-        if ($searchQuery) {
-            $postsQuery = $postRepository->searchPosts($searchQuery);
-        } else {
-            // Fetch posts ordered by likes descending
-            $postsQuery = $postRepository->findBy([], ['likeCount' => 'DESC']);
-        }
-    
-        // Manually paginate the posts
-        $currentPage = $request->query->getInt('page', 1); // Get current page number
-        $perPage = 5; // Items per page
-        $totalPosts = count($postsQuery); // Total number of posts
-        $totalPages = ceil($totalPosts / $perPage); // Total number of pages
-        $offset = ($currentPage - 1) * $perPage; // Offset for pagination
-        $posts = array_slice($postsQuery, $offset, $perPage); // Get posts for current page
-    
-        // Fetch comments for each post
-        $postComments = [];
-        foreach ($posts as $post) {
-            $postComments[$post->getId()] = $commentaireRepository->findBy(['post' => $post]);
-        }
-    
-        return $this->render('post_front/index.html.twig', [
-            'posts' => $posts, // Pass the paginated posts to the template
-            'postComments' => $postComments,
-            'searchQuery' => $searchQuery, // Pass the search query to the template
-            'totalPosts' => $totalPosts, // Pass the total number of posts
-            'perPage' => $perPage, // Pass the number of items per page
-            'currentPage' => $currentPage, // Pass the current page number
-            'totalPages' => $totalPages, // Pass the total number of pages
-        ]);
+  #[Route('/', name: 'app_post_front_index', methods: ['GET'])]
+public function index(Request $request, PostRepository $postRepository, CommentaireRepository $commentaireRepository, PaginatorInterface $paginator): Response
+{
+    // Get the search query from the request
+    $searchQuery = $request->query->get('q');
+
+    // If there's a search query, filter posts based on it
+    if ($searchQuery) {
+        $postsQuery = $postRepository->searchPosts($searchQuery);
+    } else {
+        // Fetch posts ordered by likes descending
+        $postsQuery = $postRepository->findBy([], ['likeCount' => 'DESC']);
     }
+
+    // Manually paginate the posts
+    $currentPage = $request->query->getInt('page', 1); // Get current page number
+    $perPage = 5; // Items per page
+    $totalPosts = count($postsQuery); // Total number of posts
+    $totalPages = ceil($totalPosts / $perPage); // Total number of pages
+    $offset = ($currentPage - 1) * $perPage; // Offset for pagination
+    $posts = array_slice($postsQuery, $offset, $perPage); // Get posts for current page
+
+    // Fetch comments for each post
+    $postComments = [];
+    foreach ($posts as $post) {
+        $postComments[$post->getId()] = $commentaireRepository->findBy(['post' => $post]);
+    }
+
+    return $this->render('post_front/index.html.twig', [
+        'posts' => $posts, // Pass the paginated posts to the template
+        'postComments' => $postComments,
+        'searchQuery' => $searchQuery, // Pass the search query to the template
+        'totalPosts' => $totalPosts, // Pass the total number of posts
+        'perPage' => $perPage, // Pass the number of items per page
+        'currentPage' => $currentPage, // Pass the current page number
+        'totalPages' => $totalPages, // Pass the total number of pages
+    ]);
+}
     
 
     #[Route('/new', name: 'app_post_front_new', methods: ['GET', 'POST'])]
@@ -151,7 +151,7 @@ class PostFrontController extends AbstractController
     
             // Compose the email
             $email = (new Email())
-                ->from('garalibechir10@example.com') // Change this to your email
+                ->from('kharrat.raed@esprit.tn') // Change this to your email
                 ->to($recipientEmail)
                 ->subject('Check out this post and its comments')
                 ->html($emailContent);
@@ -172,7 +172,8 @@ class PostFrontController extends AbstractController
             $this->addFlash('error', 'Failed to send email. Please try again later.');
     
             // Redirect or return a response
-            return $this->redirectToRoute('app_post_front_index');
+           return $this->redirectToRoute('app_post_front_index');
+          
         }
     }
    }
