@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use Dompdf\Dompdf;
+use Dompdf\Options;
 use App\Entity\Post;
 use App\Form\PostType;
 use App\Repository\PostRepository;
@@ -73,7 +75,7 @@ public function new(Request $request, EntityManagerInterface $entityManager, Mai
 
         // Send email after post creation
         $email = (new Email())
-            ->from('hello@example.com')
+            ->from('kharrat.raed@esprit.tn')
             ->to('garalibechir10@gmail.com')
             ->subject('New Post Created')
             ->text('A new post has been created!')
@@ -127,5 +129,37 @@ public function new(Request $request, EntityManagerInterface $entityManager, Mai
         return $this->redirectToRoute('app_post_index');
     }
 
+    #[Route('/{id}/generate-pdf', name: 'post_generate_pdf')]
+public function generatePdf(Post $post): Response
+{
+    // Get the HTML content of the page you want to convert to PDF
+    $html = $this->renderView('post/show-pdf.html.twig', [
+        // Pass any necessary data to your Twig template
+        'post' => $post,
+    ]);
+
+// Configure Dompdf options
+$options = new Options();
+$options->set('isHtml5ParserEnabled', true);
+
+// Instantiate Dompdf with the configured options
+$dompdf = new Dompdf($options);
+
+// Load HTML content into Dompdf
+$dompdf->loadHtml($html);
+
+// Set paper size and orientation
+$dompdf->setPaper('A4', 'portrait');
+
+// Render the HTML as PDF
+$dompdf->render();
+
+    // Set response headers for PDF download
+    $response = new Response($dompdf->output());
+    $response->headers->set('Content-Type', 'application/pdf');
+    $response->headers->set('Content-Disposition', 'attachment; filename="post.pdf"');
+
+    return $response;
+}
     
 }
