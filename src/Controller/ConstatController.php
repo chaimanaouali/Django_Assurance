@@ -14,23 +14,75 @@ use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
-
-
-
 #[Route('/constat')]
 class ConstatController extends AbstractController
 {
-    #[Route('/', name: 'app_constat_index', methods: ['GET'])]
-    public function index(Request $request, ConstatRepository $constatRepository): Response
-    {
-        $searchTerm = $request->query->get('search');
-        $constats = $constatRepository->search($searchTerm);
-    
-        return $this->render('constat/index.html.twig', [
-            'constats' => $constats,
-            'searchTerm' => $searchTerm,
-        ]);
+
+    #[Route('/download-pdf/{id}', name: 'app_constat_download_pdf', methods: ['GET'])]
+public function downloadPdfAction(Request $request, ConstatRepository $constatRepository, $id): Response
+{
+    $constat = $constatRepository->find($id);
+
+    if (!$constat) {
+        throw $this->createNotFoundException('Constat not found');
     }
+
+    $pdfContent = $this->generatePdfContent($constat);
+
+    $response = new Response($pdfContent);
+    $response->headers->set('Content-Type', 'application/pdf');
+    $response->headers->set('Content-Disposition', 'attachment;filename=constat_' . $id . '.pdf');
+
+    return $response;
+}
+private function generatePdfContent(Constat $constat): string
+{
+    $pdf = new \TCPDF();
+    $pdf->AddPage();
+    $pdf->SetFont('times', 'B', 16);
+
+    $pdf->Cell(40, 10, 'Constat ID: ' . $constat->getId());
+    $pdf->Ln();
+    $pdf->Cell(40, 10, 'Date de creation: ' . $constat->getDate()->format('Y-m-d H:i:s'));
+    $pdf->Ln();
+    $pdf->Cell(40, 10, 'Description: ' . $constat->getDescription());
+    $pdf->Ln();
+    $pdf->Cell(40, 10, 'Lieu: ' . $constat->getLieu());
+    $pdf->Ln();
+    $pdf->Cell(40, 10, 'ConditionRoute: ' . $constat->getConditionroute());
+    $pdf->Ln();
+    $pdf->Cell(40, 10, 'Rapporte Police: ' . $constat->getRapportepolice());
+
+
+
+    // Add more cells as needed for other Constat properties
+
+    return $pdf->Output('S');
+}
+#[Route('/', name: 'app_constat_index', methods: ['GET'])]
+public function index(Request $request, ConstatRepository $constatRepository): Response
+{
+    $searchTerm = $request->query->get('search');
+    $sort = $request->query->get('sort', 'date');
+    $order = $request->query->get('order', 'asc');
+
+    // Toggle the order if the sort field is the same
+    if ($sort === $request->query->get('sort')) {
+        $order = $order === 'asc' ? 'desc' : 'asc';
+    } else {
+        // Default to ascending order when changing the sort field
+        $order = 'asc';
+    }
+
+    $constats = $constatRepository->getConstatsWithSorting($sort, $order, $searchTerm);
+
+    return $this->render('constat/index.html.twig', [
+        'constats' => $constats,
+        'searchTerm' => $searchTerm,
+        'sort' => $sort,
+        'order' => $order,
+    ]);
+}
 
     #[Route('/new', name: 'app_constat_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger ): Response
@@ -43,6 +95,7 @@ class ConstatController extends AbstractController
 
 /** @var UploadedFile $imageFile */
 $imageFile = $form->get('photo')->getData();
+$description = $form->get('description')->getData();
 
 if ($imageFile) {
      $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
@@ -60,6 +113,7 @@ if ($imageFile) {
 
     // Update the 'image' property to store the file name instead of its contents
         $constat->setPhoto($newFilename);
+        $constat->setDescription(badwords($description));
 }
 
             $entityManager->persist($constat);
@@ -126,6 +180,13 @@ if ($imageFile) {
         return $this->render('constat/list_by_user.html.twig', [
             'constats' => $constats,
             'iduser' => $iduser,
+        ]);
+    }
+    #[Route('/showfront/{id}', name: 'app_constat_showfront', methods: ['GET'])]
+    public function showfront(Constat $constat): Response
+    {
+        return $this->render('constat/showfront.html.twig', [
+            'constat' => $constat,
         ]);
     }
 
@@ -202,5 +263,11 @@ if ($imageFile) {
             $post->setImage($newFilename);
         }
     }
-    
+}
+function badwords($message){
+    $badwords = array("lame","douche","careless","");
+    $filter = array("*","**","****","");
+    $message = str_replace($badwords,$filter,$message);
+    return $message;
+
 }

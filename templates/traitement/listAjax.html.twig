@@ -1,0 +1,43 @@
+<table class="table">
+        <thead class="table-dark">
+            <tr>
+                  
+                <th>Id</th>
+                <th>identifiant</th>
+                <th>Date_taitement</th>
+                <th>Responsable</th>
+                <th>Statut</th>
+                <th>Remarque</th>
+                <th>actions</th>
+                 <th>PDF</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for traitement in traitements %}
+            <tr>
+
+                <td>{{ traitement.id }}</td>
+                <td>{{ traitement.identifiant.id}}</td>
+                <td>{{ traitement.dateTaitement ? traitement.dateTaitement|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ traitement.responsable }}</td>
+                <td>{{ traitement.statut }}</td>
+                <td>{{ traitement.remarque }}</td>
+                <td>
+                                                 
+
+                    <a class="btn btn-outline-info"  href="{{ path('app_traitement_show', {'id': traitement.id}) }}">show <i class='bx bx-show'></i></a>
+                    <a class="btn btn-outline-warning" href="{{ path('app_traitement_edit', {'id': traitement.id}) }}">edit<i class='bx bxs-edit-alt'></i></a>
+                   
+                <td>
+                 <a class="btn btn-outline-success" href="{{ path('app_traitement_download_pdf', {'id': traitement.id}) }}">Download PDF</a>
+                </td>
+                </td>
+                
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>

@@ -16,6 +16,8 @@
     {{ include('traitement/_form.html.twig', {'button_label': 'Update'}) }}
 
     <a  class="btn btn-outline-info" href="{{ path('app_traitement_index') }}">back to list <i class='bx bx-arrow-back' ></i></a>
-
+     <td>
+                 <a class="btn btn-outline-success" href="{{ path('app_traitement_download_pdf', {'id': traitement.id}) }}">Download PDF</a>
+                </td>
     {{ include('traitement/_delete_form.html.twig') }}
 {% endblock %}

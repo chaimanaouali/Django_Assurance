@@ -21,6 +21,23 @@ class TraitementRepository extends ServiceEntityRepository
         parent::__construct($registry, Traitement::class);
     }
 
+
+    public function search(?string $searchTerm): array
+    {
+        $queryBuilder = $this->createQueryBuilder('c');
+
+        if($searchTerm !== null){
+            $queryBuilder
+                ->where('c.responsable LIKE :searchTerm OR c.id = :searchTerm OR c.remarque LIKE :searchTerm OR c.date_taitement LIKE :searchTerm OR c.statut LIKE :searchTerm ')
+                ->setParameter('searchTerm', '%' . $searchTerm . '%')
+               
+               ;
+            // Add additional conditions for other fields if needed
+        
+    }
+        return $queryBuilder->getQuery()->getResult();
+    }
+    
 //    /**
 //     * @return Traitement[] Returns an array of Traitement objects
 //     */

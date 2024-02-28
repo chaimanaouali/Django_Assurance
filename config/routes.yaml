@@ -34,6 +34,11 @@ app_traitement_index:
     controller: 'App\Controller\TraitementController::index'
     methods: ['GET']
 
+app_traitement_search:
+    path: /traitement/search
+    controller: 'App\Controller\TraitementController::search'
+    methods: ['POST']
+
 app_traitement_new:
     path: /traitement/new
     controller: 'App\Controller\TraitementController::new'
@@ -62,3 +67,14 @@ app_constat_newfront:
 app_constat_list_by_user:
     path: '/list/{iduser}'
     controller: 'App\Controller\ConstatController::listByUser'
+
+app_constat_showfront:
+    path: /showfront/{id}
+    controller: 'App\Controller\ConstatController::showfront'
+    methods: ['GET']
+
+app_traitement_download_pd:
+    path: /traitement/download-pdf/{id}
+    controller: 'App\Controller\TraitementController::downloadPdfAction'
+    methods: ['GET']
+

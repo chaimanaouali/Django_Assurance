@@ -11,41 +11,41 @@
 
 {% block body %}
 {{ parent() }}
+<nav class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme" id="layout-navbar">
+
+
+        <div class="navbar-nav align-items-center">
+        <div class="nav-item d-flex align-items-center">
+        <i class="bx bx-search fs-4 lh-0"></i>
+            <input type="text" id="search" class="form-control border-0 shadow-none ps-1 ps-sm-2" placeholder="Search..." name="search" >
+ 
+        </div>
+         
+        </div>
+       
+
+     
+</nav>
     <h1>Traitement index</h1>
+<div id='tableAjax'>
+{% include "traitement/listAjax.html.twig" with {'traitements' : traitements} %}
+</div>    
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script>
+   $(document).ready(function() {
+        $('#search').on('input', function() {
+            var search = $(this).val();
 
-    <table class="table">
-        <thead class="table-dark">
-            <tr>
-                <th>Id</th>
-                <th>identifiant</th>
-                <th>Date_taitement</th>
-                <th>Responsable</th>
-                <th>Statut</th>
-                <th>Remarque</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for traitement in traitements %}
-            <tr>
-                <td>{{ traitement.id }}</td>
-                <td>{{ traitement.identifiant.id}}</td>
-                <td>{{ traitement.dateTaitement ? traitement.dateTaitement|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ traitement.responsable }}</td>
-                <td>{{ traitement.statut }}</td>
-                <td>{{ traitement.remarque }}</td>
-                <td>
-                    <a class="btn btn-outline-info"  href="{{ path('app_traitement_show', {'id': traitement.id}) }}">show <i class='bx bx-show'></i></a>
-                    <a class="btn btn-outline-warning" href="{{ path('app_traitement_edit', {'id': traitement.id}) }}">edit<i class='bx bxs-edit-alt'></i></a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="7">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-    <a type="submit" class="btn btn-outline-success" href="{{ path('app_traitement_new') }}">Create new <i class='bx bx-plus' ></i></a>
+            $.ajax({
+                url: "{{ path('app_traitement_search') }}",
+                type: "POST",
+                data: { search: search },
+                success: function(data) {
+                    console.log(data)
+                    $("#tableAjax").html(data);
+                }
+            });
+        });
+    });
+    </script>
 {% endblock %}
