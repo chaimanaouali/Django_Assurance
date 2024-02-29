@@ -2,26 +2,29 @@
 {% block title %} devis{% endblock %}
 
 {% block body %}
-    <!DOCTYPE html>
-    <h1>Devis </h1>
+    <h1>Devis</h1>
+
+     <form action="{{ path('app_devis_index') }}" method="get">
+        <input type="text" name="q" placeholder="Search..." value="{{ searchQuery }}">
+        <button class="btn btn-primary btn-sm" type="submit">Search</button>
+    </form>
 
     <table class="table">
         <thead>
-    <tr>
-        <th><a href="{{ path('app_devis_index', {'sort_by': 'id', 'order': order == 'ASC' ? 'DESC' : 'ASC' }) }}">Id</a></th>
-        <th><a href="{{ path('app_devis_index', {'sort_by': 'nom', 'order': order == 'ASC' ? 'DESC' : 'ASC' }) }}">Nom</a></th>
-        <th><a href="{{ path('app_devis_index', {'sort_by': 'prenom', 'order': order == 'ASC' ? 'DESC' : 'ASC' }) }}">Prenom</a></th>
-        <th><a href="{{ path('app_devis_index', {'sort_by': 'adresse', 'order': order == 'ASC' ? 'DESC' : 'ASC' }) }}">Adresse</a></th>
-        <th><a href="{{ path('app_devis_index', {'sort_by': 'email', 'order': order == 'ASC' ? 'DESC' : 'ASC' }) }}">Email</a></th>
-        <th><a href="{{ path('app_devis_index', {'sort_by': 'dateNaiss', 'order': order == 'ASC' ? 'DESC' : 'ASC' }) }}">Date_naiss</a></th>
-        <th><a href="{{ path('app_devis_index', {'sort_by': 'numTel', 'order': order == 'ASC' ? 'DESC' : 'ASC' }) }}">Num_tel</a></th>
-        <th><a href="{{ path('app_devis_index', {'sort_by': 'modele', 'order': order == 'ASC' ? 'DESC' : 'ASC' }) }}">Modele</a></th>
-        <th><a href="{{ path('app_devis_index', {'sort_by': 'puissance', 'order': order == 'ASC' ? 'DESC' : 'ASC' }) }}">Puissance</a></th>
-        <th><a href="{{ path('app_devis_index', {'sort_by': 'prix', 'order': order == 'ASC' ? 'DESC' : 'ASC' }) }}">Prix</a></th>
-        <th>Actions</th> <!-- Changed to "Actions" for clarity -->
-    </tr>
-</thead>
-
+            <tr>
+                <th><a href="{{ path('app_devis_index', {'sort_by': 'id', 'order': order == 'ASC' ? 'DESC' : 'ASC' }) }}">Id</a></th>
+                <th><a href="{{ path('app_devis_index', {'sort_by': 'nom', 'order': order == 'ASC' ? 'DESC' : 'ASC' }) }}">Nom</a></th>
+                <th><a href="{{ path('app_devis_index', {'sort_by': 'prenom', 'order': order == 'ASC' ? 'DESC' : 'ASC' }) }}">Prenom</a></th>
+                <th><a href="{{ path('app_devis_index', {'sort_by': 'adresse', 'order': order == 'ASC' ? 'DESC' : 'ASC' }) }}">Adresse</a></th>
+                <th><a href="{{ path('app_devis_index', {'sort_by': 'email', 'order': order == 'ASC' ? 'DESC' : 'ASC' }) }}">Email</a></th>
+                <th><a href="{{ path('app_devis_index', {'sort_by': 'dateNaiss', 'order': order == 'ASC' ? 'DESC' : 'ASC' }) }}">Date_naiss</a></th>
+                <th><a href="{{ path('app_devis_index', {'sort_by': 'numTel', 'order': order == 'ASC' ? 'DESC' : 'ASC' }) }}">Num_tel</a></th>
+                <th><a href="{{ path('app_devis_index', {'sort_by': 'modele', 'order': order == 'ASC' ? 'DESC' : 'ASC' }) }}">Modele</a></th>
+                <th><a href="{{ path('app_devis_index', {'sort_by': 'puissance', 'order': order == 'ASC' ? 'DESC' : 'ASC' }) }}">Puissance</a></th>
+                <th><a href="{{ path('app_devis_index', {'sort_by': 'prix', 'order': order == 'ASC' ? 'DESC' : 'ASC' }) }}">Prix</a></th>
+                <th>Actions</th>
+            </tr>
+        </thead>
         <tbody>
             {% for devi in devis %}
                 <tr>
@@ -38,7 +41,6 @@
                     <td>
                         <a href="{{ path('app_devis_show', {'id': devi.id}) }}" class="btn btn-primary">Show</a>
                         <a href="{{ path('app_devis_edit', {'id': devi.id}) }}" class="btn btn-warning">Edit</a>
-                       
                     </td>
                 </tr>
             {% else %}
@@ -48,6 +50,44 @@
             {% endfor %}
         </tbody>
     </table>
+
+    <div class="category-statistics">
+        <canvas id="categoryChart" width="200" height="200"></canvas>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        var ctx = document.getElementById('categoryChart').getContext('2d');
+        var colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff', '#ff8000', '#8000ff', '#0080ff', '#80ff00'];
+
+        var data = {
+            labels: [
+                {% for devi in devis %}
+                    '{{ devi.modele }}',
+                {% endfor %}
+            ],
+            datasets: [{
+                data: [
+                    {% for devi in devis %}
+                        1, // Just a placeholder value, you can replace it with meaningful data
+                    {% endfor %}
+                ],
+                backgroundColor: colors
+            }]
+        };
+
+        var categoryChart = new Chart(ctx, {
+            type: 'pie',
+            data: data,
+            options: {
+                responsive: false,
+                maintainAspectRatio: false,
+                legend: {
+                    display: false
+                }
+            }
+        });
+    </script>
 
     <a href="{{ path('app_devis_new') }}" class="btn btn-success">Create new</a>
 {% endblock %}

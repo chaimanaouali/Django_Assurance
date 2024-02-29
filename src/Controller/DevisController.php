@@ -10,24 +10,49 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 
 #[Route('/devis')]
 class DevisController extends AbstractController
 {
     #[Route('/', name: 'app_devis_index', methods: ['GET'])]
-    public function index(DevisRepository $devisRepository, Request $request): Response
+public function index(DevisRepository $devisRepository, Request $request ,EntityManagerInterface $entityManager): Response
 {
+    $searchQuery = $request->query->get('q');
+
     $sortBy = $request->query->get('sort', 'puissance'); // Default sorting by 'puissance'
     $order = $request->query->get('order', 'ASC'); // Default order ascending
 
-    $devis = $devisRepository->findBy([], [$sortBy => $order]);
+    // Create a query builder
+    $queryBuilder = $devisRepository->createQueryBuilder('d');
+
+    // Apply sorting
+    $queryBuilder->orderBy('d.'.$sortBy, $order);
+
+    // If there's a search query, filter devis based on it
+    if ($searchQuery) {
+        $queryBuilder->andWhere('d.modele LIKE :searchQuery')
+            ->setParameter('searchQuery', '%'.$searchQuery.'%');
+    }
+
+    // Execute the query
+    $devis = $queryBuilder->getQuery()->getResult();
+
+    $modeleStatistics = $entityManager->createQueryBuilder()
+        ->select('d.modele AS category, COUNT(d.id) AS devisCount')
+        ->from(Devis::class, 'd')
+        ->groupBy('d.modele')
+        ->getQuery()
+        ->getResult();
 
     return $this->render('devis/index.html.twig', [
         'devis' => $devis,
         'sortBy' => $sortBy,
-            'order' => $order,
+        'order' => $order,
+        'searchQuery' => $searchQuery, // Pass the search query to the template
     ]);
-    }
+}
 
     #[Route('/new', name: 'app_devis_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
@@ -85,4 +110,41 @@ class DevisController extends AbstractController
 
         return $this->redirectToRoute('app_devis_index', [], Response::HTTP_SEE_OTHER);
     }
+
+    #[Route('/{id}/generate-pdf', name: 'devi_generate_pdf')]
+public function generatePdf(Devis $devi): Response
+{
+    // Get the HTML content of the page you want to convert to PDF
+    $html = $this->renderView('devis/show-pdf.html.twig', [
+        // Pass any necessary data to your Twig template
+        'devi' => $devi,
+    ]);
+
+// Configure Dompdf options
+$options = new Options();
+$options->set('isHtml5ParserEnabled', true);
+
+// Instantiate Dompdf with the configured options
+$dompdf = new Dompdf($options);
+
+// Load HTML content into Dompdf
+$dompdf->loadHtml($html);
+
+// Set paper size and orientation
+$dompdf->setPaper('A4', 'portrait');
+
+// Render the HTML as PDF
+$dompdf->render();
+
+    // Set response headers for PDF download
+    $response = new Response($dompdf->output());
+    $response->headers->set('Content-Type', 'application/pdf');
+    $response->headers->set('Content-Disposition', 'attachment; filename="devis.pdf"');
+
+    return $response;
 }
+  
+
+
+}
+
