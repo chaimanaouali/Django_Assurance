@@ -12,6 +12,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Dompdf\Dompdf;
 use Dompdf\Options;
+use BaconQrCode\Renderer\Image\Png;
+use BaconQrCode\Writer;;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 #[Route('/contrat')]
 class ContratController extends AbstractController
 {
@@ -34,7 +37,7 @@ class ContratController extends AbstractController
             $entityManager->persist($contrat);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_contrat_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_home', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('contrat/new.html.twig', [
@@ -111,4 +114,10 @@ $dompdf->render();
 
     return $response;
 }
+
+
+
+
+
+
 }

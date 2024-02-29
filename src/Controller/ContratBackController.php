@@ -34,7 +34,7 @@ class ContratBackController extends AbstractController
     }
 
     // Pass the search query and contracts to the template
-    return $this->render('contrat/index.html.twig', [
+    return $this->render('contrat_back/index.html.twig', [
         'contrats' => $contrats,
         'searchQuery' => $searchQuery,
     ]);
