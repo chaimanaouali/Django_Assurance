@@ -10,6 +10,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Doctrine\ORM\EntityRepository;
 
 #[Route('/mecanicien')]
 class MecanicienController extends AbstractController
@@ -20,8 +22,11 @@ class MecanicienController extends AbstractController
         return $this->render('admin/base-admin.html.twig', [
             'mecaniciens' => $mecanicienRepository->findAll(),
         ]);
-    }
+    
 
+      
+    }
+    
     #[Route('/new', name: 'app_mecanicien_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
@@ -30,8 +35,29 @@ class MecanicienController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($mecanicien);
-            $entityManager->flush();
+
+            $image = $form->get('image')->getData();
+
+            if ($image) {
+                $originalFilename = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
+                $newFilename = $originalFilename.'.'.$image->guessExtension();
+    
+                try {
+                    //deplacer le fichier vers un répertoire
+                    $image->move(
+                        $this->getParameter('image_directory'), // Chemin vers le répertoire de stockage des documents
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                    // Gérer l'erreur de téléchargement de fichier
+                }
+    
+                // Stockez le nom du fichier dans l'entité 
+                $mecanicien->setImage($newFilename);
+            }
+    
+            $entityManager->persist($mecanicien); // Enregistre l'objet $mecanicien dans le gestionnaire d'entités
+            $entityManager->flush(); //Exécute réellement l'opération de persistance en base de données. 
 
             return $this->redirectToRoute('app_mecanicien_index', [], Response::HTTP_SEE_OTHER);
         }
@@ -78,4 +104,7 @@ class MecanicienController extends AbstractController
 
         return $this->redirectToRoute('app_mecanicien_index', [], Response::HTTP_SEE_OTHER);
     }
+
+    
+   
 }

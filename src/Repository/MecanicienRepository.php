@@ -5,6 +5,8 @@ namespace App\Repository;
 use App\Entity\Mecanicien;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\ORM\Query;
+use Symfony\Component\VarDumper\VarDumper;
 
 /**
  * @extends ServiceEntityRepository<Mecanicien>
@@ -45,4 +47,8 @@ class MecanicienRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
+
+
+    
 }

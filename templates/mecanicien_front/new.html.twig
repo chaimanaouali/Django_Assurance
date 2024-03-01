@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+
+<title>New Mecanicien</title>
+
+{% block body %}
+    <h1>Create new Mecanicien</h1>
+
+    {{ include('mecanicien_front/_form.html.twig') }}
+
+    <a href="{{ path('app_mecanicien_front_index') }}">back to list</a>
+{% endblock %}

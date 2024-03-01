@@ -1,0 +1,38 @@
+{% extends 'client/base-client.html.twig' %}
+{% block body %}
+    <h1>Les Evaluations</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nom_client</th>
+                <th>Prenom_client</th>
+                <th>Avis_client</th>
+                <th>Date_eval</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for evaluation in evaluations %}
+            <tr>
+                <td>{{ evaluation.id }}</td>
+                <td>{{ evaluation.nomClient }}</td>
+                <td>{{ evaluation.prenomClient }}</td>
+                <td>{{ evaluation.avisClient }}</td>
+                <td>{{ evaluation.dateEval ? evaluation.dateEval|date('Y-m-d') : '' }}</td>
+                <td>
+                    <a href="{{ path('app_evaluation_front_show', {'id': evaluation.id}) }}">show</a>
+                    <a href="{{ path('app_evaluation_front_edit', {'id': evaluation.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_evaluation_front_new') }}">Create new</a>
+{% endblock %}

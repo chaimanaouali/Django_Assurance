@@ -8,7 +8,7 @@
 		<meta charset="utf-8"/>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"/>
 
-		<title>Admin panel</title>
+		<title>Admin Mecanicien</title>
 
 
 		<meta name="description" content="Most Powerful &amp; Comprehensive Bootstrap 5 HTML Admin Dashboard Template built for developers!"/>
@@ -94,18 +94,18 @@
 						{% block body %}
 										
 	<h1>Les Mecaniciens</h1>
-    <table class="table">
+    <table class="table" id="dataTable">
         <thead>
             <tr>
-                <th>Id</th>
-                <th>Nom</th>
-                <th>Prenom</th>
-                <th>Localisation</th>
-                <th>Disponibilite</th>
-                <th>Numero</th>
-                <th>Image</th>
-                <th>Email</th>
-                <th>actions</th>
+              <th scope="col">Id</th>
+                <th scope="col">Nom</th>
+                <th scope="col">Prenom</th>
+                <th scope="col">Localisation</th>
+                <th scope="col">Disponibilite</th>
+                <th scope="col">Numero</th>
+                <th scope="col">Image</th>
+                <th scope="col">Email</th>
+                <th scope="col">actions</th>
             </tr>
         </thead>
         <tbody>
@@ -132,7 +132,7 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_mecanicien_new') }}">Create new</a>
+    <a href="{{ path('app_mecanicien_new') }}">Creer mecanicien</a>
 						
 						
 						{% endblock %}
@@ -158,23 +158,43 @@
 		<!-- Core JS -->
 		<!-- build:js asset/vendor/js/core.js -->
 
-		 <script src="{{asset('back/vendor/libs/jquery/jquery.js')}}"></script>
-		 <script src="{{asset('back/vendor/libs/popper/popper.js')}}"></script>
-		 <script src="{{asset('back/vendor/js/bootstrap.js')}}"></script>
-		 <script src="{{asset('back/vendor/libs/perfect-scrollbar/perfect-scrollbar.js')}}"></script>
-		 <script src="{{asset('back/vendor/js/menu.js')}}"></script>
+
+		 <script src="{{asset('/back/vendor/libs/jquery/jquery.js')}}"></script>
+		 <script src="{{asset('/back/vendor/libs/popper/popper.js')}}"></script>
+		 <script src="{{asset('/back/vendor/js/bootstrap.js')}}"></script>
+		 <script src="{{asset('/back/vendor/libs/perfect-scrollbar/perfect-scrollbar.js')}}"></script>
+		 <script src="{{asset('/back/vendor/js/menu.js')}}"></script>
 
 		<!-- endbuild -->
 
 		<!-- Vendors JS -->
-		 <script src="{{asset('back/vendor/libs/apex-charts/apexcharts.js')}}"></script>
+		 <script src="{{asset('/back/vendor/libs/apex-charts/apexcharts.js')}}"></script>
 
 		<!-- Main JS -->
-		 <script src="{{asset('back/js/main.js')}}"></script>
+		 <script src="{{asset('/back/js/main.js')}}"></script>
 
 
 		<!-- Page JS -->
-		 <script src="{{asset('back/js/dashboards-analytics.js')}}"></script>
+		 <script src="{{asset('/back/js/dashboards-analytics.js')}}"></script>
+		  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Include DataTables library -->
+<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
+
+<!-- DataTables Initialization Script -->
+<script>
+  $(document).ready(function () {
+    $('#dataTable').DataTable({
+      "initComplete": function (settings, json) {
+        // Customize the search input field
+        var searchInput = $('#dataTable_filter input[type="search"]');
+        searchInput.addClass('form-control');
+        searchInput.attr('placeholder', 'Search...'); // Set placeholder text
+      }
+    });
+  });
+
+</script>
 
 		<!-- Place this tag in your head or just before your close body tag. -->
 		{#  <script async defer src="{{assest('buttons.github.io/buttons.js')}}"></script>

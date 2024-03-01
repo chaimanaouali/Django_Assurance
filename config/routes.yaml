@@ -1,3 +1,13 @@
 #index:
 #    path: /
 #    controller: App\Controller\DefaultController::index
+#service_index:
+#   path: /
+#   controller: App\Controller\MecanicienController::service_index
+email_send:
+    path: '/send-email'
+    controller: 'App\Controller\EmailController::sendEmail'
+
+email_success:
+    path: '/email/success'
+    controller: 'App\Controller\EmailController::successPage'

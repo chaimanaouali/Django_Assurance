@@ -1,0 +1,45 @@
+
+{% extends 'client/base-client.html.twig' %}
+	
+{% block body %}
+    <h1>Les Mécaniciens</h1>
+<table class="table" id="dataTable">
+        <thead>
+            <tr>
+                <th scope="col">Id</th>
+                <th scope="col">Nom</th>
+                <th scope="col">Prenom</th>
+                <th scope="col">Localisation</th>
+                <th scope="col">Disponibilite</th>
+                <th scope="col">Numero</th>
+                <th scope="col">Image</th>
+                <th scope="col">Email</th>
+               
+            </tr>
+        </thead>
+        <tbody>
+        {% for mecanicien in mecaniciens %}
+            <tr>
+                <td>{{ mecanicien.id }}</td>
+                <td>{{ mecanicien.nom }}</td>
+                <td>{{ mecanicien.prenom }}</td>
+                <td>{{ mecanicien.localisation }}</td>
+                <td>{{ mecanicien.disponibilite }}</td>
+                <td>{{ mecanicien.numero }}</td>
+                <td>{{ mecanicien.image }}</td>
+                <td>{{ mecanicien.email }}</td>
+               <td>
+                    <a href="{{ path('app_mecanicien_front_show', {'id': mecanicien.id}) }}">show</a>
+                  <a href="{{ path('app_bot') }}">espace bot</a>
+                </td>
+            </tr>
+        
+            
+        {% endfor %}
+        </tbody>
+    </table>
+    
+ <a href="{{ path('app_sms_index') }}">Prendre un rendez-vous via un sms</a>
+
+{% endblock %}
+	

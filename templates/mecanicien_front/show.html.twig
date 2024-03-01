@@ -1,0 +1,50 @@
+{% extends 'client/base-client.html.twig' %}
+{% block body %}
+    <h1>Mecanicien</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ mecanicien.id }}</td>
+            </tr>
+            <tr>
+                <th>Nom</th>
+                <td>{{ mecanicien.nom }}</td>
+            </tr>
+            <tr>
+                <th>Prenom</th>
+                <td>{{ mecanicien.prenom }}</td>
+            </tr>
+            <tr>
+                <th>Localisation</th>
+                <td>{{ mecanicien.localisation }}</td>
+            </tr>
+            <tr>
+                <th>Disponibilite</th>
+                <td>{{ mecanicien.disponibilite }}</td>
+            </tr>
+            <tr>
+                <th>Numero</th>
+                <td>{{ mecanicien.numero }}</td>
+            </tr>
+            <tr>
+                <th>Image</th>
+                <td>
+                {% if mecanicien.image %}
+            <img src="{{ asset('/uploads/' ~ mecanicien.image) }}"  style="max-width: 100px; max-height: 100px;">
+        {% else %}
+            Aucune image disponible
+        {% endif %}
+    </td>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <td>{{ mecanicien.email }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_mecanicien_front_index') }}">back to list</a>
+
+{% endblock %}

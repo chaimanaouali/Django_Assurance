@@ -1,22 +1,20 @@
-<!DOCTYPE html>
-
-<title>Mecanicien index</title>
+{% extends 'base-admin.html.twig' %}
 
 {% block body %}
     <h1>Mecanicien index</h1>
 
-    <table class="table">
+    <table class="table" id="dataTable">
         <thead>
             <tr>
-                <th>Id</th>
-                <th>Nom</th>
-                <th>Prenom</th>
-                <th>Localisation</th>
-                <th>Disponibilite</th>
-                <th>Numero</th>
-                <th>Image</th>
-                <th>Email</th>
-                <th>actions</th>
+                <th scope="col">Id</th>
+                <th scope="col">Nom</th>
+                <th scope="col">Prenom</th>
+                <th scope="col">Localisation</th>
+                <th scope="col">Disponibilite</th>
+                <th scope="col">Numero</th>
+                <th scope="col">Image</th>
+                <th scope="col">Email</th>
+                <th scope="col">actions</th>
             </tr>
         </thead>
         <tbody>
@@ -31,8 +29,8 @@
                 <td>{{ mecanicien.image }}</td>
                 <td>{{ mecanicien.email }}</td>
                 <td>
-                    <a href="{{ path('app_mecanicien_show', {'id': mecanicien.id}) }}">show</a>
-                    <a href="{{ path('app_mecanicien_edit', {'id': mecanicien.id}) }}">edit</a>
+                    <a href="{{ path('app_mecanicien_show', {'id': mecanicien.id}) }}">Voir</a>
+                    <a href="{{ path('app_mecanicien_edit', {'id': mecanicien.id}) }}">Modifier</a>
                 </td>
             </tr>
         {% else %}
@@ -44,4 +42,5 @@
     </table>
 
     <a href="{{ path('app_mecanicien_new') }}">Create new</a>
+   
 {% endblock %}

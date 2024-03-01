@@ -8,7 +8,7 @@
 		<meta charset="utf-8"/>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"/>
 
-		<title>Admin panel</title>
+		<title>Admin Evaluation</title>
 
 
 		<meta name="description" content="Most Powerful &amp; Comprehensive Bootstrap 5 HTML Admin Dashboard Template built for developers!"/>
@@ -94,11 +94,11 @@
 						{% block body %}
 										
 
-     <h1>Edit Evaluation</h1>
+     <h1>Modifier Evaluation</h1>
 
     {{ include('evaluation/_form.html.twig', {'button_label': 'Update'}) }}
 
-    <a href="{{ path('app_evaluation_index') }}">back to list</a>
+    <a href="{{ path('app_evaluation_index') }}">bRevenir à la liste</a>
 
     {{ include('evaluation/_delete_form.html.twig') }}
 						

@@ -31,6 +31,9 @@ class Mecanicien
     private ?string $numero = null;
 
     #[ORM\Column(length: 255)]
+      /**
+     * @ORM\Column(type="string", nullable=true) // Définir nullable=true pour autoriser les valeurs nulles
+     */
     private ?string $image = null;
 
     #[ORM\Column(length: 255)]
@@ -41,7 +44,7 @@ class Mecanicien
 
     public function __toString()
     {
-        return $this->getNom();
+        return $this->getId();
     }
 
     public function __construct()
