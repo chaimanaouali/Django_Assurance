@@ -24,7 +24,7 @@ class BotController extends AbstractController
     if (array_key_exists($message, $qa)) {
         $response = $qa[$message];
     } else {
-        $response = 'SALUT';
+        $response = 'SALUT!';
     }
     return $this->render('bot/index.html.twig', [
         'response' => $response
