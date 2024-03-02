@@ -1,40 +1,225 @@
 {% extends 'admin/base-admin.html.twig' %}
 
-{% block title %}show Commentaire{% endblock %}
-
 {% block body %}
     <!DOCTYPE html>
     <h1>Commentaire </h1>
+<div style="margin-bottom: 10px;">
+        <input type="text" id="searchInput" onkeyup="searchTable()" placeholder="Write here..." name="text" class="input" style="margin-left: 10px;">
+        <div class="paste-button" onmouseleave="hideDropdown()">
+        <button class="button" onmouseenter="showDropdown()">Select Attribute &nbsp; ▼</button>
+        <div class="dropdown-content" id="searchAttributeDropdown">
+            <a href="#" onclick="selectAttribute('id')">Id</a>
+            <a href="#" onclick="selectAttribute('contenu')">Contenu</a>
+            <a href="#" onclick="selectAttribute('dateCreation')">DateCreation</a>
+            <a href="#" onclick="selectAttribute('auteur')">Auteur</a>
+            <a href="#" onclick="selectAttribute('signaled')">Signaled</a>
+            
+        </div>
+        </div>
+    </div>
 
-    <table class="table">
+    <select id="searchAttribute" style="display: none;">
+    <option value="id">Id</option>
+    <option value="contenu">Contenu</option>
+    <option value="dateCreation">DateCreation</option>
+    <option value="auteur">Auteur</option>
+    <option value="signaled">Signaled</option>
+    </select>
+</form>
+
+    {# Display total number of signaled comments #}
+    <p>Total Signaled Comments: {{ totalSignaledComments }}</p>
+
+    <table class="table" id="CommentaireTable">
         <thead>
             <tr>
-                <th>Id</th>
-                <th>Contenu</th>
-                <th>DateCreation</th>
-                <th>Auteur</th>
-               
+                <th><a href="#" onclick="toggleSorting(0)">Id</a></th>
+                <th><a href="#" onclick="toggleSorting(1)">Contenu</a></th>
+                <th><a href="#" onclick="toggleSorting(2)">DateCreation</a></th>
+                <th><a href="#" onclick="toggleSorting(3)">Auteur</a></th>
+                <th><a href="#" onclick="toggleSorting(4)">Signaled</a></th>
+                <th>actions</th>
             </tr>
         </thead>
+        </thead>
         <tbody>
-            {% for commentaire in commentaires %}
+            {% for commentaire in pagination %}
                 <tr>
                     <td>{{ commentaire.id }}</td>
                     <td>{{ commentaire.contenu }}</td>
                     <td>{{ commentaire.dateCreation ? commentaire.dateCreation|date('Y-m-d H:i:s') : '' }}</td>
                     <td>{{ commentaire.auteur }}</td>
-                      <td>
-                    <a href="{{ path('app_commentaire_back_show', {'id': commentaire.id}) }}" class="btn btn-primary">Voir</a>
-                    <a href="{{ path('app_commentaire_back_edit', {'id': commentaire.id}) }}" class="btn btn-success">Modifier</a>
-                </td>
+                    <td>{{ commentaire.signaled ? 'Yes' : 'No' }}</td>
+                    <td>
+                        <a href="{{ path('app_commentaire_back_show', {'id': commentaire.id}) }}" class="btn btn-primary">Voir</a>
+                        <a href="{{ path('app_commentaire_back_edit', {'id': commentaire.id}) }}" class="btn btn-success">Modifier</a>
+                    </td>
                 </tr>
             {% else %}
                 <tr>
-                    <td colspan="5">no records found</td>
+                    <td colspan="6">No records found</td>
                 </tr>
             {% endfor %}
         </tbody>
     </table>
+    <nav class="app-pagination mt-5">
+        <ul class="pagination justify-content-center">
+            {{ knp_pagination_render(pagination) }}
+        </ul>
+    </nav>
 
-   
+<script>
+       var sortOrder = "asc";
+
+    function searchTable() {
+        var input, filter, table, tr, td, i, j, txtValue;
+        input = document.getElementById("searchInput");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("CommentaireTable");
+        tr = table.getElementsByTagName("tr");
+
+        // Get the index of the selected attribute from the dropdown
+        var attributeIndex = document.getElementById("searchAttribute").selectedIndex;
+
+        for (i = 1; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[attributeIndex];
+            if (td) {
+                txtValue = td.textContent || td.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+
+    function toggleSorting(columnIndex) {
+        var table, rows, switching, i, x, y, shouldSwitch;
+        table = document.getElementById("CommentaireTable");
+        switching = true;
+
+        while (switching) {
+            switching = false;
+            rows = table.rows;
+
+            for (i = 1; i < (rows.length - 1); i++) {
+                shouldSwitch = false;
+                x = rows[i].getElementsByTagName("td")[columnIndex];
+                y = rows[i + 1].getElementsByTagName("td")[columnIndex];
+
+                if (sortOrder === "asc") {
+                    if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                        shouldSwitch = true;
+                        break;
+                    }
+                } else if (sortOrder === "desc") {
+                    if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+                        shouldSwitch = true;
+                        break;
+                    }
+                }
+            }
+            if (shouldSwitch) {
+                rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                switching = true;
+            }
+        }
+        // Reverse the sorting order for the next click
+        sortOrder = sortOrder === "asc" ? "desc" : "asc";
+    }
+
+    function showDropdown() {
+    var dropdownContent = document.getElementById("searchAttributeDropdown");
+    dropdownContent.style.display = "block";
+    }
+
+    function hideDropdown() {
+    var dropdownContent = document.getElementById("searchAttributeDropdown");
+    dropdownContent.style.display = "none";
+    }
+
+    function selectAttribute(attribute) {
+    document.getElementById("searchAttribute").value = attribute;
+    hideDropdown();
+    updateButtonText(attribute);
+    }
+
+    function updateButtonText(attribute) {
+    var button = document.querySelector(".paste-button .button");
+    button.textContent = attribute /*+ " &nbsp; ▼"*/;
+    }
+
+
+</script>
+
+
+
+    <style>
+.input {
+  border-radius: 10px;
+  outline: 2px solid #FEBF00;
+  border: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  background-color: #e2e2e2;
+  outline-offset: 3px;
+  padding: 10px 1rem;
+  transition: 0.25s;
+}
+
+.input:focus {
+  outline-offset: 5px;
+  background-color: #fff
+}
+
+.paste-button {
+  position: relative;
+  display: inline-block;
+}
+
+.button {
+  background-color: #4CAF50;
+  color: #ffffff;
+  padding: 10px 15px;
+  font-size: 15px;
+  font-weight: bold;
+  border: none;
+  border-radius: 15px;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  z-index: 1;
+  min-width: 200px;
+  background-color: #ffffff;
+  border: 2px solid #4CAF50;
+  border-top: none;
+  border-radius: 0px 0px 15px 15px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+}
+
+.dropdown-content a {
+  color: #4CAF50;
+  padding: 8px 10px;
+  text-decoration: none;
+  display: block;
+  transition: 0.1s;
+}
+
+.dropdown-content a:hover {
+  background-color: #4CAF50;
+  color: #ffffff;
+}
+
+.paste-button:hover .dropdown-content {
+  display: block;
+}
+
+</style>
 {% endblock %}
+
+
+

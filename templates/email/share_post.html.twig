@@ -3,17 +3,64 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Share Post</title>
+    <title>Shared Post</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            background-color: #f4f4f4;
+            padding: 20px;
+            margin: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .post-image {
+            width: 100%;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        .post-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .post-description {
+            margin-bottom: 20px;
+        }
+        .post-details {
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+        .post-comments {
+            list-style-type: none;
+            padding: 0;
+        }
+        .post-comments li {
+            margin-bottom: 10px;
+        }
+    </style>
 </head>
 <body>
-    <h1>Shared Post</h1>
-    <p>This is the content of the shared post:</p>
-    <p>{{ post.titre }}</p>
-    <p>Comments:</p>
-    <ul>
-        {% for comment in comments %}
-            <li>{{ comment.contenu }} - {{ comment.auteur }}</li>
-        {% endfor %}
-    </ul>
+    <div class="container">
+        <h1>Shared Post</h1>
+        <img src="{{ asset('uploads/posts/' ~ post.imageName) }}" alt="Post Image" class="post-image"> <!-- Assuming 'imageName' is the property containing the image name -->
+        <div class="post-content">
+            <h2 class="post-title">{{ post.titre }}</h2>
+            <p class="post-description">{{ post.description }}</p> <!-- Assuming 'description' is the property containing the description of the post -->
+            <p class="post-details">Number of Likes: {{ post.likeCount }}</p>
+            <h3>Comments:</h3>
+            <ul class="post-comments">
+                {% for comment in comments %}
+                    <li>{{ comment.contenu }} - {{ comment.auteur }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
 </body>
 </html>

@@ -90,4 +90,17 @@ class CommentaireController extends AbstractController
 
         return $this->redirectToRoute('app_commentaire_index', [], Response::HTTP_SEE_OTHER);
     }
+
+    #[Route('/{id}/signal', name: 'comment_signal', methods: ['POST'])]
+    public function signalComment(Request $request, Commentaire $commentaire): Response
+    {
+        // Set the signaling status of the comment to true
+        $commentaire->setSignaled(true);
+
+        // Persist changes to the database
+        $this->getDoctrine()->getManager()->flush();
+
+        // Redirect back to the previous page or any other desired page
+        return $this->redirectToRoute('app_post_front_index', ['id' => $commentaire->getPost()->getId()]);
+    }
 }

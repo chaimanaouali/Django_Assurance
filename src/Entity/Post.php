@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 
+
 #[ORM\Entity(repositoryClass: PostRepository::class)]
 #[Vich\Uploadable]
 class Post
@@ -65,6 +66,9 @@ class Post
 
     #[ORM\Column(type: 'integer')]
     private int $likeCount = 0; // New property for storing like count
+    #[ORM\Column(type: 'boolean')]
+private bool $signaled = false;
+   
 
     
 
@@ -173,8 +177,20 @@ class Post
 
         return $this;
     }
+    public function getSignaled(): bool
+{
+    return $this->signaled;
+}
 
+public function setSignaled(bool $signaled): self
+{
+    $this->signaled = $signaled;
+    return $this;
+}
+    
 
+   
+    
     public function __toString(): string
     {
         return $this->getTitre(); // Assuming you want to use the titre property as the string representation

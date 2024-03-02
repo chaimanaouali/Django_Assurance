@@ -20,7 +20,15 @@ class CommentaireRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Commentaire::class);
     }
-
+    public function countSignaledComments(): int
+    {
+        return $this->createQueryBuilder('c')
+            ->select('COUNT(c.id)')
+            ->where('c.signaled = :signaled')
+            ->setParameter('signaled', true)
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
 //    /**
 //     * @return Commentaire[] Returns an array of Commentaire objects
 //     */

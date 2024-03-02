@@ -41,6 +41,9 @@ class Commentaire
     #[ORM\JoinColumn(name: "post_id", referencedColumnName: "id")]
     private Post $post;
 
+    #[ORM\Column(type: 'boolean')]
+    private bool $signaled = false;
+
    
 
 
@@ -91,7 +94,15 @@ class Commentaire
         $this->post = $post;
         return $this;
     }
-  
+    public function isSignaled(): bool
+    {
+        return $this->signaled;
+    }
+
+    public function setSignaled(bool $signaled): void
+    {
+        $this->signaled = $signaled;
+    }
 
     
    /**

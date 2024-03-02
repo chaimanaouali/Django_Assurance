@@ -1,8 +1,9 @@
-{% extends 'admin/base-admin.html.twig' %}
+    {% extends 'admin/base-admin.html.twig' %}
 
-{% block title %}Show Commentaire{% endblock %}
+    {% block title %}Show Commentaire{% endblock %}
 
-{% block body %}
+    {% block body %}
+    
     <h1>Commentaire</h1>
 
     <table class="table">
@@ -23,12 +24,56 @@
                 <th>Auteur</th>
                 <td>{{ commentaire.auteur }}</td>
             </tr>
+            <tr>
+                <th>Signaled</th>
+                <td>{{ commentaire.signaled ? 'Yes' : 'No' }}</td>
+            </tr>
         </tbody>
     </table>
 
     <a href="{{ path('app_commentaire_back_index') }}">Back to list</a>
+    
+    <form action="{{ path('comment_signal', {'id': commentaire.id}) }}" method="post">
+        <button type="submit" class="btn btn-primary">
+            {% if commentaire.signaled %}
+                Unsignal
+            {% else %}
+                Signal
+            {% endif %}
+        </button>
+    </form>
+    <script>
+        // Get the signal form and button
+        const signalForm = document.getElementById('signalForm');
+        const signalButton = document.getElementById('signalButton');
+
+        // Add an event listener to the form submission
+        signalForm.addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent the default form submission
+
+            // Submit the form
+            fetch(this.action, {
+                method: 'POST',
+                body: new FormData(this)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json(); // Assuming the response contains JSON data
+            })
+            .then(data => {
+                // Update the button text based on the value of 'signaled' in the response data
+                signalButton.textContent = data.signaled ? 'Unsignal' : 'Signal';
+            })
+            .catch(error => {
+                console.error('There was a problem with the fetch operation:', error);
+            });
+        });
+    </script>
+
 
     <a href="{{ path('app_commentaire_back_edit', {'id': commentaire.id}) }}">Edit</a>
 
     {{ include('commentaire_back/_delete_form.html.twig') }}
-{% endblock %}
+    {% endblock %}
