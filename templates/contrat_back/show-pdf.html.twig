@@ -1,45 +1,63 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contract</title>
+    <title>Contrat d'assurance</title>
     <style>
+        /* Style des champs de texte */
+        input[type="text"],
+        input[type="email"],
+        input[type="date"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px; /* Ajout de bord arrondi */
+            box-sizing: border-box;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+        
         body {
             font-family: Arial, sans-serif;
             line-height: 1.6;
             margin: 0;
             padding: 0;
-            background-color: #f4f4f4; /* Background color */
+            background-color: #f8f9fa; /* Couleur de fond */
+            color: #333; /* Couleur du texte */
         }
         .container {
             max-width: 800px;
             margin: 0 auto;
             padding: 20px;
-            background-color: #fff; /* Contract background color */
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Box shadow */
+            background-color: #fff; /* Couleur de fond du contrat */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Ombre */
+            border-radius: 8px;
+            border: 1px solid #ddd; /* Bordure */
         }
-        header {
+        header, footer {
             text-align: center;
-            margin-bottom: 20px;
+            padding: 10px 0;
+            background-color: #007bff; /* Couleur de fond de l'en-tête et du pied de page */
+            color: #fff; /* Couleur du texte de l'en-tête et du pied de page */
+            border-radius: 8px 8px 0 0;
         }
         header img {
-            max-width: 200px;
+            max-width: 150px;
             height: auto;
         }
         h1 {
             text-align: center;
-            font-size: 24px;
+            font-size: 28px;
             margin-top: 20px;
             margin-bottom: 20px;
+            color: #007bff; /* Couleur du titre */
         }
         .date {
             text-align: right;
             margin-bottom: 20px;
-        }
-        .date p {
-            margin: 0;
+            font-size: 16px;
         }
         table {
             width: 100%;
@@ -47,8 +65,9 @@
             margin-top: 20px;
         }
         th, td {
-            border: 1px solid #dddddd;
+            border: 1px solid #ddd;
             padding: 10px;
+            font-size: 16px;
         }
         th {
             background-color: #f2f2f2;
@@ -66,32 +85,54 @@
         }
         .signature p {
             margin-top: 20px;
+            font-size: 18px;
+        }
+        footer p {
+            font-size: 14px;
+        }
+
+        /* Nouveaux styles */
+        .location-date {
+            text-align: right;
+            margin-bottom: 20px;
+            font-size: 16px;
+            color: #333; /* Couleur du texte */
+        }
+
+        @media only screen and (max-width: 600px) {
+            .location-date {
+                text-align: left; /* Pour les petits écrans, alignez à gauche */
+            }
         }
     </style>
 </head>
 <body>
+    <header>
+        <img src="{{ asset('images/logo.jpeg') }}" alt="Logo">
+        <h2>Nom de l'entreprise</h2>
+        <p>Adresse de l'entreprise | Téléphone: 123-456-789 | Site Web: www.example.com</p>
+    </header>
+
     <div class="container">
-        <header>
-            <img src="file:///C:/dev/Django_Assurance/public/back/img/logo" alt="Logo">
-        </header>
+        <h1>Contrat d'assurance</h1>
 
-        <h1>Insurance Contract</h1>
-
-        <div class="date">
-            <p>Date: {{ "now"|date("Y-m-d") }}</p>
-            <p>Where: Elghazzela </p>
+        <!-- Nouvelle disposition pour la date et le lieu -->
+        <div class="location-date">
+            <p>Date: {{ "now"|date("d/m/Y") }}</p>
+            <p>Lieu: Elghazzela</p>
         </div>
 
+        <!-- Reste du contenu -->
         <div class="contract-info">
-            <p><strong>Contract Details:</strong></p>
+            <p><strong>Détails du contrat:</strong></p>
             <table>
                 <tbody>
                     <tr>
-                        <th>Name</th>
+                        <th>Nom</th>
                         <td>{{ contrat.nom }}</td>
                     </tr>
                     <tr>
-                        <th>First Name</th>
+                        <th>Prénom</th>
                         <td>{{ contrat.prenom }}</td>
                     </tr>
                     <tr>
@@ -103,24 +144,28 @@
                         <td>{{ contrat.id }}</td>
                     </tr>
                     <tr>
-                        <th>Start Date</th>
-                        <td>{{ contrat.dateDebutContrat ? contrat.dateDebutContrat|date('Y-m-d') : '' }}</td>
+                        <th>Date de début</th>
+                        <td>{{ contrat.dateDebutContrat ? contrat.dateDebutContrat|date('d/m/Y') : '' }}</td>
                     </tr>
                     <tr>
-                        <th>End Date</th>
-                        <td>{{ contrat.datefinContrat ? contrat.datefinContrat|date('Y-m-d') : '' }}</td>
+                        <th>Date de fin</th>
+                        <td>{{ contrat.datefinContrat ? contrat.datefinContrat|date('d/m/Y') : '' }}</td>
                     </tr>
                     <tr>
-                        <th>Address</th>
+                        <th>Adresse</th>
                         <td>{{ contrat.adresseAssur }}</td>
                     </tr>
                     <tr>
-                        <th>Insurance Number</th>
+                        <th>Numéro d'assurance</th>
                         <td>{{ contrat.numeroAssur }}</td>
                     </tr>
                 </tbody>
             </table>
         </div>
     </div>
+
+    <footer>
+        <p>&copy; {{ "now"|date("Y") }} Nom de l'entreprise. Tous droits réservés.</p>
+    </footer>
 </body>
 </html>
