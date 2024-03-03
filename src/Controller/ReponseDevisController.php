@@ -13,6 +13,11 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\Form\FormError;
+use BaconQrCode\Encoder\QrCode;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use BaconQrCode\Renderer\ImageRenderer;
+use BaconQrCode\Renderer\Image\RendererStyle\FillRendererStyle;
+
 
 
 
@@ -124,4 +129,9 @@ class ReponseDevisController extends AbstractController
 
         return $this->redirectToRoute('app_reponse_devis_index', [], Response::HTTP_SEE_OTHER);
     }
+
+
+    
+
+   
 }

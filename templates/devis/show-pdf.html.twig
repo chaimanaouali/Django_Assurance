@@ -1,10 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Devis - Assurance Django</title>
+    <style>
+        /* CSS styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7; /* Couleur de fond */
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #ffffff; /* Couleur de fond de la boîte */
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #333333; /* Couleur du titre */
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #dddddd; /* Couleur de la bordure */
+        }
+        th {
+            background-color: #f0f0f0; /* Couleur de fond de l'en-tête de colonne */
+            font-weight: bold;
+            color: #333333; /* Couleur du texte de l'en-tête de colonne */
+            text-transform: uppercase;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9; /* Couleur de fond des lignes paires */
+        }
+        tr:hover {
+            background-color: #e2e2e2; /* Couleur de fond au survol */
+        }
+        .company-details {
+            margin-bottom: 20px;
+        }
+        .company-details h2 {
+            color: #0066cc; /* Couleur du titre des détails de la société */
+        }
+        .company-details p {
+            color: #666666; /* Couleur du texte des détails de la société */
+        }
+        .image-cell img {
+            height: 100px;
+            width: auto;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- Logo section -->
+    <div style="text-align: center; margin-bottom: 20px;">
+       <img  src="{{ absolute_url(asset('uploads/65d271afc17ba.png')) }}" alt="Assurance Django Logo" >
+    </div>
 
-{% block body %}
-    <!DOCTYPE html>
-    <h1>Devis</h1>
+    <h1>Devis - Assurance Django</h1>
 
-    <table class="table">
+    <!-- Company details section -->
+    <div class="company-details">
+        <h2>Assurance Django</h2>
+        <p>Adresse: El Ghazela, 75000 Ariana Soghra</p>
+        <p>Téléphone: +216 50 962 694</p>
+        <p>Email: contact@assurancedjango.com</p>
+    </div>
+
+    <table>
         <tbody>
+            <!-- Contenu du devis ici -->
             <tr>
                 <th>Id</th>
                 <td>{{ devi.id }}</td>
@@ -14,7 +89,7 @@
                 <td>{{ devi.nom }}</td>
             </tr>
             <tr>
-                <th>Prenom</th>
+                <th>Prénom</th>
                 <td>{{ devi.prenom }}</td>
             </tr>
             <tr>
@@ -26,15 +101,15 @@
                 <td>{{ devi.email }}</td>
             </tr>
             <tr>
-                <th>Date_naiss</th>
+                <th>Date de Naissance</th>
                 <td>{{ devi.dateNaiss ? devi.dateNaiss|date('Y-m-d') : '' }}</td>
             </tr>
             <tr>
-                <th>Num_tel</th>
+                <th>Numéro de téléphone</th>
                 <td>{{ devi.numTel }}</td>
             </tr>
             <tr>
-                <th>Modele</th>
+                <th>Modèle</th>
                 <td>{{ devi.modele }}</td>
             </tr>
             <tr>
@@ -45,7 +120,16 @@
                 <th>Prix</th>
                 <td>{{ devi.prix }}</td>
             </tr>
+            <tr>
+                <th>Images</th>
+               <!-- <td class="image-cell">
+                    {% for imageName in reponse_devi.documents %}
+                        <img src="{{ absolute_url(asset('uploads/documents' ~ reponse_devi.documents)) }}" alt="Image">
+                    {% endfor %}
+                </td>
+            </tr>
         </tbody>
     </table>
-
-{% endblock %}
+</div>
+</body>
+</html>

@@ -1,0 +1,107 @@
+{% extends 'client/base-clientD.html.twig' %}
+{% block body %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+
+        .chatbot-header {
+            background-color: #4267B2;
+            color: #fff;
+            padding: 10px 20px;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+        }
+
+        .chatbot-messages {
+            max-height: 300px;
+            overflow-y: auto;
+            padding: 10px;
+        }
+
+        .chatbot-message {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            background-color: #f2f2f2;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+
+        .chatbot-message-received {
+            opacity: 1;
+            transform: translateY(0);
+            background-color: #f9f9f9;
+        }
+
+        .chatbot-input {
+            padding: 10px;
+            border-top: 1px solid #ddd;
+        }
+
+        .chatbot-input input[type="text"] {
+            width: calc(100% - 70px);
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            outline: none;
+        }
+
+        .chatbot-input button {
+            width: 50px;
+            height: 36px;
+            background-color: #4267B2;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="chatbot-header">
+            <h1>Chatbot</h1>
+        </div>
+        <div class="chatbot-messages">
+            {% if response is defined %}
+                <div class="chatbot-message chatbot-message-received" id="message">
+                    <p>{{ response | raw }}</p>
+                </div>
+            {% endif %}
+        </div>
+        <div class="chatbot-input">
+            <form method="post" action="{{ path('app_bot') }}">
+                <input type="text" id="message" name="message" placeholder="Type your message...">
+                <button type="submit">Send</button>
+            </form>
+        </div>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var message = document.getElementById("message");
+            message.classList.add("received");
+        });
+    </script>
+</body>
+</html>
+{% endblock %}

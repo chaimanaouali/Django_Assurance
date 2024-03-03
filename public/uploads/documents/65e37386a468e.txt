@@ -1,0 +1,6 @@
+gestion user 
+gestion assurance automobile: table 1:voiture  table2:client
+gestion assurance habitation :table 1:maison  table2:client
+gestion assurance santé/vie : table 1:client  table2:
+gestion contrat : table 1:etat table2: les biens
+gestion assurance: table 1 :des bloc  table 2: appartement

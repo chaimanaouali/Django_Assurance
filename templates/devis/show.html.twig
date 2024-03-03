@@ -1,59 +1,64 @@
-{% extends 'admin/base-front.html.twig' %}
-{% block title %} devis{% endblock %}
+{% extends 'client/base-clientD.html.twig' %}
+
+{% block title %}Devis{% endblock %}
 
 {% block body %}
-    <!DOCTYPE html>
+    <div style="margin-bottom: 20px;">
+        <img src="{{ asset('uploads/documents/django.png') }}" alt="Django Assurance Logo" style="height: 50px; width: auto;">
+    </div>
+
     <h1>Devis</h1>
 
-    <table class="table">
+    <table class="table table-bordered">
         <tbody>
             <tr>
-                <th>Id</th>
+                <th scope="row" style="width: 30%;">Id</th>
                 <td>{{ devi.id }}</td>
             </tr>
             <tr>
-                <th>Nom</th>
+                <th scope="row">Nom</th>
                 <td>{{ devi.nom }}</td>
             </tr>
             <tr>
-                <th>Prenom</th>
+                <th scope="row">Prénom</th>
                 <td>{{ devi.prenom }}</td>
             </tr>
             <tr>
-                <th>Adresse</th>
+                <th scope="row">Adresse</th>
                 <td>{{ devi.adresse }}</td>
             </tr>
             <tr>
-                <th>Email</th>
+                <th scope="row">Email</th>
                 <td>{{ devi.email }}</td>
             </tr>
             <tr>
-                <th>Date_naiss</th>
+                <th scope="row">Date de Naissance</th>
                 <td>{{ devi.dateNaiss ? devi.dateNaiss|date('Y-m-d') : '' }}</td>
             </tr>
             <tr>
-                <th>Num_tel</th>
+                <th scope="row">Numéro de Téléphone</th>
                 <td>{{ devi.numTel }}</td>
             </tr>
             <tr>
-                <th>Modele</th>
+                <th scope="row">Modèle</th>
                 <td>{{ devi.modele }}</td>
             </tr>
             <tr>
-                <th>Puissance</th>
+                <th scope="row">Puissance</th>
                 <td>{{ devi.puissance }}</td>
             </tr>
             <tr>
-                <th>Prix</th>
+                <th scope="row">Prix</th>
                 <td>{{ devi.prix }}</td>
             </tr>
         </tbody>
     </table>
 
-    <a href="{{ path('app_devis_index') }}" class="btn btn-primary">Back to List</a>
+   
 
-    <a href="{{ path('app_devis_edit', {'id': devi.id}) }}" class="btn btn-warning">Edit</a>
-    <a href="{{ path('devi_generate_pdf', { 'id': devi.id }) }}" class="btn btn-primary">Download PDF</a>
+    <a href="{{ path('app_devis_index') }}" class="btn btn-primary">Retour à la liste</a>
+    <a href="{{ path('app_devis_edit', {'id': devi.id}) }}" class="btn btn-warning">Modifier</a>
+    <a href="{{ path('devi_generate_pdf', { 'id': devi.id }) }}" class="btn btn-primary">Télécharger le PDF</a>
 
     {{ include('devis/_delete_form.html.twig') }}
 {% endblock %}

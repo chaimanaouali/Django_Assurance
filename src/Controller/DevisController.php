@@ -12,6 +12,19 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Dompdf\Dompdf;
 use Dompdf\Options;
+use Endroid\QrCode\QrCode;
+use Endroid\QrCode\Builder\BuilderInterface;
+use Endroid\QrCode\Encoding\Encoding;
+use Endroid\QrCode\Response\QrCodeResponse;
+use Endroid\QrCode\Logo\Logo;
+use Endroid\QrCode\Label\Label;
+use Endroid\QrCode\Color\Color;
+use Endroid\QrCode\Label\Alignment\LabelAlignmentLeft;
+use Endroid\QrCode\ErrorCorrectionLevel;
+use Endroid\QrCode\Label\LabelAlignment;
+use Endroid\QrCode\Writer\PngWriter;
+
+
 
 #[Route('/devis')]
 class DevisController extends AbstractController
@@ -32,9 +45,14 @@ public function index(DevisRepository $devisRepository, Request $request ,Entity
 
     // If there's a search query, filter devis based on it
     if ($searchQuery) {
-        $queryBuilder->andWhere('d.modele LIKE :searchQuery')
-            ->setParameter('searchQuery', '%'.$searchQuery.'%');
+        $queryBuilder
+            ->andWhere('d.modele LIKE :searchQueryModel OR d.nom LIKE :searchQueryNom OR d.id = :searchQueryId')
+            ->setParameter('searchQueryModel', '%'.$searchQuery.'%')
+            ->setParameter('searchQueryNom', '%'.$searchQuery.'%')
+            ->setParameter('searchQueryId', $searchQuery);
     }
+    
+    
 
     // Execute the query
     $devis = $queryBuilder->getQuery()->getResult();
@@ -53,6 +71,7 @@ public function index(DevisRepository $devisRepository, Request $request ,Entity
         'searchQuery' => $searchQuery, // Pass the search query to the template
     ]);
 }
+
 
     #[Route('/new', name: 'app_devis_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
@@ -144,6 +163,7 @@ $dompdf->render();
     return $response;
 }
   
+
 
 
 }

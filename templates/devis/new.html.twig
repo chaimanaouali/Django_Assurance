@@ -1,4 +1,4 @@
-{% extends 'admin/base-front.html.twig' %}
+{% extends 'client/base-clientD.html.twig' %}
 {% block title %} devis{% endblock %}
 
 {% block body %}
@@ -7,7 +7,14 @@
     <h1>Create new Devis</h1>
 
     {{ include('devis/_form.html.twig') }}
+    {{ form_errors(form) }}
+                    
+    {{ form_start(form) }}
+    {# No need to render the recaptcha field here #}
 
     <a href="{{ path('app_devis_index') }}" class="btn btn-primary">Back to List</a>
     <button type="submit" class="btn btn-success">Save</button>
+
+    {{ form_end(form) }} {# Don't forget to close the form #}
+
 {% endblock %}
