@@ -92,12 +92,13 @@
 						class="content-wrapper">
 						<!-- Content -->
 						{% block body %}
-										
-	<h1>Les Mecaniciens</h1>
+	
+						<h1> Les Mécaniciens</h1>
+
     <table class="table" id="dataTable">
         <thead>
             <tr>
-              <th scope="col">Id</th>
+                <th scope="col">Id</th>
                 <th scope="col">Nom</th>
                 <th scope="col">Prenom</th>
                 <th scope="col">Localisation</th>
@@ -120,8 +121,8 @@
                 <td>{{ mecanicien.image }}</td>
                 <td>{{ mecanicien.email }}</td>
                 <td>
-                    <a href="{{ path('app_mecanicien_show', {'id': mecanicien.id}) }}">show</a>
-                    <a href="{{ path('app_mecanicien_edit', {'id': mecanicien.id}) }}">edit</a>
+                    <a href="{{ path('app_mecanicien_show', {'id': mecanicien.id}) }}">Voir</a>
+                    <a href="{{ path('app_mecanicien_edit', {'id': mecanicien.id}) }}">Modifier</a>
                 </td>
             </tr>
         {% else %}
@@ -132,9 +133,7 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_mecanicien_new') }}">Creer mecanicien</a>
-						
-						
+    <a href="{{ path('app_mecanicien_new') }}">Create new</a>
 						{% endblock %}
 						<!-- / Content -->
 

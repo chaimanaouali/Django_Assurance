@@ -19,7 +19,7 @@ class MecanicienController extends AbstractController
     #[Route('/', name: 'app_mecanicien_index', methods: ['GET'])]
     public function index(MecanicienRepository $mecanicienRepository): Response
     {
-        return $this->render('admin/base-admin.html.twig', [
+        return $this->render('admin/base-adminM.html.twig', [
             'mecaniciens' => $mecanicienRepository->findAll(),
         ]);
     

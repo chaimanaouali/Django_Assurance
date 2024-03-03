@@ -1,0 +1,39 @@
+
+{% extends 'client/base-client.html.twig' %}
+
+{% block body %}
+    <div class="service">
+        <div class="container">
+            <div class="section-header text-center">
+                <div id="google_translate_element"></div>
+                <h4 style="margin-top:50px; margin-bottom:50px;">Liste des mécaniciens</h4>
+            </div>
+            <div class="row">
+                {% for mecanicien in mecaniciens %}
+                    <div class="col-lg-4 col-md-6 mb-4">
+                        
+                            <img src="{{ asset('uploads/' ~ mecanicien.image)}}" style="width:350px; height:250px;" alt="">
+                            <center><h2>{{ mecanicien.id}}</h2></center>
+                            <center><h2>{{ mecanicien.nom }}</h2></center>
+                            <center><h2>{{ mecanicien.prenom }}</h2></center>
+                            <p><strong style="color:#696969">localisation:</strong> {{ mecanicien.localisation }}</p>
+                            <p><strong style="color:#696969">disponibilite:</strong> {{ mecanicien.disponibilite }}</p>
+                            <p><strong style="color:#696969">Numero:</strong> {{ mecanicien.numero }}</p>
+                            <p><strong style="color:#696969">Email:</strong> {{ mecanicien.email }}</p>
+                            
+                                <center><a href="{{ path('app_mecanicien_front_show', {'id': mecanicien.id}) }}">show</a></center>
+                                 <center><a href="{{ path('app_bot') }}">espace bot</a></center>
+                                  <center><a href="{{ path('app_evaluation_front_new') }}">Evaluation</a></center>
+                                 <center><a href="{{ path('app_sms_index') }}">Prendre un rendez-vous via un sms</a></center>
+                            <br>
+                            <br>
+                       
+                    </div>
+        
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <br>
+    
+{% endblock %}

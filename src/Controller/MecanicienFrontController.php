@@ -78,4 +78,16 @@ class MecanicienFrontController extends AbstractController
 
         return $this->redirectToRoute('app_mecanicien_front_index', [], Response::HTTP_SEE_OTHER);
     }
+
+    #[Route('/front', name: 'app_mecanicien_front_front')]
+    public function front(): Response
+    {
+  
+        $mecanicien = $this->getDoctrine()->getRepository(Mecanicien::class)->findAll();
+
+        return $this->render('mecanicien_front/front.html.twig', [
+            'mecaniciens' => $mecanicien, 
+        ]);
+        
+    }
 }

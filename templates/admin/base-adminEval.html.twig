@@ -95,16 +95,16 @@
 										
 	<h1>Les Evaluations</h1>
 
-    <table class="table">
+   <table class="table" id="dataTable">
         <thead>
             <tr>
-                <th>Id</th>
-				<th>Mecanicien</th>
-                <th>Nom_client</th>
-                <th>Prenom_client</th>
-                <th>Avis_client</th>
-                <th>Date_eval</th>
-                <th>actions</th>
+                <th scope="col">Id</th>
+				<th scope="col">Mecanicien</th>
+                <th scope="col">Nom_client</th>
+                <th scope="col">Prenom_client</th>
+                <th scope="col">Avis_client</th>
+                <th scope="col">Date_eval</th>
+                <th scope="col">actions</th>
             </tr>
         </thead>
         <tbody>
@@ -172,9 +172,28 @@
 
 		<!-- Page JS -->
 		 <script src="{{asset('back/js/dashboards-analytics.js')}}"></script>
+<!-- Include DataTables library -->
+<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
 
+<!-- DataTables Initialization Script -->
+<script>
+  $(document).ready(function () {
+    $('#dataTable').DataTable({
+      "initComplete": function (settings, json) {
+        // Customize the search input field
+        var searchInput = $('#dataTable_filter input[type="search"]');
+        searchInput.addClass('form-control');
+        searchInput.attr('placeholder', 'Search...'); // Set placeholder text
+      }
+    });
+  });
+
+</script>
 		<!-- Place this tag in your head or just before your close body tag. -->
 		{#  <script async defer src="{{assest('buttons.github.io/buttons.js')}}"></script>
 	#}
+
+
+
 
 </body></html>

@@ -48,7 +48,7 @@ class EvaluationFrontController extends AbstractController
          
          // Send it
          $notifier->send($notification);
-         return $this->redirectToRoute('app_evaluation_front_index', [], Response::HTTP_SEE_OTHER);  
+         return $this->redirectToRoute('app_evaluation_front_new', [], Response::HTTP_SEE_OTHER);  
                      
                  }
 

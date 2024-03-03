@@ -11,3 +11,8 @@ email_send:
 email_success:
     path: '/email/success'
     controller: 'App\Controller\EmailController::successPage'
+
+app_mecanicien_front:
+    path: /mecaniciens
+    controller: App\Controller\MecanicienFrontController::front
+    methods: GET
