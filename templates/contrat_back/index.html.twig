@@ -1,15 +1,51 @@
 {% extends 'admin/base-front.html.twig' %}
 
-{% block title %} Contrat index {% endblock %}
+{% block title %}Contrat index{% endblock %}
 
 {% block body %}
-    <!DOCTYPE html>
+    <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
+        <div class="app-brand demo">
+            <a href="index-2.html" class="app-brand-link">
+                <span class="app-brand-logo demo">
+                    {# Your logo here #}
+                </span>
+                <span class="app-brand-text demo menu-text fw-bold ms-2">Django</span>
+            </a>
+            <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
+                <i class="bx bx-chevron-left bx-sm align-middle"></i>
+            </a>
+        </div>
+        <div class="menu-inner-shadow"></div>
+        <ul class="menu-inner py-1">
+            <li class="menu-header small text-uppercase">
+                <span class="menu-header-text">Gestions</span>
+            </li>
+            <li class="menu-item">
+                <a href="javascript:void(0);" class="menu-link menu-toggle">
+                    <i class="menu-icon tf-icons bx bx-dock-top"></i>
+                    <div data-i18n="Gestion Contrat">Gestion Contrat</div>
+                </a>
+                <ul class="menu-sub">
+                    <li class="menu-item">
+                        <a href="{{ path('app_contrat_back_index') }}" class="menu-link">
+                            <div data-i18n="contrat">Contrat</div>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="{{ path('app_type_index') }}" class="menu-link">
+                            <div data-i18n="Type Contrat">Type Contrat</div>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </aside>
+
     <h1>Contrat index</h1>
-    
+
     <table class="table">
         <thead>
             <tr>
-               
                 <th>Id</th>
                 <th>Nom</th>
                 <th>Prénom</th>
@@ -19,33 +55,31 @@
                 <th>Type de contrat</th>
                 <th>AdresseAssuré</th>
                 <th>NumeroAssur</th>
-               
                 <th>Actions</th>
             </tr>
         </thead>
         <tbody>
-        {% for contrat in contrats %}
-            <tr>
-                 <td>{{ contrat.id }}</td>
-                <td>{{ contrat.nom }}</td>
-                <td>{{ contrat.prenom }}</td>
-                <td>{{ contrat.email }}</td>
-                <td>{{ contrat.dateDebutContrat ? contrat.dateDebutContrat|date('Y-m-d') : '' }}</td>
-                <td>{{ contrat.datefinContrat ? contrat.datefinContrat|date('Y-m-d') : '' }}</td>
-                <td>{{ contrat.getTypeCouverture }}</td>
-                <td>{{ contrat.adresseAssur }}</td>
-                <td>{{ contrat.numeroAssur }}</td>
-                
-                <td>
-                    <a href="{{ path('app_contrat_show', {'id': contrat.id}) }}">show</a>
-                    <a href="{{ path('app_contrat_edit', {'id': contrat.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="10">no records found</td>
-            </tr>
-        {% endfor %}
+            {% for contrat in contrats %}
+                <tr>
+                    <td>{{ contrat.id }}</td>
+                    <td>{{ contrat.nom }}</td>
+                    <td>{{ contrat.prenom }}</td>
+                    <td>{{ contrat.email }}</td>
+                    <td>{{ contrat.dateDebutContrat ? contrat.dateDebutContrat|date('Y-m-d') : '' }}</td>
+                    <td>{{ contrat.datefinContrat ? contrat.datefinContrat|date('Y-m-d') : '' }}</td>
+                    <td>{{ contrat.getTypeCouverture }}</td>
+                    <td>{{ contrat.adresseAssur }}</td>
+                    <td>{{ contrat.numeroAssur }}</td>
+                    <td>
+                        <a href="{{ path('app_contrat_show', {'id': contrat.id}) }}">show</a>
+                        <a href="{{ path('app_contrat_edit', {'id': contrat.id}) }}">edit</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="10">no records found</td>
+                </tr>
+            {% endfor %}
         </tbody>
     </table>
 

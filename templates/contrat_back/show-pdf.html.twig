@@ -54,10 +54,11 @@
             margin-bottom: 20px;
             color: #007bff; /* Couleur du titre */
         }
-        .date {
+        .location-date {
             text-align: right;
             margin-bottom: 20px;
             font-size: 16px;
+            color: #333; /* Couleur du texte */
         }
         table {
             width: 100%;
@@ -88,17 +89,10 @@
             font-size: 18px;
         }
         footer p {
-            font-size: 14px;
+            font-size: 20px;
         }
 
-        /* Nouveaux styles */
-        .location-date {
-            text-align: right;
-            margin-bottom: 20px;
-            font-size: 16px;
-            color: #333; /* Couleur du texte */
-        }
-
+        /* Media Query pour les petits écrans */
         @media only screen and (max-width: 600px) {
             .location-date {
                 text-align: left; /* Pour les petits écrans, alignez à gauche */
@@ -108,9 +102,9 @@
 </head>
 <body>
     <header>
-        <img src="{{ asset('images/logo.jpeg') }}" alt="Logo">
-        <h2>Nom de l'entreprise</h2>
-        <p>Adresse de l'entreprise | Téléphone: 123-456-789 | Site Web: www.example.com</p>
+        <img src="/images/logo.jpeg" alt="Logo" />
+        <h2>Django Assurance</h2>
+        <p>123 Nour Jaafer, Ariana , Tunisia | Téléphone: +216 345 67890 | mail : Django@hormail.com</p>
     </header>
 
     <div class="container">
@@ -156,7 +150,7 @@
                         <td>{{ contrat.adresseAssur }}</td>
                     </tr>
                     <tr>
-                        <th>Numéro d'assurance</th>
+                        <th>Numéro du client</th>
                         <td>{{ contrat.numeroAssur }}</td>
                     </tr>
                 </tbody>
@@ -165,7 +159,7 @@
     </div>
 
     <footer>
-        <p>&copy; {{ "now"|date("Y") }} Nom de l'entreprise. Tous droits réservés.</p>
+        <p>&copy; {{ "now"|date("Y") }} Django Assurance. Tous droits réservés 2024.</p>
     </footer>
 </body>
 </html>

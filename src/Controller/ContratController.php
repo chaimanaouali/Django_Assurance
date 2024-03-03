@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Dompdf\Dompdf;
-use Dompdf\Options;
+use Dompdf\Options as DompdfOptions;
 use BaconQrCode\Renderer\Image\Png;
 use BaconQrCode\Writer;;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -92,7 +92,7 @@ public function generatePdf(Contrat $contrat): Response
     ]);
 
 // Configure Dompdf options
-$options = new Options();
+$options = new DompdfOptions();
 $options->set('isHtml5ParserEnabled', true);
 
 // Instantiate Dompdf with the configured options
