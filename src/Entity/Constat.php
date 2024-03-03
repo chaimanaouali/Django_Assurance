@@ -127,7 +127,7 @@ class Constat
 
         return $this;
     }
-
+ 
     public function getPhoto(): ?string
     {
         return $this->photo;
@@ -151,5 +151,5 @@ class Constat
 
         return $this;
     }
-   
+
 }

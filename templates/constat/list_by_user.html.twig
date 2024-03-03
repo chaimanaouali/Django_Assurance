@@ -26,10 +26,11 @@
                     <div class="team-img position-relative overflow-hidden">
                         <img class="img-fluid w-100" src="{{ asset('uploads/' ~ constat.photo) }}" alt="Uploaded Image" length="100" width="100">
                         <div class="team-social">
-                            <a class="btn btn-lg btn-primary btn-lg-square rounded" href="{{ path('app_constat_showfront', {'id': constat.id}) }}"><i class="fab fa-twitter fw-normal"></i></a>
-                            <a class="btn btn-lg btn-primary btn-lg-square rounded" href="{{ path('app_constat_download_pdf', {'id': constat.id}) }}"><i class="fab fa-facebook-f fw-normal"></i></a>
-                            <a class="btn btn-lg btn-primary btn-lg-square rounded" href=""><i class="fab fa-instagram fw-normal"></i></a>
-                            <a class="btn btn-lg btn-primary btn-lg-square rounded" href=""><i class="fab fa-linkedin-in fw-normal"></i></a>
+                            <a class="btn btn-lg btn-primary btn-lg-square rounded" href="{{ path('app_constat_showfront', {'id': constat.id}) }}"><i class="fab fa- fw-normal"></i></a>
+                          
+                            <a class="btn btn-lg btn-primary btn-lg-square rounded" href="{{ path('app_constat_download_pd', {'id': constat.id}) }}"><i class="fab fa--f fw-normal"></i></a>
+                            <a class="btn btn-lg btn-primary btn-lg-square rounded" href=""><i class="fab fa--in fw-normal"></i></a>
+                         
                         </div>
                     </div>
                     <div class="text-center py-4">
@@ -37,6 +38,7 @@
                         <p class="text-uppercase m-0">{{ constat.description }}</p>
                     </div>
                 </div>
+
             </div>
             
         {% else %}

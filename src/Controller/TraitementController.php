@@ -11,8 +11,14 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use TCPDF;
 use App\Service\SmsService;
+use Dompdf\Dompdf;
+use Dompdf\Options;
+use App\Form\FileType;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 #[Route('/traitement')]
 class TraitementController extends AbstractController
@@ -28,55 +34,46 @@ class TraitementController extends AbstractController
         
         ]);
     }
+    
+    private $imgDirectory;
 
-    #[Route('/traitement/download-pdf/{id}', name: 'app_traitement_download_pdf', methods: ['GET'])]
-    public function downloadPdfAction(Request $request, TraitementRepository $traitementRepository, $id): Response
+    public function __construct(ParameterBagInterface $params)
     {
-        // Retrieve the specific Traitement based on the provided ID
-        $traitement = $traitementRepository->find($id);
-    
-        if (!$traitement) {
-            throw $this->createNotFoundException('Traitement not found');
-        }
-    
-        // Generate PDF content using the specific Traitement data
-        $pdfContent = $this->generatePdfContent($traitement);
-    
-        // Create a new Symfony Response object with appropriate headers
-        $response = new Response($pdfContent);
-        $response->headers->set('Content-Type', 'application/pdf');
-        $response->headers->set('Content-Disposition', 'attachment;filename=traitement_' . $id . '.pdf');
-    
-        return $response;
+        // Inject the img_directory parameter
+        $this->imgDirectory = $params->get('img_directory');
     }
-    
-    private function generatePdfContent(Traitement $traitement): string
-    {
-        // Create a new TCPDF instance
-        $pdf = new \TCPDF();
-    
-        // Add content to the PDF using Traitement data
-            $pdf->AddPage();
-            $pdf->SetFont('times', 'B', 16);
-        
-        // Example: Displaying Traitement data in the PDF
-        $pdf->Cell(40, 10, 'Traitement ID: ' . $traitement->getId());
-        $pdf->Ln(); // Move to the next line
-        $pdf->Cell(40, 10, 'Responsable: ' . $traitement->getResponsable());
-        $pdf->Ln(); // Move to the next line
-        $pdf->Cell(40, 10, 'Statut: ' . $traitement->getStatut());
-        $pdf->Ln(); // Move to the next line
-        $pdf->Cell(40, 10, 'Date de Traitement: ' . $traitement->getDatetaitement()->format('Y-m-d H:i:s'));
-        $pdf->Ln(); // Move to the next line
-        $pdf->Cell(40, 10, 'Remarque: ' . $traitement->getRemarque());
+  
+#[Route('/traitement/download-pdf/{id}', name: 'app_traitement_download_pdf', methods: ['GET'])]
+public function downloadPdfAction(Request $request, TraitementRepository $traitementRepository, $id): Response
+{
+    // Retrieve the specific Traitement based on the provided ID
+    $traitement = $traitementRepository->find($id);
 
-
-
-        // Add more cells as needed for other Traitement properties
-    
-        // Return the generated PDF content as a string
-        return $pdf->Output('S');
+    if (!$traitement) {
+        throw $this->createNotFoundException('Traitement not found');
     }
+
+    // Configure Dompdf according to your needs
+    $pdfOptions = new Options();
+    $pdfOptions->set('defaultFont', 'Arial');
+    $pdfOptions->setIsRemoteEnabled(true);
+
+    // Instantiate Dompdf with our options
+    $dompdf = new Dompdf($pdfOptions);
+
+    // Generate the HTML content for the specific Traitement
+    $html = $this->renderView('traitement/printtraitement.html.twig', ['traitement' => $traitement]);
+
+    // Load HTML to Dompdf
+    $dompdf->loadHtml($html);
+    $dompdf->setPaper('A4', 'portrait'); // Setup the paper size and orientation
+    $dompdf->render(); // Render the HTML as PDF
+
+    $filename = sprintf('traitement-%s.pdf', date('Y-m-d_H-i-s'));
+
+    // Output the generated PDF to Browser (force download)
+    return new Response($dompdf->stream($filename, ['Attachment' => true]));
+}
     #[Route('/search', name: 'app_traitement_search', methods: ['POST'])]
     public function search(Request $request, TraitementRepository $traitementRepository): Response
     {
@@ -89,29 +86,60 @@ class TraitementController extends AbstractController
         ]);
     }
 
+   // ... (use statements)
 
-    #[Route('/new/{id}', name: 'app_traitement_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager ,ConstatRepository $repo): Response
-    {
-        $traitement = new Traitement();
-        $form = $this->createForm(TraitementType::class, $traitement);
-        $form->handleRequest($request);
-        $idFromUrl = $request->query->get('id');
-        $constat=$repo->find($idFromUrl);
-  
-        if ($form->isSubmitted() && $form->isValid()) {
-            $traitement->setIdentifiant($constat);
-            $entityManager->persist($traitement);
-            $entityManager->flush();
+#[Route('/new/{id}', name: 'app_traitement_new', methods: ['GET', 'POST'])]
+public function new(Request $request, EntityManagerInterface $entityManager, ConstatRepository $repo, SluggerInterface $slugger, TraitementRepository $traitementRepository): Response
+{
+    $idFromUrl = $request->query->get('id');
+    $constat = $repo->find($idFromUrl);
 
-            return $this->redirectToRoute('app_traitement_index', [], Response::HTTP_SEE_OTHER);
+    // Check if the Constat already has a Traitement
+    $existingTraitement = $traitementRepository->findOneBy(['identifiant' => $constat]);
+
+    if ($existingTraitement) {
+        // You can customize the response as needed, for example, redirect to the Traitement or show an error message
+        return $this->redirectToRoute('app_traitement_show', ['id' => $existingTraitement->getId()]);
+    }
+
+    $traitement = new Traitement();
+    $traitement->setIdentifiant($constat);
+
+    $form = $this->createForm(TraitementType::class, $traitement);
+    $form->handleRequest($request);
+
+    if ($form->isSubmitted() && $form->isValid()) {
+        // Handle file upload for the logo
+        $logoFile = $form->get('photo')->getData();
+
+        if ($logoFile) {
+            $originalFilename = pathinfo($logoFile->getClientOriginalName(), PATHINFO_FILENAME);
+            $safeFilename = $slugger->slug($originalFilename);
+            $newFilename = $safeFilename . '-' . uniqid() . '.' . $logoFile->guessExtension();
+
+            try {
+                $logoFile->move(
+                    $this->getParameter('img_directory'), // Configure this in your services.yaml
+                    $newFilename
+                );
+            } catch (FileException $e) {
+                // Handle the exception if something happens during the file upload
+            }
+
+            $traitement->setPhoto($newFilename);
         }
 
-        return $this->renderForm('traitement/new.html.twig', [
-            'traitement' => $traitement,
-            'form' => $form,
-        ]);
+        $entityManager->persist($traitement);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_traitement_index', [], Response::HTTP_SEE_OTHER);
     }
+
+    return $this->renderForm('traitement/new.html.twig', [
+        'traitement' => $traitement,
+        'form' => $form,
+    ]);
+}
 
     #[Route('/{id}', name: 'app_traitement_show', methods: ['GET'])]
     public function show(Traitement $traitement): Response

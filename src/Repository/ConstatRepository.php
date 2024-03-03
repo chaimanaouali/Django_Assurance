@@ -6,6 +6,7 @@ use App\Entity\Constat;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\Query\Expr\OrderBy;
+
 /**
  * @extends ServiceEntityRepository<Constat>
  *
@@ -22,27 +23,33 @@ class ConstatRepository extends ServiceEntityRepository
     }
 
     
-    public function getConstatsWithSorting(?string $sort, ?string $order, ?string $searchTerm): array
-    {
-        $queryBuilder = $this->createQueryBuilder('c');
+    public function getConstatsWithSorting(?string $sort, ?string $order): array
+{
+    $queryBuilder = $this->createQueryBuilder('c');
 
-        if ($searchTerm) {
-            $queryBuilder
-                ->where('c.lieu LIKE :searchTerm OR c.id = :searchTermId OR c.conditionroute LIKE :searchTermRoute OR c.date LIKE :searchTermDate OR c.rapportepolice LIKE :searchTermRapportepolice')
-                ->setParameter('searchTerm', '%' . $searchTerm . '%')
-                ->setParameter('searchTermId', $searchTerm)
-                ->setParameter('searchTermRoute', '%' . $searchTerm . '%')
-                ->setParameter('searchTermDate', '%' . $searchTerm . '%')
-                ->setParameter('searchTermRapportepolice', '%' . $searchTerm . '%');
-        }
-
-        // Sorting logic
-        if ($sort === 'date' && in_array($order, ['asc', 'desc'])) {
-            $queryBuilder->orderBy('c.date', $order);
-        }
-
-        return $queryBuilder->getQuery()->getResult();
+    // Sorting logic
+    if ($sort === 'date' && in_array($order, ['asc', 'desc'])) {
+        $queryBuilder->orderBy('c.date', $order);
     }
+
+    return $queryBuilder->getQuery()->getResult();
+}
+    
+public function search(?string $searchTerm): array
+{
+    $queryBuilder = $this->createQueryBuilder('c');
+
+    if($searchTerm !== null){
+        $queryBuilder
+            ->where('c.id LIKE :searchTerm OR c.date = :searchTerm OR c.lieu LIKE :searchTerm OR c.description LIKE :searchTerm OR c.rapportepolice LIKE :searchTerm OR c.conditionroute LIKE :searchTerm ')
+            ->setParameter('searchTerm', '%' . $searchTerm . '%')
+           
+           ;
+        // Add additional conditions for other fields if needed
+    
+}
+    return $queryBuilder->getQuery()->getResult();
+}
     
 //    /**
 //     * @return Constat[] Returns an array of Constat objects

@@ -13,56 +13,72 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\String\Slugger\SluggerInterface;
+use Dompdf\Dompdf;
+use Dompdf\Options;
+
+
+
 
 #[Route('/constat')]
 class ConstatController extends AbstractController
-{
-
-    #[Route('/download-pdf/{id}', name: 'app_constat_download_pdf', methods: ['GET'])]
-public function downloadPdfAction(Request $request, ConstatRepository $constatRepository, $id): Response
-{
-    $constat = $constatRepository->find($id);
-
-    if (!$constat) {
-        throw $this->createNotFoundException('Constat not found');
+{       
+ 
+    #[Route('/search', name: 'app_constat_search', methods: ['POST'])]
+    public function searchAjax(Request $request, ConstatRepository $constatRepository): Response
+    {
+        $searchTerm = $request->request->get('search');
+        $constats = $constatRepository->search($searchTerm);
+    
+        return $this->render('constat/listAjax.html.twig', [
+            'constats' => $constats,
+        
+        ]);
+       
     }
+    private $constatRepository;
 
-    $pdfContent = $this->generatePdfContent($constat);
+    public function __construct(ConstatRepository $constatRepository)
+    {
+        $this->constatRepository = $constatRepository;
+    }
+    
+    #[Route('/download-pdf/{id}', name: 'app_constat_download_pd', methods: ['GET'])]
+    public function printPdf(int $id): Response
+    {
+        // Fetch the Constat entity based on the provided id
+        $constat = $this->constatRepository->find($id);
+    
+        if (!$constat) {
+            throw $this->createNotFoundException('Constat not found');
+        }
+    
+        // Configure Dompdf according to your needs
+        $pdfOptions = new Options();
+        $pdfOptions->set('defaultFont', 'Arial');
+        $pdfOptions->setIsRemoteEnabled(true);
+    
+        // Instantiate Dompdf with our options
+        $dompdf = new Dompdf($pdfOptions);
+    
+        // Generate the HTML content for the specific Constat
+        $html = $this->renderView('constat/print.html.twig', ['constat' => $constat]);
+    
+        // Load HTML to Dompdf
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'portrait'); // Setup the paper size and orientation
+        $dompdf->render(); // Render the HTML as PDF
+    
+        $filename = sprintf('constat-%s.pdf', date('Y-m-d_H-i-s'));
+    
+        // Output the generated PDF to Browser (force download)
+        return new Response($dompdf->stream($filename, ["Attachment" => true]));
+    }
+    
 
-    $response = new Response($pdfContent);
-    $response->headers->set('Content-Type', 'application/pdf');
-    $response->headers->set('Content-Disposition', 'attachment;filename=constat_' . $id . '.pdf');
-
-    return $response;
-}
-private function generatePdfContent(Constat $constat): string
-{
-    $pdf = new \TCPDF();
-    $pdf->AddPage();
-    $pdf->SetFont('times', 'B', 16);
-
-    $pdf->Cell(40, 10, 'Constat ID: ' . $constat->getId());
-    $pdf->Ln();
-    $pdf->Cell(40, 10, 'Date de creation: ' . $constat->getDate()->format('Y-m-d H:i:s'));
-    $pdf->Ln();
-    $pdf->Cell(40, 10, 'Description: ' . $constat->getDescription());
-    $pdf->Ln();
-    $pdf->Cell(40, 10, 'Lieu: ' . $constat->getLieu());
-    $pdf->Ln();
-    $pdf->Cell(40, 10, 'ConditionRoute: ' . $constat->getConditionroute());
-    $pdf->Ln();
-    $pdf->Cell(40, 10, 'Rapporte Police: ' . $constat->getRapportepolice());
-
-
-
-    // Add more cells as needed for other Constat properties
-
-    return $pdf->Output('S');
-}
 #[Route('/', name: 'app_constat_index', methods: ['GET'])]
 public function index(Request $request, ConstatRepository $constatRepository): Response
 {
-    $searchTerm = $request->query->get('search');
+
     $sort = $request->query->get('sort', 'date');
     $order = $request->query->get('order', 'asc');
 
@@ -74,11 +90,10 @@ public function index(Request $request, ConstatRepository $constatRepository): R
         $order = 'asc';
     }
 
-    $constats = $constatRepository->getConstatsWithSorting($sort, $order, $searchTerm);
+    $constats = $constatRepository->getConstatsWithSorting($sort, $order);
 
     return $this->render('constat/index.html.twig', [
         'constats' => $constats,
-        'searchTerm' => $searchTerm,
         'sort' => $sort,
         'order' => $order,
     ]);
@@ -265,7 +280,7 @@ if ($imageFile) {
     }
 }
 function badwords($message){
-    $badwords = array("lame","douche","careless","");
+    $badwords = array("lame","douche","careless","police","amour");
     $filter = array("*","**","****","");
     $message = str_replace($badwords,$filter,$message);
     return $message;

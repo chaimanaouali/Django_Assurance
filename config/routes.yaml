@@ -73,8 +73,18 @@ app_constat_showfront:
     controller: 'App\Controller\ConstatController::showfront'
     methods: ['GET']
 
-app_traitement_download_pd:
+app_traitement_download_pdf:
     path: /traitement/download-pdf/{id}
     controller: 'App\Controller\TraitementController::downloadPdfAction'
     methods: ['GET']
 
+
+app_constat_search:
+    path: /search
+    controller: 'App\Controller\ConstatController::searchAjax'
+    methods: ['POST']    
+
+app_constat_download_pd:
+    path: /constat/download-pdf/{id}
+    controller: 'App\Controller\ConstatController::printPdf'
+    methods: ['GET']

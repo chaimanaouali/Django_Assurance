@@ -1,0 +1,43 @@
+<table class="table">
+        <thead class="table-dark">
+            <tr>
+                <th>Id user</th>
+                <th>Id</th>
+                <th>Date</th>
+                <th>Lieu</th>
+                <th>Description</th>
+                <th>Conditionroute</th>
+                <th>Rapportepolice</th>
+                <th>Photo</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody class="table-border-bottom-0">
+            {% for constat in constats %}
+                <tr>
+                    <td>{{ constat.iduser }}</td> 
+                    <td>{{ constat.id }}</td>
+                    <td>{{ constat.date ? constat.date|date('Y-m-d H:i:s') : '' }}</td>
+                    <td>{{ constat.lieu }}</td>
+                    <td>{{ constat.description }}</td>
+                    <td>{{ constat.conditionroute }}</td>
+                    <td>{{ constat.rapportepolice ? 'Yes' : 'No' }}</td>
+                    
+                    <td><img src="{{ asset('uploads/' ~ constat.photo) }}"  alt="Uploaded Image" length="100" width="100"></td>
+                    
+                    <td> 
+                        <a type="button" class="btn btn-outline-warning" href="{{ path('app_traitement_new', {'id': constat.id}) }}">trai<i class='bx bxs-edit-alt'></i></a>
+                        <a type="button" class="btn btn-outline-info" href="{{ path('app_constat_show', {'id': constat.id}) }}">show <i class='bx bx-show'></i></a>
+                        <a type="button" class="btn btn-outline-warning" href="{{ path('app_constat_edit', {'id': constat.id}) }}">edit<i class='bx bxs-edit-alt'></i></a>
+                        <a class="btn btn-outline-info" href="{{ path('app_constat_download_pd', {'id': constat.id}) }}">PDF <i class="bx bx-show"></i></a>
+
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="8">no records found</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+         <a type="submit" class="btn btn-outline-success" href="{{ path('app_constat_new') }}">Create new <i class='bx bx-plus' ></i></a>
+    </table>
