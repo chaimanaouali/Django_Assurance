@@ -1,0 +1,41 @@
+{% extends 'admin/base-front.html.twig' %}
+
+{% block title %}Commentaire{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 offset-md-2">
+                <h1 class="mt-5 mb-4">Commentaire</h1>
+
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <th scope="row">Id</th>
+                            <td>{{ commentaire.id }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Contenu</th>
+                            <td>{{ commentaire.contenu }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Date de création</th>
+                            <td>{{ commentaire.dateCreation ? commentaire.dateCreation|date('Y-m-d H:i:s') : '' }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Auteur</th>
+                            <td>{{ commentaire.auteur }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="mt-4">
+                    <a href="{{ path('app_commentaire_index') }}" class="btn btn-primary">Retourner</a>
+                    <a href="{{ path('app_commentaire_edit', {'id': commentaire.id}) }}" class="btn btn-success">Modifier</a>
+                </div>
+
+                {{ include('commentaire/_delete_form.html.twig') }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

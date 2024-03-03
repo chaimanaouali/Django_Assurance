@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>{% block title %}Titre de la page{% endblock %}</title>
+    <!-- Mettre ici vos balises meta, liens CSS, etc. -->
+</head>
+
+<body>
+
+    <!-- En-tête -->
+    {% include 'header.twig' %}
+
+    <!-- Barre de navigation -->
+    {% include 'navbar.twig' %}
+
+    <!-- Contenu principal -->
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8">
+                <h2>Liste des Articles</h2>
+                {% if articles is empty %}
+                    <p>Aucun article trouvé.</p>
+                {% else %}
+                    <ul>
+                        {% for article in articles %}
+                            <li>
+                                <h3>{{ article.title }}</h3>
+                                <p>{{ article.content }}</p>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Pied de page -->
+    {% include 'footer.twig' %}
+
+    <!-- Scripts JavaScript -->
+    <!-- Mettre ici vos liens vers les fichiers JavaScript -->
+
+</body>
+
+</html>

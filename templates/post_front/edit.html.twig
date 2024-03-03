@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+
+<title>Edit Post</title>
+
+{% block body %}
+    <h1>Edit Post</h1>
+
+    {{ include('post_front/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_post_front_index') }}">retourner  list</a>
+
+    {{ include('post_front/_delete_form.html.twig') }}
+{% endblock %}

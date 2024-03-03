@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Share Post</title>
+</head>
+<body>
+    <h1>Shared Post</h1>
+    <p>This is the content of the shared post:</p>
+    <p>{{ post.titre }}</p>
+    <p>Comments:</p>
+    <ul>
+        {% for comment in comments %}
+            <li>{{ comment.contenu }} - {{ comment.auteur }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

@@ -1,0 +1,57 @@
+{% extends 'admin/base-admin.html.twig' %}
+
+{% block title %}Post{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <h1 class="text-center mt-5 mb-4">Post</h1>
+
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <th>Id</th>
+                            <td>{{ post.id }}</td>
+                        </tr>
+                        <tr>
+                            <th>Titre</th>
+                            <td>{{ post.titre }}</td>
+                        </tr>
+                        <tr>
+                            <th>Description</th>
+                            <td>{{ post.description }}</td>
+                        </tr>
+                        <tr>
+                            <th>Image</th>
+                            <td>
+                                {% if post.imageName %}
+                                    <img src="{{ asset('uploads/posts/' ~ post.imageName) }}" alt="Post Image" style="max-width: 200px;">
+                                {% else %}
+                                    No image available
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Categorie</th>
+                            <td>{{ post.categorie }}</td>
+                        </tr>
+                        <tr>
+                            <th>UpdatedAt</th>
+                            <td>{{ post.updatedAt ? post.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="text-center">
+                    <a href="{{ path('app_post_index') }}" class="btn btn-primary">retourner list</a>
+                    <a href="{{ path('app_post_edit', {'id': post.id}) }}" class="btn btn-secondary">modifier</a>
+                </div>
+
+                {{ include('post/_delete_form.html.twig') }}
+                <a href="{{ path('post_generate_pdf', { 'id': post.id }) }}" class="btn btn-primary">Download PDF</a>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,3 +1,15 @@
 #index:
 #    path: /
 #    controller: App\Controller\DefaultController::index
+app_post_front_index:
+    path: /post_front
+    controller: App\Controller\PostFrontController::index
+    methods: GET
+app_commentaire_new:
+    path: '/commentaire/new/{postId}'
+    controller: 'App\Controller\CommentaireController::new'
+    methods: ['GET', 'POST']
+app_send_email:
+    path: '/send_email'
+    controller: 'App\Controller\EmailController::send'
+    methods: ['POST']    

@@ -1,0 +1,43 @@
+{% extends 'admin/base-front.html.twig' %}
+{% block title %}Commentaire index{% endblock %}
+
+{% block body %}
+    <div class="text-center mb-4">
+        <h1>Commentaire</h1>
+    </div>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Contenu</th>
+                <th>Date de Création</th>
+                <th>Auteur</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for commentaire in commentaires %}
+            <tr>
+                <td>{{ commentaire.id }}</td>
+                <td>{{ commentaire.contenu }}</td>
+                <td>{{ commentaire.dateCreation ? commentaire.dateCreation|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ commentaire.auteur }}</td>
+                <td>
+                    <a href="{{ path('app_commentaire_back_show', {'id': commentaire.id}) }}" class="btn btn-primary">Voir</a>
+                    <a href="{{ path('app_commentaire_back_edit', {'id': commentaire.id}) }}" class="btn btn-success">Modifier</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">Aucun enregistrement trouvé</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table> 
+
+    <div class="mt-4">
+        <a href="{{ path('app_commentaire_new') }}" class="btn btn-success">Ajouter commentaire</a>
+        <a href="{{ path('app_post_front_index') }}" class="btn btn-primary">Retour à la liste des posts</a>
+    </div>
+{% endblock %}

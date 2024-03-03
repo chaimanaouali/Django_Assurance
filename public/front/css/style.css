@@ -490,3 +490,9 @@ h6,
         margin-bottom: -75px;
     }
 }
+.comment-date {
+    background-color: rgba(0, 0, 0, 0.1); /* Light gray background with transparency */
+    padding: 2px 5px; /* Adjust padding as needed */
+    border-radius: 4px; /* Rounded corners */
+    font-size: 0.5em; /* Adjust the font size to make it smaller */
+}
