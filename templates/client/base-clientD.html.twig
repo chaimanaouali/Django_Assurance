@@ -43,14 +43,7 @@
     <!-- Navbar & Carousel Start -->
     <div class="container-fluid position-relative p-0">
         <nav class="navbar navbar-expand-lg navbar-dark px-5 py-3 py-lg-0">
-                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Compte</a>
-                        <div class="dropdown-menu m-0">
-                            <a href="{{ path('app_register') }}" class="dropdown-item">Inscription</a>
-                            <a href="{{ path('app_login') }}" class="dropdown-item">Connexion</a>
-                            <a href="{{ path('app_logout') }}" class="dropdown-item">Deconnexion</a>
-
-                        </div>
-            <a href="" class="navbar-brand p-0">
+            <a href="index.html" class="navbar-brand p-0">
                 <h1 class="m-0"><i class="fa fa-user-tie me-2"></i>Django Assurance</h1>
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
@@ -58,72 +51,35 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <div class="navbar-nav ms-auto py-0">
-                    <a href="index.html" class="nav-item nav-link active">Home</a>
+                    <a href="index.html" class="nav-item nav-link ">Home</a>
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Voiture</a>
                         <div class="dropdown-menu m-0">
                             <a href="{{ path('app_voiture_new')}}" class="dropdown-item">Ajouter Voiture</a>
-                            <a href="{{ path('app_voiture_index')}}" class="dropdown-item">Les voitures</a>
+                            <a href="{{ path('app_voiture_index')}}" class="dropdown-item">Les voiture</a>
                         </div>
                     </div>
                     <a href="about.html" class="nav-item nav-link">Sinistre</a>
                     <a href="service.html"  class="nav-item nav-link">Réparation</a>
-
                     <div class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Contrats</a>
-                        <div class="dropdown-menu m-0">
-                            <a href="price.html" class="dropdown-item">Pricing Plan</a>
-                            <a href="feature.html" class="dropdown-item">Our features</a>
-                            <a href="team.html" class="dropdown-item">Team Members</a>
-                            <a href="testimonial.html" class="dropdown-item">Testimonial</a>
-                            <a href="quote.html" class="dropdown-item">Free Quote</a>
-                        </div>
+                        <a href="#" class="nav-item nav-link" >Actualités</a>
+                       
                     </div>
-                    <a href="" class="nav-item nav-link">Devis</a>
+                    <div class="nav-item dropdown">
+                        <a href="#" class="nav-item nav-link" >Contrats</a>
+                        
+                    </div>
+                    <a href="#" class="nav-item nav-link ">Devis</a>
                 </div>
-                
             </div>
         </nav>
 
-        <div id="header-carousel" class="carousel slide carousel-fade" data-bs-ride="carousel">
-            <div class="carousel-inner">
-                <div class="carousel-item active">
-                    <img class="w-100" src="{{asset('front/img/ass-automobile.jpg')}}" alt="Image">
-                    <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
-                        <div class="p-3" style="max-width: 900px;">
-                        <h1 class="display-1 text-white mb-md-4 animated zoomIn">Nous vous assurons!</h1>
-                            <h1 class="text-white text-uppercase mb-3 animated slideInDown">La ou vous étes!</h1>
-                            
-                            
-                        </div>
-                    </div>
-                </div>
-                <div class="carousel-item">
-                    <img class="w-100" src="{{asset('front/img/ass-automobile.jpg')}}" alt="Image">
-                    <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
-                        <div class="p-3" style="max-width: 900px;">
-                          <h1 class="display-1 text-white mb-md-4 animated zoomIn">Nous vous assurons!</h1>
-                            <h1 class="text-white text-uppercase mb-3 animated slideInDown">La ou vous étes!</h1>>
-                          
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#header-carousel"
-                data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Previous</span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#header-carousel"
-                data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Next</span>
-            </button>
-        </div>
-    </div>
+       <br></br>
+      
+       
     <!-- Navbar & Carousel End -->
 
-    						{% block body %}
+                            {% block body %}
                              <h1>Mecanicien index</h1>
 
     <table class="table">
@@ -166,7 +122,9 @@
                             {% endblock %}
 
 
-    <!-- Footer Start -->
+    <!-- Footer Start --><br></br>
+    <br></br>
+    <br></br>
     <div class="container-fluid bg-dark text-light mt-5 wow fadeInUp" data-wow-delay="0.1s">
         <div class="container">
             <div class="row gx-5">
@@ -214,7 +172,7 @@
                             </div>
                             <div class="link-animated d-flex flex-column justify-content-start">
                                 <a class="text-light mb-2" href="#"><i class="bi bi-arrow-right text-primary me-2"></i>Home</a>
-                                <a class="text-light mb-2" href="{{ path('app_voiture_new')}}"><i class="bi bi-arrow-right text-primary me-2"></i>Voiture</a>
+                                <a class="text-light mb-2" href="{{ path('app_voiture_new') }}"><i class="bi bi-arrow-right text-primary me-2"></i>Voiture</a>
                                 <a class="text-light mb-2" href="#"><i class="bi bi-arrow-right text-primary me-2"></i>Sinistre</a>
                                 <a class="text-light mb-2" href="#"><i class="bi bi-arrow-right text-primary me-2"></i>Reparation</a>
                                 <a class="text-light mb-2" href="#"><i class="bi bi-arrow-right text-primary me-2"></i>Actualités</a>
@@ -233,8 +191,8 @@
                 <div class="col-lg-8 col-md-6">
                     <div class="d-flex align-items-center justify-content-center" style="height: 75px;">
                         <p class="mb-0">&copy; <a class="text-white border-bottom" href="#">Django Website</a>. Tous Droits Réservés. 
-						
-						<!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
+                        
+                        <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
                     </div>
                 </div>
             </div>
@@ -261,4 +219,3 @@
 </body>
 
 </html>
-Error 404 (Not Found)!!1

@@ -1,6 +1,6 @@
-{% extends 'client/base-clientD.html.twig' %}
-
+{% extends 'admin/base-admin.html.twig' %}
 {% block title %}Voiture index{% endblock %}
+
 
 {% block body %}
     <h1 class="text-center">Voitures</h1>
@@ -9,34 +9,52 @@
         <div class="paste-button" onmouseleave="hideDropdown()">
         <button class="button" onmouseenter="showDropdown()">Select Attribute &nbsp; ▼</button>
         <div class="dropdown-content" id="searchAttributeDropdown">
+            <a href="#" onclick="selectAttribute('id')">Id</a>
             <a href="#" onclick="selectAttribute('email')">Email</a>
+            <a href="#" onclick="selectAttribute('matricule')">Matricule</a>
             <a href="#" onclick="selectAttribute('marque')">Marque</a>
-
+            <a href="#" onclick="selectAttribute('prix')">Prix</a>
+            <a href="#" onclick="selectAttribute('puissance')">Puissance</a>
             
         </div>
         </div>
     </div>
 
     <select id="searchAttribute" style="display: none;">
+    <option value="id">Id</option>
     <option value="email">Email</option>
+    <option value="matricule">Matricule</option>
     <option value="marque">Marque</option>
+    <option value="prix">Prix</option>
+    <option value="puissance">Puissance</option>
     </select>
 </form>
 
     <table class="table" id="VoitureTable">
         <thead>
             <tr>
+                <th><a href="#" onclick="toggleSorting(0)">Id</a></th>
                 <th><a href="#" onclick="toggleSorting(4)">Email</a></th>
+                <th><a href="#" onclick="toggleSorting(6)">Matricule</a></th>
                 <th><a href="#" onclick="toggleSorting(1)">Marque</a></th>
-
+                <th><a href="#" onclick="toggleSorting(2)">Prix</a></th>
+                <th><a href="#" onclick="toggleSorting(3)">Puissance</a></th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
         {% for voiture in voitures %}
             <tr>
+                <td>{{ voiture.id }}</td>
                 <td>{{ voiture.email }}</td>
+                <td>{{ voiture.matricule }}</td>
                 <td>{{ voiture.marque }}</td>
-
+                <td>{{ voiture.prixVoiture }}</td>
+                <td>{{ voiture.puissance }}</td>
+                <td>
+                    <a href="{{ path('app_voiture_back_show', {'id': voiture.id}) }}" class="btn btn-success">Afficher</a>
+                    <a href="{{ path('app_voiture_back_edit', {'id': voiture.id}) }}" class="btn btn-primary">Modifier</a>
+                </td>
             </tr>
         {% else %}
             <tr>
@@ -45,17 +63,12 @@
         {% endfor %}
         </tbody>
     </table>
-    <div style="text-align: center; margin-top: 20px;">
-    <a href="{{ path('app_voiture_new') }}" class="btn btn-primary my-3">Créer nouveau</a>
+        <div style="text-align: center; margin-top: 20px;">
+
+    <a href="{{ path('app_voiture_back_new') }}" class="btn btn-primary my-3">Créer nouveau</a>
     <a href="{{ path('app_home') }}" class="btn btn-secondary my-3">Retour</a>
     </div>
-
-  <nav class="app-pagination mt-5">
-    <ul class="pagination justify-content-center">
-        {{ knp_pagination_render(pagination) }}
-    </ul>
-</nav>
-    <script>
+ <script>
        var sortOrder = "asc";
 
     function searchTable() {
@@ -207,6 +220,5 @@
 }
 
 </style>
+
 {% endblock %}
-
-

@@ -24,7 +24,7 @@
 
                         {% if app.user %}
                         <div class="mb-3">
-                            Vous êtes connecté(e) comme{{ app.user.userIdentifier }}, <a
+                            Vous êtes connecté(e) comme {{ app.user.userIdentifier }}, <a
                                 href="{{ path('app_logout') }}">Déconnecté</a>
                         </div>
                         {% endif %}
@@ -57,10 +57,18 @@
                             </button>
                         </div>
                     </form>
+                    <div class="text-center"> <!-- Centered button -->
+                    </div>
+                    <a href="{{ path('app_forgot_password_request') }}">Mot de pass oublier</a>
+                    <br>
+                    <a href="{{ path('app_home') }}" class="btn btn-secondary my-3">Retour</a>
+                    <a href="{{ path('app_register') }}" class="btn btn-primary my-3">S'inscrire</a>
+
                 </div>
             </div>
         </div>
     </div>
+    
 </div>
 {% endblock %}
 
@@ -82,6 +90,7 @@
         border-radius: 20px;
         padding: 12px;
     }
+
 
     .btn-success:hover {
         background-color: #4CAF50;

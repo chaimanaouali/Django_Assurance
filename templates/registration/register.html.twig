@@ -53,62 +53,84 @@
                     {% for flash_error in app.flashes('verify_email_error') %}
                         <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
                     {% endfor %}
-                    
+
+
                     {{ form_errors(registrationForm) }}
                     
-                    {{ form_start(registrationForm) }}
-                    
-                    <div class="form-group">
-                        {{ form_row(registrationForm.email, {
-                            'label': '<i class="fas fa-envelope"></i> Email:',
-                            'label_html': true,
-                            'label_attr': {'class': 'form-label mr-2'}
-                        }) }}
-                        <small id="emailHelp" class="form-text text-muted">Nous ne partagerons jamais votre e-mail avec quelqu'un d'autre.</small>
+         {{ form_start(registrationForm) }}
+
+
+
+            {# Displaying email field #}
+            <div class="form-group">
+                {{ form_row(registrationForm.email, {
+                    'label': '<i class="fas fa-envelope"></i> Email:',
+                    'label_html': true,
+                    'label_attr': {'class': 'form-label mr-2'}
+                }) }}
+                <small id="emailHelp" class="form-text text-muted">Nous ne partagerons jamais votre e-mail avec quelqu'un d'autre.</small>
+            </div>
+
+            {# Displaying nom_user field #}
+            <div class="form-group">
+                {{ form_row(registrationForm.nom_user, {
+                    'label': '<i class="fas fa-user"></i> Nom:',
+                    'label_html': true,
+                    'label_attr': {'class': 'form-label mr-2'}
+                }) }}
+            </div>
+
+            {# Displaying prenom_user field #}
+            <div class="form-group">
+                {{ form_row(registrationForm.prenom_user, {
+                    'label': '<i class="fas fa-user"></i> Prenom:',
+                    'label_html': true,
+                    'label_attr': {'class': 'form-label mr-2'}
+                }) }}
+            </div>
+
+            {# Displaying plainPassword field #}
+            <div class="form-group">
+                {{ form_row(registrationForm.plainPassword, {
+                    'label': '<i class="fas fa-lock"></i> Password:',
+                    'label_html': true,
+                    'label_attr': {'class': 'form-label mr-2'}
+                }) }}
+            </div>
+
+            {# Displaying agreeTerms field #}
+            <div class="form-check mb-4">
+                {{ form_row(registrationForm.agreeTerms, {
+                    'label': '<i class="fas fa-check"></i> J\'accepte les conditions',
+                    'label_html': true,
+                    'label_attr': {'class': 'form-label mr-2'}
+                }) }}
+            </div>
+
+            {# Displaying recaptcha field #}
+            <div class="form-group">
+                {{ form_row(registrationForm.recaptcha) }}
+                {{ form_errors(registrationForm.recaptcha) }}
+            </div>
+            
+            {# Submit button #}
+            <button type="submit" class="btn btn-success btn-block">
+                <i class="fas fa-plus-circle"></i> S'inscrire
+            </button>
+
+            {{ form_end(registrationForm) }}
+
+                                
+                                {{ form_end(registrationForm) }}
+                                <a href="{{ path('app_home') }}" class="btn btn-secondary my-3">Retour</a>
+                                <a href="{{ path('app_login') }}">Connecter</a>
+
+
+                            </div>
+                        </div>
                     </div>
-                    
-                    <div class="form-group">
-                        {{ form_row(registrationForm.nom_user, {
-                            'label': '<i class="fas fa-user"></i> Nom:',
-                            'label_html': true,
-                            'label_attr': {'class': 'form-label mr-2'}
-                        }) }}
-                    </div>
-                    
-                    <div class="form-group">
-                        {{ form_row(registrationForm.prenom_user, {
-                            'label': '<i class="fas fa-user"></i> Prenom:',
-                            'label_html': true,
-                            'label_attr': {'class': 'form-label mr-2'}
-                        }) }}
-                    </div>
-                    
-                    <div class="form-group">
-                        {{ form_row(registrationForm.plainPassword, {
-                            'label': '<i class="fas fa-lock"></i> Password:',
-                            'label_html': true,
-                            'label_attr': {'class': 'form-label mr-2'}
-                        }) }}
-                    </div>
-                    
-                    <div class="form-check mb-4">
-                        {{ form_row(registrationForm.agreeTerms, {
-                            'label': '<i class="fas fa-check"></i>  Jaccepte les conditions',
-                            'label_html': true,
-                            'label_attr': {'class': 'form-label mr-2'}
-    }) }}
-                    </div>
-                    
-                    <button type="submit" class="btn btn-success btn-block">
-                        <i class="fas fa-plus-circle"></i> S'inscrire
-                    </button>
-                    
-                    {{ form_end(registrationForm) }}
                 </div>
             </div>
-        </div>
-    </div>
-</div>
 
 <style>
     .card {

@@ -10,7 +10,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Security\Core\Security;
 
-class VoitureType extends AbstractType
+class Voiture1Type extends AbstractType
 {
     private $security;
 

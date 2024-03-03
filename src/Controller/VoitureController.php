@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Knp\Component\Pager\PaginatorInterface;
  
 
 #[Route('/voiture')]
@@ -18,27 +19,34 @@ class VoitureController extends AbstractController
     #[Route('/', name: 'app_voiture_index', methods: ['GET'])]
    
 
-    public function index(Request $request, VoitureRepository $voitureRepository): Response
+    public function index(Request $request, VoitureRepository $voitureRepository, PaginatorInterface $paginator): Response
     {
+        
         $searchQuery = $request->query->get('q');
     
-        // Initialize an empty array to hold voitures
-        $voitures = [];
+        // Retrieve all voitures
+        $queryBuilder = $voitureRepository->createQueryBuilder('v')
+            ->orderBy('v.id', 'DESC');
     
         // If there's a search query, filter voitures based on it
         if ($searchQuery) {
-            $voitures = $voitureRepository->searchVoitures($searchQuery); 
-        } else {
-            // If there's no search query, retrieve all voitures
-            $voitures = $voitureRepository->findAll();
+            $queryBuilder->andWhere('v.someField LIKE :searchQuery')
+                ->setParameter('searchQuery', '%' . $searchQuery . '%');
         }
     
+        // Paginate the results
+        $pagination = $paginator->paginate(
+            $queryBuilder->getQuery(), // Doctrine Query, not results
+            $request->query->getInt('page', 1), // Define the page parameter
+            4 // Items per page
+        );
+    
         return $this->render('voiture/index.html.twig', [
-            'voitures' => $voitures,
+            'pagination' => $pagination,
             'searchQuery' => $searchQuery,
+            'voitures' => $pagination
         ]);
     }
-
 
     #[Route('/new', name: 'app_voiture_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
@@ -96,4 +104,5 @@ class VoitureController extends AbstractController
 
         return $this->redirectToRoute('app_voiture_index', [], Response::HTTP_SEE_OTHER);
     }
+    
 }

@@ -1,0 +1,15 @@
+{% extends 'admin/base-admin.html.twig' %}
+
+
+{% block title %}Modifier Voiture{% endblock %}
+
+{% block body %}
+    <h1>Modifier Voiture</h1>
+        <div class="text-center">
+
+    {{ include('voiture_back/_form.html.twig', {'button_label': 'Modifier'}) }}
+
+    <a href="{{ path('app_voiture_back_index') }}" class="btn btn-primary">Retour</a>
+    </div>
+    {{ include('voiture_back/_delete_form.html.twig') }}
+{% endblock %}
