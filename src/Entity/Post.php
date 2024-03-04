@@ -8,6 +8,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Symfony\Component\Serializer\Annotation\Groups;
+
+
 
 
 
@@ -68,7 +71,23 @@ class Post
     private int $likeCount = 0; // New property for storing like count
     #[ORM\Column(type: 'boolean')]
 private bool $signaled = false;
-   
+
+#[ORM\Column(type: 'boolean')]
+private bool $enable;
+
+
+
+#[ORM\Column(type: 'integer')]
+private int $dislikeCount = 0; // Property for storing dislike count
+
+public function __construct()
+{
+    // Initialize the like and dislike counts to 0 when a new post is created
+    $this->likeCount = 0;
+    $this->dislikeCount = 0;
+    $this->enable = true;
+}
+
 
     
 
@@ -187,9 +206,30 @@ public function setSignaled(bool $signaled): self
     $this->signaled = $signaled;
     return $this;
 }
-    
 
-   
+public function getDislikeCount(): ?int
+{
+    return $this->dislikeCount;
+}
+
+public function setDislikeCount(int $dislikeCount): self
+{
+    $this->dislikeCount = $dislikeCount;
+
+    return $this;
+}
+public function getEnable(): ?bool
+{
+    return $this->enable;
+}
+
+public function setEnable(bool $enable): self
+{
+    $this->enable = $enable;
+
+    return $this;
+}
+
     
     public function __toString(): string
     {

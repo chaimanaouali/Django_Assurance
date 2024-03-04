@@ -6,4 +6,6 @@ knp_paginator:
         sort_direction_name: direction # Parameter name for sorting direction in URL
         distinct: true                 # Ensure distinct results, useful when paginating with joins
     template:
-        pagination: '@KnpPaginator/Pagination/sliding.html.twig'  # Template for pagination
+        pagination: "@KnpPaginator/Pagination/twitter_bootstrap_v4_pagination.html.twig" # sliding pagination controls template
+        sortable: "@KnpPaginator/Pagination/twitter_bootstrap_v4_font_awesome_sortable_link.html.twig" # sort link template
+        filtration: "@KnpPaginator/Pagination/filtration.html.twig" # filters template

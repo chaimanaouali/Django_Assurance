@@ -43,6 +43,14 @@
                                 <td>{{ post.categorie }}</td>
                                 <td>{{ post.updatedAt ? post.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
                                 <td>
+                                    <button class="btn btn-success btn-sm" style="color:black; margin-left:px;">
+                                        <a style="color:black;" href="{{ path('app_post_edit', {'id': post.id}) }}">edit</a>
+                                    </button>
+                                    {% if post.enable %}
+                                        <a href="{{ path('masquer_post', {'idPost' : post.id}) }}" class="btn btn-primary text-white">Masquer</a>
+                                    {% else %}
+                                        <a href="{{ path('afficher_evenement', {'idPost' : post.id}) }}" class="btn btn-primary text-white">Afficher</a>
+                                    {% endif %}
                                     <a href="{{ path('app_post_show', {'id': post.id}) }}" class="btn btn-primary">afficher</a>
                                     <a href="{{ path('app_post_edit', {'id': post.id}) }}" class="btn btn-secondary">modifier</a>
                                 </td>
@@ -54,7 +62,7 @@
                 <div class="text-center">
                     <a href="{{ path('app_post_new') }}" class="btn btn-success">ajouter</a>
                 </div>
-                <br></br>
+                <br>
 
                 {# Render pagination controls manually #}
                 <div class="pagination justify-content-center">
@@ -75,44 +83,40 @@
                     {% endif %}
                 </div>
             </div>
-            <br>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <br>
-  <h2>Category Statistics</h2>
-<div class="category-statistics">
-    <canvas id="categoryChart" width="50" height="50"></canvas>
-</div>
-
-<script>
-    var ctx = document.getElementById('categoryChart').getContext('2d');
-    var colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff', '#ff8000', '#8000ff', '#0080ff', '#80ff00'];
-
-    var data = {
-        labels: [
-            {% for stat in categoryStatistics %}
-                '{{ stat.categorie }}',
-            {% endfor %}
-        ],
-        datasets: [{
-            data: [
-                {% for stat in categoryStatistics %}
-                    {{ stat.postCount }},
-                {% endfor %}
-            ],
-            backgroundColor: colors
-        }]
-    };
-
-    var categoryChart = new Chart(ctx, {
-        type: 'pie',
-        data: data
-    });
-</script>              
-
-
-</div>
-    
-</div>
         </div>
     </div>
+
+    <br>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <br>
+    <h2>Category Statistics</h2>
+    <div class="category-statistics">
+        <canvas id="categoryChart" width="50" height="50"></canvas>
+    </div>
+
+    <script>
+        var ctx = document.getElementById('categoryChart').getContext('2d');
+        var colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff', '#ff8000', '#8000ff', '#0080ff', '#80ff00'];
+
+        var data = {
+            labels: [
+                {% for stat in categoryStatistics %}
+                    '{{ stat.categorie }}',
+                {% endfor %}
+            ],
+            datasets: [{
+                data: [
+                    {% for stat in categoryStatistics %}
+                        {{ stat.postCount }},
+                    {% endfor %}
+                ],
+                backgroundColor: colors
+            }]
+        };
+
+        var categoryChart = new Chart(ctx, {
+            type: 'pie',
+            data: data
+        });
+    </script>
 {% endblock %}

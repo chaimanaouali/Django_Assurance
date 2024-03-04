@@ -42,7 +42,7 @@ public function index(CommentaireRepository $commentaireRepository, Request $req
         $queryBuilder->getQuery(), // Use the query builder to build the query
         $request->query->getInt('page', 1), // Get the current page number
         10 // Number of items per page
-    );
+     );
     $signaledComments = $commentaireRepository->findBy(['signaled' => true]);
     // Render the template with the pagination
     return $this->render('commentaire_back/index.html.twig', [

@@ -21,9 +21,35 @@ use App\Entity\Commentaire;
 
 
 
+
 #[Route('/post_front')]
 class PostFrontController extends AbstractController
 {  
+    #[Route('/{idPost}/afficher', name: 'afficher_evenement')]
+    public function afficherEvent($idPost): Response
+    {
+        $post = $this->getDoctrine()->getRepository(Post::class)->find($idPost);
+        $post->setEnable(true);
+        $entityManager = $this->getDoctrine()->getManager();
+    
+        $entityManager->persist($post);
+        $entityManager->flush();
+    
+        return $this->redirectToRoute('app_post_index', [], Response::HTTP_SEE_OTHER);
+    }
+    
+    #[Route('/{idPost}/masquer', name: 'masquer_post')]
+    public function masquerEvent($idPost): Response
+    {
+        $post = $this->getDoctrine()->getRepository(Post::class)->find($idPost);
+        $post->setEnable(false);
+        $entityManager = $this->getDoctrine()->getManager();
+    
+        $entityManager->persist($post);
+        $entityManager->flush();
+    
+        return $this->redirectToRoute('app_post_index', [], Response::HTTP_SEE_OTHER);
+    }
     private $mailer;
     public function __construct(MailerInterface $mailer)
     {
@@ -137,6 +163,17 @@ class PostFrontController extends AbstractController
         // Redirect back to the previous page or any other desired page
         return $this->redirectToRoute('app_post_front_index', ['id' => $post->getId()]);
     }
+    #[Route('/dislike/{id}', name: 'app_post_front_dislike', methods: ['POST'])]
+public function dislike(Request $request, Post $post, EntityManagerInterface $entityManager): Response
+{
+    // Increment the dislike count for the post
+    $post->setDislikeCount($post->getDislikeCount() + 1);
+    $entityManager->flush();
+
+    // Redirect back to the previous page or any other desired page
+    return $this->redirectToRoute('app_post_front_index', ['id' => $post->getId()]);
+}
+
 
     #[Route('/{id}/edit', name: 'app_post_front_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Post $post, EntityManagerInterface $entityManager): Response

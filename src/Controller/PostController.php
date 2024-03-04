@@ -14,11 +14,17 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
+use Symfony\Component\Serializer\Annotation\Groups;
+
+
+
+
 
 
 class PostController extends AbstractController
 {
-    #[Route('/post', name: 'app_post_index', methods: ['GET'])]
+   
+       #[Route('/post', name: 'app_post_index', methods: ['GET'])]
     public function index(Request $request, PostRepository $postRepository, EntityManagerInterface $entityManager): Response
     {
         // Get the current page number from the request query parameters
@@ -74,14 +80,7 @@ public function new(Request $request, EntityManagerInterface $entityManager, Mai
         $this->addFlash('success', ' New Post Added.');
 
         // Send email after post creation
-        $email = (new Email())
-            ->from('kharrat.raed@esprit.tn')
-            ->to('garalibechir10@gmail.com')
-            ->subject('New Post Created')
-            ->text('A new post has been created!')
-            ->html('<p>A new post has been created!</p>');
-
-        $mailer->send($email);
+        
 
         // Redirect to index page with updated notification count
         return $this->redirectToRoute('app_post_index', ['postCount' => $postCount]);
@@ -161,5 +160,6 @@ $dompdf->render();
 
     return $response;
 }
+
     
 }

@@ -12,4 +12,5 @@ app_commentaire_new:
 app_send_email:
     path: '/send_email'
     controller: 'App\Controller\EmailController::send'
-    methods: ['POST']    
+    methods: ['POST']  
+      
