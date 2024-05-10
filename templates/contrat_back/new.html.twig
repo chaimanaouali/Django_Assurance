@@ -1,12 +1,13 @@
-<!DOCTYPE html>
+{% extends 'admin/base-front.html.twig' %}
 
-<title>New Contrat</title>
+{% block title %}New Contrat{% endblock %}
 
 {% block body %}
-
-    <h1>Create new Contrat</h1>
+<div class="container mt-4">
+    <h1>Create New Contrat</h1>
 
     {{ include('contrat_back/_form.html.twig') }}
 
-    <a href="{{ path('app_contrat_back_index') }}">back to list</a>
+    <a href="{{ path('app_contrat_back_index') }}" class="btn btn-secondary mt-3">Back to List</a>
+</div>
 {% endblock %}

@@ -1,13 +1,21 @@
-<!DOCTYPE html>
+{% extends 'admin/base-back.html.twig' %}
 
-<title>Edit Contrat</title>
+{% block title %}Edit Contrat{% endblock %}
 
 {% block body %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Contrat</title>
+</head>
+<body>
     <h1>Edit Contrat</h1>
 
     {{ include('contrat_back/_form.html.twig', {'button_label': 'Update'}) }}
 
-    <a href="{{ path('app_contrat_back_index') }}">back to list</a>
+    <a href="{{ path('app_contrat_back_index') }}" class="btn">Back to List</a>
 
     {{ include('contrat_back/_delete_form.html.twig') }}
+</body>
+</html>
 {% endblock %}
