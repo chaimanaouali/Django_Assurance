@@ -43,7 +43,11 @@
     <!-- Navbar & Carousel Start -->
     <div class="container-fluid position-relative p-0">
         <nav class="navbar navbar-expand-lg navbar-dark px-5 py-3 py-lg-0">
+<<<<<<< HEAD
             <a href="" class="navbar-brand p-0">
+=======
+            <a href="index.html" class="navbar-brand p-0">
+>>>>>>> gestion_actualitee
                 <h1 class="m-0"><i class="fa fa-user-tie me-2"></i>Django Assurance</h1>
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
@@ -52,11 +56,16 @@
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <div class="navbar-nav ms-auto py-0">
                     <a href="index.html" class="nav-item nav-link active">Home</a>
+<<<<<<< HEAD
                     <a href="" class="nav-item nav-link">Voiture</a>
+=======
+                    {#<a href="{{ path('app_voiture_index') }}" class="nav-item nav-link">Voiture</a>#}
+>>>>>>> gestion_actualitee
 
                     <a href="about.html" class="nav-item nav-link">Sinistre</a>
                     <a href="service.html"  class="nav-item nav-link">Réparation</a>
                     <div class="nav-item dropdown">
+<<<<<<< HEAD
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Actualités</a>
                         <div class="dropdown-menu m-0">
                             <a href="blog.html" class="dropdown-item">Blog Grid</a>
@@ -65,6 +74,15 @@
                     </div>
                     <a href="{{ path('app_contrat_new') }}" class="nav-item nav-link">Contrat</a>
 
+=======
+                        <a href="{{ path('app_post_front_index') }}" class="nav-item nav-link" ">Actualités</a>
+                        
+                    </div>
+                    <div class="nav-item dropdown">
+                        <a href="#" class="nav-item nav-link" >Contrats</a>
+                        
+                    </div>
+>>>>>>> gestion_actualitee
                     <a href="" class="nav-item nav-link">Devis</a>
                 </div>
             </div>
@@ -199,12 +217,21 @@
                             </div>
                             <div class="link-animated d-flex flex-column justify-content-start">
                                 <a class="text-light mb-2" href="#"><i class="bi bi-arrow-right text-primary me-2"></i>Home</a>
+<<<<<<< HEAD
                                 <a class="text-light mb-2" href=""><i class="bi bi-arrow-right text-primary me-2"></i>Voiture</a>
                                 <a class="text-light mb-2" href="#"><i class="bi bi-arrow-right text-primary me-2"></i>Sinistre</a>
                                 <a class="text-light mb-2" href="#"><i class="bi bi-arrow-right text-primary me-2"></i>Reparation</a>
                                 <a class="text-light mb-2" href="#"><i class="bi bi-arrow-right text-primary me-2"></i>Actualités</a>
                                 <a class="text-light mb-2" href="{{ path('app_contrat_new') }}"><i class="bi bi-arrow-right text-primary me-2"></i>Contrats</a>
                                 <a class="text-light mb-2" href="#"><i class="bi bi-arrow-right text-primary me-2"></i>Devis</a>
+=======
+                                {#<a class="text-light mb-2" href="{{ path('app_voiture_index') }}"><i class="bi bi-arrow-right text-primary me-2"></i>Voiture</a>#}
+                                <a class="text-light mb-2" href="#"><i class="bi bi-arrow-right text-primary me-2"></i>Sinistre</a>
+                                <a class="text-light mb-2" href="#"><i class="bi bi-arrow-right text-primary me-2"></i>Reparation</a>
+                                <a class="text-light mb-2" href="{{ path('app_post_front_index') }}"><i class="bi bi-arrow-right text-primary me-2"></i>Actualités</a>
+                                <a class="text-light mb-2" href="#"><i class="bi bi-arrow-right text-primary me-2"></i>Contrats</a>
+                                <a class="text-light mb-2" href=""><i class="bi bi-arrow-right text-primary me-2"></i>Devis</a>
+>>>>>>> gestion_actualitee
                             </div>
                         </div>
                     </div>

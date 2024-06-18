@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ma Page Front Office</title>
+    <link rel="stylesheet" href="your-styles.css"> <!-- Add your custom styles here -->
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="{{ path('app_home') }}">Accueil</a></li>
+                <li><a href="#">À propos</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Le contenu principal de votre page front-office -->
+        <section id="featured-post">
+            <h2>Article à la une</h2>
+            {# Inclure show.html.twig ici pour afficher le post à la une #}
+            {% include 'client/home/show.html.twig' %}
+        </section>
+
+        <section id="other-posts">
+            <h2>Derniers articles</h2>
+            {% if posts is defined and posts|length > 0 %}
+                {# Inclure une liste d'autres articles ou une boucle pour afficher plusieurs articles #}
+                {% for post in posts %}
+                    <article>
+                        <h3>{{ post.title }}</h3>
+                        <p>{{ post.content }}</p>
+                        <a href="{{ path('app_post_show', {'id': post.id}) }}">Lire la suite</a>
+                    </article>
+                {% endfor %}
+            {% else %}
+                <p>Aucun article à afficher pour le moment.</p>
+            {% endif %}
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Ma Page Front Office. Tous droits réservés.</p>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,24 @@
+{% extends 'admin/base-admin.html.twig' %}
+
+{% block title %}Edit Post{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <!DOCTYPE html>
+                <title>Edit Post</title>
+                
+                <h1 class="text-center mt-5 mb-4">modifier Post</h1>
+
+                {{ include('post/_form.html.twig', {'button_label': 'Update'}) }}
+
+                <div class="text-center mt-3">
+                    <a href="{{ path('app_post_index') }}" class="btn btn-primary">retourner list</a>
+                </div>
+
+                {{ include('post/_delete_form.html.twig') }}
+            </div>
+        </div>
+    </div>
+{% endblock %}
