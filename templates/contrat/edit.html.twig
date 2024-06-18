@@ -1,14 +1,29 @@
 {% extends 'admin/base-front.html.twig' %}
 
-{% block title %} Contrat edit{% endblock %}
+{% block title %}Edit Contract{% endblock %}
 
 {% block body %}
-    <!DOCTYPE html>
-    <h1>Edit Contrat</h1>
+    <style>
+        h1 {
+            font-size: 24px;
+            color: #0056b3; /* Blue color for heading */
+            margin-bottom: 15px;
+        }
+        a {
+            color: #007bff;
+            text-decoration: none;
+            font-size: 16px;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+
+    <h1>Edit Contract</h1>
 
     {{ include('contrat/_form.html.twig', {'button_label': 'Update'}) }}
 
-    <a href="{{ path('app_contrat_index') }}">back to list</a>
+    <a href="{{ path('app_contrat_index') }}">Back to list</a>
 
     {{ include('contrat/_delete_form.html.twig') }}
 {% endblock %}

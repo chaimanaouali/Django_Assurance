@@ -16,6 +16,33 @@ class Contrat1Type extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
+        ->add('nom', TextType::class, [
+            'constraints' => [
+                new Assert\Regex([
+                    'pattern' => '/^[A-Z][a-zA-Z]*$/',
+                    'message' => 'Le nom doit commencer par une majuscule et ne doit pas contenir de chiffres.',
+                ]),
+            ],
+        ])
+        
+        ->add('prenom', TextType::class, [
+            'constraints' => [
+                new Assert\Regex([
+                    'pattern' => '/^[A-Z][a-zA-Z]*$/',
+                    'message' => 'Le prénom doit commencer par une majuscule et ne doit pas contenir de chiffres.',
+                ]),
+            ],
+        ])
+        
+        ->add('email', TextType::class, [
+            'constraints' => [
+                new Assert\Regex([
+                    'pattern' => '/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/',
+                    'message' => 'Veuillez saisir une adresse e-mail valide.',
+                ]),
+            ],
+        ])
+        
             ->add('dateDebutContrat')
             ->add('datefinContrat')
             ->add('type_couverture', EntityType::class, [
@@ -43,6 +70,7 @@ class Contrat1Type extends AbstractType
                     ]),
                 ],
             ])
+          
             
         ;
     }

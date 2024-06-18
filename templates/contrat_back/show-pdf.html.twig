@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contrat d'assurance</title>
+    <style>
+        /* Style des champs de texte */
+        input[type="text"],
+        input[type="email"],
+        input[type="date"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px; /* Ajout de bord arrondi */
+            box-sizing: border-box;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa; /* Couleur de fond */
+            color: #333; /* Couleur du texte */
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff; /* Couleur de fond du contrat */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Ombre */
+            border-radius: 8px;
+            border: 1px solid #ddd; /* Bordure */
+        }
+        header, footer {
+            text-align: center;
+            padding: 10px 0;
+            background-color: #007bff; /* Couleur de fond de l'en-tête et du pied de page */
+            color: #fff; /* Couleur du texte de l'en-tête et du pied de page */
+            border-radius: 8px 8px 0 0;
+        }
+        header img {
+            max-width: 150px;
+            height: auto;
+        }
+        h1 {
+            text-align: center;
+            font-size: 28px;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            color: #007bff; /* Couleur du titre */
+        }
+        .location-date {
+            text-align: right;
+            margin-bottom: 20px;
+            font-size: 16px;
+            color: #333; /* Couleur du texte */
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            font-size: 16px;
+        }
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+        td {
+            vertical-align: top;
+        }
+        .contract-info {
+            margin-bottom: 30px;
+        }
+        .signature {
+            margin-top: 50px;
+            text-align: center;
+        }
+        .signature p {
+            margin-top: 20px;
+            font-size: 18px;
+        }
+        footer p {
+            font-size: 20px;
+        }
+
+        /* Media Query pour les petits écrans */
+        @media only screen and (max-width: 600px) {
+            .location-date {
+                text-align: left; /* Pour les petits écrans, alignez à gauche */
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img src="/images/logo.jpeg" alt="Logo" />
+        <h2>Django Assurance</h2>
+        <p>123 Nour Jaafer, Ariana , Tunisia | Téléphone: +216 345 67890 | mail : Django@hormail.com</p>
+    </header>
+
+    <div class="container">
+        <h1>Contrat d'assurance</h1>
+
+        <!-- Nouvelle disposition pour la date et le lieu -->
+        <div class="location-date">
+            <p>Date: {{ "now"|date("d/m/Y") }}</p>
+            <p>Lieu: Elghazzela</p>
+        </div>
+
+        <!-- Reste du contenu -->
+        <div class="contract-info">
+            <p><strong>Détails du contrat:</strong></p>
+            <table>
+                <tbody>
+                    <tr>
+                        <th>Nom</th>
+                        <td>{{ contrat.nom }}</td>
+                    </tr>
+                    <tr>
+                        <th>Prénom</th>
+                        <td>{{ contrat.prenom }}</td>
+                    </tr>
+                    <tr>
+                        <th>Email</th>
+                        <td>{{ contrat.email }}</td>
+                    </tr>
+                    <tr>
+                        <th>ID</th>
+                        <td>{{ contrat.id }}</td>
+                    </tr>
+                    <tr>
+                        <th>Date de début</th>
+                        <td>{{ contrat.dateDebutContrat ? contrat.dateDebutContrat|date('d/m/Y') : '' }}</td>
+                    </tr>
+                    <tr>
+                        <th>Date de fin</th>
+                        <td>{{ contrat.datefinContrat ? contrat.datefinContrat|date('d/m/Y') : '' }}</td>
+                    </tr>
+                    <tr>
+                        <th>Adresse</th>
+                        <td>{{ contrat.adresseAssur }}</td>
+                    </tr>
+                    <tr>
+                        <th>Numéro du client</th>
+                        <td>{{ contrat.numeroAssur }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; {{ "now"|date("Y") }} Django Assurance. Tous droits réservés 2024.</p>
+    </footer>
+</body>
+</html>

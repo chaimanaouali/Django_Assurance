@@ -19,6 +19,9 @@ class Type
     #[ORM\Column(length: 255)]
     private ?string $typeCouverture = null;
 
+    
+
+
     public function getId(): ?int
     {
         return $this->id;

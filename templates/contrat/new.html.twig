@@ -1,12 +1,33 @@
 {% extends 'admin/base-front.html.twig' %}
 
-{% block title %} New Contrat{% endblock %}
+{% block title %} New Contract {% endblock %}
 
 {% block body %}
-    <!DOCTYPE html>
-    <h1>Create new Contrat</h1>
+<style>
+    h1 {
+        font-size: 24px;
+        color: #0056b3;
+        margin-bottom: 20px;
+    }
+    .home-link {
+        background-color: #0056b3;
+        color: white;
+        padding: 10px 20px;
+        text-decoration: none;
+        border-radius: 3px;
+        display: inline-block;
+        font-size: 16px;
+    }
+    .home-link span {
+        margin-right: 5px;
+    }
+</style>
 
-    {{ include('contrat/_form.html.twig') }}
 
-    <a href="{{ path('app_contrat_index') }}">back to list</a>
+{{ include('contrat/_form.html.twig') }}
+
+<a href="{{ path('app_home') }}" class="home-link">
+    <span>◄</span> Home
+</a>
+
 {% endblock %}

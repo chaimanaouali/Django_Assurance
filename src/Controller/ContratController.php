@@ -10,7 +10,11 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-
+use Dompdf\Dompdf;
+use Dompdf\Options as DompdfOptions;
+use BaconQrCode\Renderer\Image\Png;
+use BaconQrCode\Writer;;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 #[Route('/contrat')]
 class ContratController extends AbstractController
 {
@@ -33,7 +37,7 @@ class ContratController extends AbstractController
             $entityManager->persist($contrat);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_contrat_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_home', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('contrat/new.html.twig', [
@@ -78,4 +82,42 @@ class ContratController extends AbstractController
 
         return $this->redirectToRoute('app_contrat_index', [], Response::HTTP_SEE_OTHER);
     }
+    #[Route('/{id}/generate-pdf', name: 'contrat_generate_pdf')]
+public function generatePdf(Contrat $contrat): Response
+{
+    // Get the HTML content of the page you want to convert to PDF
+    $html = $this->renderView('contrat_back/show-pdf.html.twig', [
+        // Pass any necessary data to your Twig template
+        'contrat' => $contrat,
+    ]);
+
+// Configure Dompdf options
+$options = new DompdfOptions();
+$options->set('isHtml5ParserEnabled', true);
+
+// Instantiate Dompdf with the configured options
+$dompdf = new Dompdf($options);
+
+// Load HTML content into Dompdf
+$dompdf->loadHtml($html);
+
+// Set paper size and orientation
+$dompdf->setPaper('A4', 'portrait');
+
+// Render the HTML as PDF
+$dompdf->render();
+
+    // Set response headers for PDF download
+    $response = new Response($dompdf->output());
+    $response->headers->set('Content-Type', 'application/pdf');
+    $response->headers->set('Content-Disposition', 'attachment; filename="contrat.pdf"');
+
+    return $response;
+}
+
+
+
+
+
+
 }

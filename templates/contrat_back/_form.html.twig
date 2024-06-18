@@ -1,4 +1,20 @@
+<style>
+    .btn {
+        padding: 10px 20px;
+        font-size: 16px;
+        border: none;
+        border-radius: 3px;
+        background-color: #007bff; /* Bootstrap primary blue */
+        color: white;
+        cursor: pointer;
+        transition: background-color 0.2s; /* Smooth transition for mouse hover */
+    }
+
+    .btn:hover {
+        background-color: #0056b3; /* Slightly darker blue on hover */
+    }
+</style>
 {{ form_start(form) }}
     {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+    <button type="submit" class="btn">{{ button_label|default('Save') }}</button>
 {{ form_end(form) }}

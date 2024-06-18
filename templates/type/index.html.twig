@@ -79,6 +79,7 @@ h1 {
             <td>{{ type.id }}</td>
             <td>{{ type.description }}</td>
             <td>{{ type.typeCouverture }}</td>
+
             <td class="action-links">
                 <a href="{{ path('app_type_show', {'id': type.id}) }}" class="action-link">Show</a>
             </td>
@@ -93,6 +94,6 @@ h1 {
     {% endfor %}
     </tbody>
 </table>
-
+ 
 <a href="{{ path('app_type_new') }}" class="create-button">Create new</a>
 {% endblock %}

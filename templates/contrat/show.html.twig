@@ -1,39 +1,95 @@
 {% extends 'admin/base-front.html.twig' %}
 
-{% block title %}Contrat{% endblock %}
+{% block title %}Contrat Details{% endblock %}
 
 {% block body %}
-    <!DOCTYPE html>
-    <h1>Contrat</h1>
+<style>
+    h1 {
+        font-size: 24px;
+        color: #0056b3; /* Matching the application theme */
+        margin-bottom: 20px;
+    }
+    table {
+        width: 100%;
+        margin-top: 20px;
+        border-collapse: collapse;
+    }
+    th, td {
+        padding: 10px;
+        border: 1px solid #ccc;
+        text-align: left;
+    }
+    th {
+        background-color: #f4f4f4;
+    }
+    a {
+        color: #007bff;
+        text-decoration: none;
+        margin-right: 10px;
+    }
+    a:hover {
+        text-decoration: underline;
+    }
+    .btn-primary {
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 3px;
+        cursor: pointer;
+        text-decoration: none;
+    }
+    .btn-primary:hover {
+        background-color: #0056b3;
+    }
+</style>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ contrat.id }}</td>
-            </tr>
-            <tr>
-                <th>DateDebutContrat</th>
-                <td>{{ contrat.dateDebutContrat ? contrat.dateDebutContrat|date('Y-m-d') : '' }}</td>
-            </tr>
-            <tr>
-                <th>DatefinContrat</th>
-                <td>{{ contrat.datefinContrat ? contrat.datefinContrat|date('Y-m-d') : '' }}</td>
-            </tr>
-            <tr>
-                <th>AdresseAssur</th>
-                <td>{{ contrat.adresseAssur }}</td>
-            </tr>
-            <tr>
-                <th>NumeroAssur</th>
-                <td>{{ contrat.numeroAssur }}</td>
-            </tr>
-        </tbody>
-    </table>
+<h1>Contract Details</h1>
 
-    <a href="{{ path('app_contrat_index') }}">back to list</a>
+<table class="table">
+    <tbody>
+        <tr>
+            <th>Id</th>
+            <td>{{ contrat.id }}</td>
+        </tr>
+        <tr>
+            <th>Name</th>
+            <td>{{ contrat.nom }}</td>
+        </tr>
+        <tr>
+            <th>First Name</th>
+            <td>{{ contrat.prenom }}</td>
+        </tr>
+        <tr>
+            <th>E-mail</th>
+            <td>{{ contrat.email }}</td>
+        </tr>
+        <tr>
+            <th>Contract Start Date</th>
+            <td>{{ contrat.dateDebutContrat ? contrat.dateDebutContrat|date('Y-m-d') : '' }}</td>
+        </tr>
+        <tr>
+            <th>Contract End Date</th>
+            <td>{{ contrat.datefinContrat ? contrat.datefinContrat|date('Y-m-d') : '' }}</td>
+        </tr>
+        <tr>
+            <th>Type of Contract</th>
+            <td>{{ contrat.getTypeCouverture }}</td>
+        </tr>
+        <tr>
+            <th>Insured's Address</th>
+            <td>{{ contrat.adresseAssur }}</td>
+        </tr>
+        <tr>
+            <th>Insured's Phone Number</th>
+            <td>{{ contrat.numeroAssur }}</td>
+        </tr>
+    </tbody>
+</table>
 
-    <a href="{{ path('app_contrat_edit', {'id': contrat.id}) }}">edit</a>
+<a href="{{ path('app_contrat_index') }}">Back to list</a>
+<a href="{{ path('app_contrat_edit', {'id': contrat.id}) }}">Edit</a>
+<a href="{{ path('contrat_generate_pdf', {'id': contrat.id}) }}" class="btn btn-primary">Download PDF</a>
 
-    {{ include('contrat/_delete_form.html.twig') }}
+{{ include('contrat/_delete_form.html.twig') }}
 {% endblock %}

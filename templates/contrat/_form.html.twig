@@ -1,110 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Compact Contract Form</title>
 <style>
- /* Style for form wrapper */
-.form-wrapper {
-    max-width: 2000px;
-    margin: 0 auto;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    background-color: #f9f9f9;
-}
-
-/* Style for form group */
-.form-group {
-    margin-bottom: 20px;
-}
-
-/* Style for form label */
-.form-group label {
-    display: block;
-    font-weight: bold;
-    margin-bottom: 5px;
-}
-
-/* Style for form input fields */
-.form-group input[type="text"],
-.form-group input[type="date"] {
-    width: 100%;
-    padding: 8px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 3px;
-}
-
-/* Style for form button */
-.btn {
-    padding: 10px 20px;
-    font-size: 16px;
-    border: none;
-    border-radius: 3px;
-    background-color: #007bff;
-    color: white;
-    cursor: pointer;
-}
-
-/* Hover effect for button */
-.btn:hover {
-    background-color: #0056b3;
-}
-
+    .form-wrapper {
+        max-width: 800px;
+        margin: 20px auto;
+        padding: 15px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        background-color: #fff;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .form-group {
+        margin-bottom: 15px;
+    }
+    .form-group label {
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+    .form-group input[type="text"], .form-group input[type="date"],
+    .form-group input[type="email"], .form-group select {
+        width: 100%;
+        padding: 8px;
+        font-size: 14px;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+    }
+    .btn {
+        padding: 8px 15px;
+        font-size: 14px;
+        background-color: #0056b3;
+        color: white;
+        border-radius: 4px;
+        border: none;
+        cursor: pointer;
+    }
+    .btn:hover {
+        background-color: #003875;
+    }
+    h1 {
+        font-size: 24px;
+        color: #0056b3;
+        margin-bottom: 15px;
+    }
+    a {
+        color: #0056b3;
+        text-decoration: none;
+        margin-top: 10px;
+        display: inline-block;
+    }
+    a:hover {
+        text-decoration: underline;
+    }
 </style>
-   <style>
-h1 {
-    font-size: 35px;
-    color: #007bff; /* Same blue as the submit button */
-    margin-bottom: 20px;
-    font-family: Arial, sans-serif; /* Change font to Arial or any other desired sans-serif font */
-}
+</head>
+<body>
+    {{ form_start(form, {'attr': {'class': 'form-wrapper'}}) }}
+        <h1>Contract Form</h1>
 
-/* Links */
-a {
-    color: #007bff; /* Same blue as the submit button */
-    text-decoration: underline; /* Add text decoration */
-    margin-top: 20px;
-    display: inline-block;
-    font-family: Arial, sans-serif; /* Change font to Arial or any other desired sans-serif font */
-}
-
-a:hover {
-    text-decoration: none; /* Remove underline on hover */
-}
-
-    </style>
-{{ form_start(form) }}
-    <div class="form-wrapper">
         <div class="form-group">
-            <label class="form-label" for="{{ form.dateDebutContrat.vars.id }}">Start Date:</label>
+            <label for="{{ form.nom.vars.id }}">Name:</label>
+            {{ form_widget(form.nom, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.nom) }}
+        </div>
+        
+        <div class="form-group">
+            <label for="{{ form.prenom.vars.id }}">First Name:</label>
+            {{ form_widget(form.prenom, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.prenom) }}
+        </div>
+        
+        <div class="form-group">
+            <label for="{{ form.email.vars.id }}">E-mail:</label>
+            {{ form_widget(form.email, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.email) }}
+        </div>
+        
+        <div class="form-group">
+            <label for="{{ form.dateDebutContrat.vars.id }}">Start Date:</label>
             {{ form_widget(form.dateDebutContrat, {'attr': {'class': 'form-control'}}) }}
-            <div class="error-message">{{ form_errors(form.dateDebutContrat) }}</div>
+            {{ form_errors(form.dateDebutContrat) }}
         </div>
 
         <div class="form-group">
-            <label class="form-label" for="{{ form.datefinContrat.vars.id }}">End Date:</label>
+            <label for="{{ form.datefinContrat.vars.id }}">End Date:</label>
             {{ form_widget(form.datefinContrat, {'attr': {'class': 'form-control'}}) }}
-            <div class="error-message">{{ form_errors(form.datefinContrat) }}</div>
+            {{ form_errors(form.datefinContrat) }}
         </div>
 
         <div class="form-group">
-            <label class="form-label" for="{{ form.adresseAssur.vars.id }}">Address:</label>
+            <label for="{{ form.adresseAssur.vars.id }}">Address:</label>
             {{ form_widget(form.adresseAssur, {'attr': {'class': 'form-control'}}) }}
-            <div class="error-message">{{ form_errors(form.adresseAssur) }}</div>
+            {{ form_errors(form.adresseAssur) }}
         </div>
 
         <div class="form-group">
-            <label class="form-label" for="{{ form.numeroAssur.vars.id }}">Phone Number:</label>
+            <label for="{{ form.numeroAssur.vars.id }}">Phone Number:</label>
             {{ form_widget(form.numeroAssur, {'attr': {'class': 'form-control'}}) }}
-            <div class="error-message">{{ form_errors(form.numeroAssur) }}</div>
+            {{ form_errors(form.numeroAssur) }}
         </div>
 
         <div class="form-group">
-            <label class="form-label" for="{{ form.type_couverture.vars.id }}">Type of Coverage:</label>
+            <label for="{{ form.type_couverture.vars.id }}">Type of Coverage:</label>
             {{ form_widget(form.type_couverture, {'attr': {'class': 'form-control'}}) }}
-            <div class="error-message">{{ form_errors(form.type_couverture) }}</div>
+            {{ form_errors(form.type_couverture) }}
         </div>
 
-        <button type="submit" class="btn">{{ button_label|default('Save') }}</button>
-    </div>
-{{ form_end(form) }}
-
-
-
+        <button type="submit" class="btn">Submit</button>
+    {{ form_end(form) }}
+</body>
+</html>

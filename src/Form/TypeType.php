@@ -24,7 +24,7 @@ class TypeType extends AbstractType
                     'Assistance routière' => 'assistance_routiere',
                 ],
             ])
-            
+        
         ;
     }
 
